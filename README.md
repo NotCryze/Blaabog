@@ -3,7 +3,7 @@ Blå Bog is a website for students to write comments/notes on other students' pr
 
 # Project Details
 | Platform | GUI | Timeframe | Database Solution |
-|-|-|-|-|
+|----------|-----|-----------|-------------------|
 | Web Application  | Razor Pages | August | SQL Server |
 
 ## Dependencies
