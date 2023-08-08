@@ -11,6 +11,7 @@ Blå Bog is a website for students to write comments/notes on other students' pr
 - [SBO.BlaaBog.Services]()
 - [SBO.BlaaBog.Web]()
     - [Bootstrap 5 (v5.3)](https://getbootstrap.com/docs/5.3/)
+    - [Font Awesome 6 (v6.4.2)](https://fontawesome.com/search)
 
 See the [wiki]() for more in depth information about the project.
 
