@@ -8,5 +8,7 @@ namespace SBO.BlaaBog.Domain.Entities
 {
     public class Student
     {
+        private string _name;
+        public string Name { get { return _name; } }
     }
 }
