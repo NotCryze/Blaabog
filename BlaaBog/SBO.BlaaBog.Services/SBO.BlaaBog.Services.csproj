@@ -5,4 +5,8 @@
     <Nullable>disable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\SBO.BlaaBog.Domain\SBO.BlaaBog.Domain.csproj" />
+  </ItemGroup>
+
 </Project>
