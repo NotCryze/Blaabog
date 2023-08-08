@@ -1,9 +1,9 @@
 # Introduction
-_Add an introduction by explaining what the idea behind the application is_
+Blå Bog is a website for students to write comments/notes on other students' profiles.
 
 # Project Details
 | Platform | GUI | Timeframe | Database Solution |
-|----------|-----|-----------|-------------------|
+|-|-|-|-|
 | Web Application  | Razor Pages | August | SQL Server |
 
 ## Dependencies
