@@ -81,7 +81,7 @@ Coming soon™
 
 ## Change Log
 _`Classes`, `structs`, `interfaces` and `enums` etc. are to be linked to the project wiki page, and versions are in descending order_
- - **[v0.0.0](LinkToGitLabTag)**
+ - **[v0.0.0]()**
    - **Added**
      - _List the features added with this version_
    - **Modified**
