@@ -1,0 +1,62 @@
+USE master;
+GO
+ALTER DATABASE BlaaBog SET SINGLE_USER WITH ROLLBACK IMMEDIATE;
+GO
+DROP DATABASE IF EXISTS BlaaBog;
+GO
+
+CREATE DATABASE BlaaBog;
+GO
+USE BlaaBog;
+GO
+
+
+DROP TABLE IF EXISTS Classes;
+CREATE TABLE Classes(
+    id INT PRIMARY KEY IDENTITY(1, 1) NOT NULL,
+    start_date DATE NOT NULL,
+    token CHAR(5) NOT NULL,
+    deleted BIT NOT NULL DEFAULT 0
+);
+GO
+
+
+DROP TABLE IF EXISTS Students;
+CREATE TABLE Students(
+    id INT PRIMARY KEY IDENTITY(1, 1) NOT NULL,
+    name NVARCHAR(100) NOT NULL,
+    image VARCHAR(41) NOT NULL DEFAULT 'default.png',
+    description NVARCHAR(4000) DEFAULT NULL,
+    email NVARCHAR(320) UNIQUE NOT NULL,
+    speciality VARCHAR(50) NOT NULL, -- IT Support | Programmering | Infrastruktur
+    fk_class INT FOREIGN KEY REFERENCES Classes(id),
+    end_date DATE DEFAULT NULL,
+    password VARCHAR(60) NOT NULL,
+    deleted BIT NOT NULL DEFAULT 0
+);
+GO
+
+
+DROP TABLE IF EXISTS Teachers;
+CREATE TABLE Teachers(
+    id INT PRIMARY KEY IDENTITY(1, 1) NOT NULL,
+    name NVARCHAR(100) NOT NULL,
+    email VARCHAR(60) NOT NULL,
+    password VARCHAR(60) NOT NULL,
+    deleted BIT NOT NULL DEFAULT 0
+);
+GO
+
+
+DROP TABLE IF EXISTS Comments;
+CREATE TABLE Comments(
+    id INT PRIMARY KEY IDENTITY(1, 1) NOT NULL,
+    fk_author_student INT NOT NULL FOREIGN KEY REFERENCES Students(id),
+    fk_recipient_student INT NOT NULL FOREIGN KEY REFERENCES Students(id),
+    approved BIT NOT NULL DEFAULT 0,
+    approved_by INT FOREIGN KEY REFERENCES Teachers(id) DEFAULT NULL,
+    approved_at DATETIME DEFAULT NULL,
+    created_at DATETIME NOT NULL DEFAULT GETUTCDATE(),
+    deleted BIT NOT NULL DEFAULT 0
+);
+GO
