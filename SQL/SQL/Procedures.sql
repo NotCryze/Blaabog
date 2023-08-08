@@ -214,6 +214,56 @@ GO
 
 
 /*
+	Student Pending Changes
+*/
+
+-- Create Change
+CREATE OR ALTER PROCEDURE spCreateChange
+	@fk_student INT,
+	@name NVARCHAR(100) = NULL,
+	@image VARCHAR(41) = NULL,
+	@description NVARCHAR(4000) = NULL
+AS
+BEGIN
+	INSERT INTO StudentsPendingChanges(fk_student, name, image, description)
+	VALUES (@fk_student, @name, @image, @description)
+END
+GO
+
+-- Read Change
+CREATE OR ALTER PROCEDURE spGetChange
+	@id INT
+AS
+BEGIN
+	SELECT *
+	FROM StudentsPendingChanges
+	WHERE
+		id = @id
+END
+GO
+
+---- Update Change
+--CREATE OR ALTER PROCEDURE spUpdateChange
+--	@id INT
+--AS
+--BEGIN
+--	RETURN NULL
+--END
+--GO
+
+-- Delete Change
+CREATE OR ALTER PROCEDURE spDeleteChange
+	@id INT
+AS
+BEGIN
+	DELETE FROM StudentsPendingChanges
+	WHERE id = @id
+END
+GO
+
+
+
+/*
 	Teachers
 */
 
