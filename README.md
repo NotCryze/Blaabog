@@ -12,7 +12,7 @@ _Add an introduction by explaining what the idea behind the application is_
 - [SBO.BlaaBog.Web]()
     - [Bootstrap 5 (v5.3)](https://getbootstrap.com/docs/5.3/)
 
-See the [Wiki]() for more in depth information about the project.
+See the [wiki]() for more in depth information about the project.
 
 ## Initial Features
 - Students
