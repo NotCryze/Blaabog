@@ -32,7 +32,6 @@ CREATE TABLE Students(
     fk_class INT NOT NULL FOREIGN KEY REFERENCES Classes(id),
     end_date DATE DEFAULT NULL,
     password VARCHAR(60) NOT NULL,
-	approved BIT NOT NULL DEFAULT 0,
     deleted BIT NOT NULL DEFAULT 0
 );
 GO
@@ -68,8 +67,8 @@ GO
 DROP TABLE IF EXISTS Comments;
 CREATE TABLE Comments(
     id INT PRIMARY KEY IDENTITY(1, 1) NOT NULL,
-    fk_author_student INT NOT NULL FOREIGN KEY REFERENCES Students(id),
-    fk_subject_student INT NOT NULL FOREIGN KEY REFERENCES Students(id),
+    fk_author INT NOT NULL FOREIGN KEY REFERENCES Students(id),
+    fk_subject INT NOT NULL FOREIGN KEY REFERENCES Students(id),
 	content NVARCHAR(500) NOT NULL,
     approved BIT NOT NULL DEFAULT 0,
     approved_by INT FOREIGN KEY REFERENCES Teachers(id) DEFAULT NULL,
