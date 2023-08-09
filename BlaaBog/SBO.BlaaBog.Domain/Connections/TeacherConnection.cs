@@ -20,6 +20,7 @@ namespace SBO.BlaaBog.Domain.Connections
         }
 
         #region Create
+
         /// <summary>
         /// Creates new teacher in database
         /// </summary>
@@ -49,9 +50,11 @@ namespace SBO.BlaaBog.Domain.Connections
 
             return false;
         }
+
         #endregion
 
         #region Read
+
         /// <summary>
         /// Gets a specific teacher from database
         /// </summary>
@@ -173,9 +176,11 @@ namespace SBO.BlaaBog.Domain.Connections
             }
             return null;
         }
+
         #endregion
 
         #region Update
+
         /// <summary>
         /// Updates a teacher in database
         /// </summary>
@@ -206,9 +211,11 @@ namespace SBO.BlaaBog.Domain.Connections
             }
             return false;
         }
+
         #endregion
 
         #region Delete
+
         /// <summary>
         /// Deletes a teacher from database
         /// </summary>
@@ -235,6 +242,7 @@ namespace SBO.BlaaBog.Domain.Connections
             }
             return false;
         }
+
         #endregion
     }
 }
