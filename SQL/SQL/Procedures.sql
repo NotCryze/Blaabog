@@ -42,7 +42,7 @@ GO
 
 
 -- Update Class
-CREATE OR ALTER PROCEDURE spUpdateClassStartDate
+CREATE OR ALTER PROCEDURE spUpdateClass
 	@id INT,
 	@start_date DATE = NULL,
 	@token CHAR(5) = NULL
