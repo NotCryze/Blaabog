@@ -44,24 +44,14 @@ GO
 -- Update Class
 CREATE OR ALTER PROCEDURE spUpdateClassStartDate
 	@id INT,
-	@start_date DATE
+	@start_date DATE = NULL,
+	@token CHAR(5) = NULL
 AS
 BEGIN
 	UPDATE Classes
-	SET start_date = @start_date
-	WHERE
-		id = @id
-		AND deleted = 0
-END
-GO
-
-CREATE OR ALTER PROCEDURE spUpdateClassToken
-	@id INT,
-	@token CHAR(5)
-AS
-BEGIN
-	UPDATE Classes
-	SET token = @token
+	SET
+		start_date = ISNULL(@start_date, start_date),
+		token = ISNULL(@token, token)
 	WHERE
 		id = @id
 		AND deleted = 0
