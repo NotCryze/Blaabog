@@ -8,5 +8,11 @@ namespace SBO.BlaaBog.Domain.Connections
 {
     public class PendingChangeConnection
     {
+        private SQL _sql;
+
+        public PendingChangeConnection()
+        {
+            _sql = new SQL();
+        }
     }
 }

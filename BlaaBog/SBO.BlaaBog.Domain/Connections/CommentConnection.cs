@@ -8,5 +8,11 @@ namespace SBO.BlaaBog.Domain.Connections
 {
     public class CommentConnection
     {
+        private SQL _sql;
+
+        public CommentConnection()
+        {
+            _sql = new SQL();
+        }
     }
 }
