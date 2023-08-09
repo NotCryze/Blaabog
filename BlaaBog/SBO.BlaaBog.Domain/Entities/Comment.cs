@@ -8,8 +8,8 @@ namespace SBO.BlaaBog.Domain.Entities
 {
     public class Comment
     {
-        private int _id;
-        public int Id { get { return _id; } }
+        private int? _id;
+        public int? Id { get { return _id; } }
 
         private int _authorId;
         public int AuthorId { get { return _authorId; } }
@@ -41,7 +41,7 @@ namespace SBO.BlaaBog.Domain.Entities
         private DateTime _createdAt;
         public DateTime CreatedAt { get { return _createdAt; } }
 
-        public Comment(int id, int authorId, int subjectId, string content, bool approved, int? approvedById, DateTime? approvedAt, DateTime createdAt)
+        public Comment(int? id, int authorId, int subjectId, string content, bool approved, int? approvedById, DateTime? approvedAt, DateTime createdAt)
         {
             _id = id;
             _authorId = authorId;

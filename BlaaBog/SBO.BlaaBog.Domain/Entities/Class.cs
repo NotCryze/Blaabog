@@ -8,8 +8,8 @@ namespace SBO.BlaaBog.Domain.Entities
 {
     public class Class
     {
-        private int _id;
-        public int Id { get { return _id; } }
+        private int? _id;
+        public int? Id { get { return _id; } }
 
         public string Name { get { return _startDate.ToString("MM:yyyy"); } }
 
@@ -22,7 +22,7 @@ namespace SBO.BlaaBog.Domain.Entities
         private List<Student>? _students;
         public List<Student>? Students { get { return _students; } }
 
-        public Class(int id, DateOnly startDate, string token)
+        public Class(int? id, DateOnly startDate, string token) 
         {
             _id = id;
             _startDate = startDate;

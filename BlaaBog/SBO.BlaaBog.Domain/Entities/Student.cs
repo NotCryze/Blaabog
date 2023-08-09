@@ -8,8 +8,8 @@ namespace SBO.BlaaBog.Domain.Entities
 {
     public class Student
     {
-        private int _id;
-        public int Id { get { return _id; } }
+        private int? _id;
+        public int? Id { get { return _id; } }
 
         private string _name;
         public string Name { get { return _name; } }
@@ -41,7 +41,7 @@ namespace SBO.BlaaBog.Domain.Entities
         private List<Comment>? _comments;
         public List<Comment>? Comments { get { return _comments; } }
 
-        public Student(int id, string name, string image, string? description, string email, string? speciality, int classId, DateOnly? endDate, string password)
+        public Student(int? id, string name, string image, string? description, string email, string? speciality, int classId, DateOnly? endDate, string password)
         {
             _id = id;
             _name = name;

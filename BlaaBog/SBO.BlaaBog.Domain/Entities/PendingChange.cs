@@ -8,8 +8,8 @@ namespace SBO.BlaaBog.Domain.Entities
 {
     public class PendingChange
     {
-        private int _id;
-        public int Id { get { return _id; } }
+        private int? _id;
+        public int? Id { get { return _id; } }
 
         private string? _name;
         public string? Name { get { return _name; } }
@@ -20,7 +20,7 @@ namespace SBO.BlaaBog.Domain.Entities
         private string? _description;
         public string? Description { get { return _description; } }
 
-        public PendingChange(int id, string? name, string? image, string? description)
+        public PendingChange(int? id, string? name, string? image, string? description)
         {
             _id = id;
             _name = name;

@@ -8,8 +8,8 @@ namespace SBO.BlaaBog.Domain.Entities
 {
     public class Report
     {
-        private int _id;
-        public int Id { get { return _id; } }
+        private int? _id;
+        public int? Id { get { return _id; } }
 
         private int _commentId;
         public int CommentId { get { return _commentId; } }
@@ -23,7 +23,7 @@ namespace SBO.BlaaBog.Domain.Entities
         private DateTime _createdAt;
         public DateTime CreatedAt { get { return _createdAt; } }
 
-        public Report(int id, int commentId, string reason, DateTime createdAt)
+        public Report(int? id, int commentId, string reason, DateTime createdAt)
         {
             _id = id;
             _commentId = commentId;

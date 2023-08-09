@@ -8,8 +8,8 @@ namespace SBO.BlaaBog.Domain.Entities
 {
     public class Teacher
     {
-        private int _id;
-        public int Id { get { return _id; } }
+        private int? _id;
+        public int? Id { get { return _id; } }
 
         private string _name;
         public string Name { get { return _name; } }
@@ -23,7 +23,7 @@ namespace SBO.BlaaBog.Domain.Entities
         private bool _admin;
         public bool Admin { get { return _admin; } }
 
-        public Teacher(int id, string name, string email, string password, bool admin)
+        public Teacher(int? id, string name, string email, string password, bool admin)
         {
             _id = id;
             _name = name;
