@@ -52,6 +52,8 @@ namespace SBO.BlaaBog.Services.Services
             return await _pendingChangeConnection.GetPendingChangesAsync();
         }
 
+        #endregion
+
         #region Update Pending Change
 
         #endregion
