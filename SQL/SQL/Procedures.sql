@@ -344,13 +344,13 @@ GO
 
 -- Create Comment
 CREATE OR ALTER PROCEDURE spCreateComment
-	@fk_author_student INT,
-	@fk_subject_student INT,
+	@fk_author INT,
+	@fk_subject INT,
 	@content NVARCHAR(512)
 AS
 BEGIN
-	INSERT INTO Comments(fk_author_student, fk_subject_student, content)
-	VALUES (@fk_author_student, @fk_subject_student, @content)
+	INSERT INTO Comments(fk_author, fk_subject, content)
+	VALUES (@fk_author, @fk_subject, @content)
 END
 GO
 
@@ -372,17 +372,19 @@ AS
 BEGIN
 	SELECT *
 	FROM Comments
-	WHERE deleted = 0
+	WHERE
+		approved = 1
+		AND deleted = 0
 END
 GO
 
-CREATE OR ALTER PROCEDURE spGetComments
+CREATE OR ALTER PROCEDURE spGetNonApprovedComments
 AS
 BEGIN
 	SELECT *
 	FROM Comments
 	WHERE
-		approved = 1
+		approved = 0
 		AND deleted = 0
 END
 GO
@@ -413,17 +415,6 @@ BEGIN
 END
 GO
 
-CREATE OR ALTER PROCEDURE spGetNonApprovedComments
-AS
-BEGIN
-	SELECT *
-	FROM Comments
-	WHERE
-		approved = 0
-		AND deleted = 0
-END
-GO
-
 -- Update Comment
 CREATE OR ALTER PROCEDURE spUpdateComment
 	@id INT,
@@ -450,6 +441,23 @@ AS
 BEGIN
 	UPDATE Comments
 	SET deleted = 1
+	WHERE
+		id = @id
+		AND deleted = 0
+END
+GO
+
+-- Other
+CREATE OR ALTER PROCEDURE spApproveComment
+	@id INT,
+	@approved_by INT
+AS
+BEGIN
+	UPDATE Comments
+	SET
+		approved = 1,
+		approved_by = @approved_by,
+		approved_at = GETUTCDATE()
 	WHERE
 		id = @id
 		AND deleted = 0
