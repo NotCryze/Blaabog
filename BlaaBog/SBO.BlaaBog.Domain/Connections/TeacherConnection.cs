@@ -2,11 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
-using System.Linq;
-using System.Text;
-using System.Threading.Channels;
 using System.Threading.Tasks;
-using System.Xml.Linq;
 
 namespace SBO.BlaaBog.Domain.Connections
 {
@@ -60,7 +56,7 @@ namespace SBO.BlaaBog.Domain.Connections
         /// </summary>
         /// <param name="id"></param>
         /// <returns> Teacher </returns>
-        public async Task<Teacher> GetTeacherAsync(int id)
+        public async Task<Teacher?> GetTeacherAsync(int id)
         {
             SqlCommand cmd = _sql.Execute("spGetTeacher");
             cmd.Parameters.AddWithValue("@id", id);
@@ -86,7 +82,7 @@ namespace SBO.BlaaBog.Domain.Connections
 
                 return teacher;
             }
-            catch ( Exception ex )
+            catch ( SqlException ex )
             {
                 await Console.Out.WriteLineAsync(ex.Message);
             }
@@ -101,7 +97,7 @@ namespace SBO.BlaaBog.Domain.Connections
         /// Gets all teachers from database
         /// </summary>
         /// <returns> List<Teacher> </returns>
-        public async Task<List<Teacher>> GetTeachersAsync()
+        public async Task<List<Teacher>?> GetTeachersAsync()
         {
             SqlCommand cmd = _sql.Execute("spGetTeachers");
             try
@@ -125,7 +121,7 @@ namespace SBO.BlaaBog.Domain.Connections
                 await cmd.Connection.CloseAsync();
                 return teachers;
             }
-            catch ( Exception ex )
+            catch ( SqlException ex )
             {
                 await Console.Out.WriteLineAsync(ex.Message);
             }
@@ -141,7 +137,7 @@ namespace SBO.BlaaBog.Domain.Connections
         /// </summary>
         /// <param name="name"></param>
         /// <returns> List<Teacher> </returns>
-        public async Task<List<Teacher>> GetTeachersByNameAsync(string name)
+        public async Task<List<Teacher>?> GetTeachersByNameAsync(string name)
         {
             SqlCommand cmd = _sql.Execute("spGetTeachersByName");
             cmd.Parameters.AddWithValue("@name", name);
@@ -166,7 +162,7 @@ namespace SBO.BlaaBog.Domain.Connections
                 await cmd.Connection.CloseAsync();
                 return teachers;
             }
-            catch ( Exception ex )
+            catch ( SqlException ex )
             {
                 await Console.Out.WriteLineAsync(ex.Message);
             }
@@ -201,7 +197,7 @@ namespace SBO.BlaaBog.Domain.Connections
                 await cmd.Connection.CloseAsync();
                 return rowsAffected > 0;
             }
-            catch ( Exception ex )
+            catch ( SqlException ex )
             {
                 await Console.Out.WriteLineAsync(ex.Message);
             }
@@ -232,7 +228,7 @@ namespace SBO.BlaaBog.Domain.Connections
                 await cmd.Connection.CloseAsync();
                 return rowsAffected > 0;
             }
-            catch ( Exception ex )
+            catch ( SqlException ex )
             {
                 await Console.Out.WriteLineAsync(ex.Message);
             }
