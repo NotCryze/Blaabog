@@ -24,7 +24,7 @@ namespace SBO.BlaaBog.Domain.Connections
         /// Create a pending change in the database
         /// </summary>
         /// <param name="pendingChange"></param>
-        /// <returns></returns>
+        /// <returns>bool</returns>
         public async Task<bool> CreatePendingChangeAsync(PendingChange pendingChange)
         {
             SqlCommand sqlCommand = _sql.Execute("spCreatePendingChange");
@@ -60,7 +60,7 @@ namespace SBO.BlaaBog.Domain.Connections
         /// Get a specific pending change from the database
         /// </summary>
         /// <param name="id"></param>
-        /// <returns></returns>
+        /// <returns>PendingChange?</returns>
         public async Task<PendingChange?> GetPendingChangeAsync(int id)
         {
             SqlCommand sqlCommand = _sql.Execute("spGetPendingChange");
@@ -107,7 +107,7 @@ namespace SBO.BlaaBog.Domain.Connections
         /// <summary>
         /// Get all pending changes from the database
         /// </summary>
-        /// <returns></returns>
+        /// <returns>List<PendingChange>?</returns>
         public async Task<List<PendingChange>?> GetPendingChangesAsync()
         {
             SqlCommand sqlCommand = _sql.Execute("spGetPendingChanges");
@@ -165,7 +165,7 @@ namespace SBO.BlaaBog.Domain.Connections
         /// Delete a pending change from the database
         /// </summary>
         /// <param name="id"></param>
-        /// <returns></returns>
+        /// <returns>bool</returns>
         public async Task<bool> DeletePendingChangeAsync(int id)
         {
             SqlCommand sqlCommand = _sql.Execute("spDeletePendingChange");
