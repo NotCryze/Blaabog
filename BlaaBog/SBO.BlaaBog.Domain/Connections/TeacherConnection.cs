@@ -77,6 +77,8 @@ namespace SBO.BlaaBog.Domain.Connections
                         (bool)rdr["admin"]
                         );
                     }
+
+                    await rdr.CloseAsync(); 
                 }
                 await cmd.Connection.CloseAsync();
 
@@ -117,6 +119,8 @@ namespace SBO.BlaaBog.Domain.Connections
                                 (bool)rdr["admin"]
                             ));
                     }
+
+                    await rdr.CloseAsync();
                 }
                 await cmd.Connection.CloseAsync();
                 return teachers;
@@ -156,8 +160,10 @@ namespace SBO.BlaaBog.Domain.Connections
                                 (string)rdr["email"],
                                 (string)rdr["password"],
                                 (bool)rdr["admin"]
-                            ));   
+                            ));
                     }
+
+                    await rdr.CloseAsync();
                 }
                 await cmd.Connection.CloseAsync();
                 return teachers;

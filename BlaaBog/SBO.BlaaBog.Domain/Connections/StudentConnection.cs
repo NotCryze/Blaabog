@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
+using System.Runtime.Intrinsics.Arm;
 using System.Threading.Tasks;
 
 namespace SBO.BlaaBog.Domain.Connections
@@ -68,23 +69,25 @@ namespace SBO.BlaaBog.Domain.Connections
             {
                 await cmd.Connection.OpenAsync();
 
-                SqlDataReader reader = await cmd.ExecuteReaderAsync();
-                if ( reader.HasRows )
+                SqlDataReader rdr = await cmd.ExecuteReaderAsync();
+                if ( rdr.HasRows )
                 {
-                    while ( await reader.ReadAsync() )
+                    while ( await rdr.ReadAsync() )
                     {
                         student = new Student(
-                                (int)reader["id"],
-                                (string)reader["name"],
-                                (string)reader["image"],
-                                (string)reader["description"],
-                                (string)reader["email"],
-                                (string)reader["speciality"],
-                                (int)reader["classId"],
-                                (DateOnly)reader["endDate"],
-                                (string)reader["password"]
-                            );
+                                (int)rdr["id"],
+                                (string)rdr["name"],
+                                (string)rdr["image"],
+                                (string)rdr["description"],
+                                (string)rdr["email"],
+                                (string)rdr["speciality"],
+                                (int)rdr["classId"],
+                                (DateOnly)rdr["endDate"],
+                                (string)rdr["password"]
+                        );
                     }
+
+                    await rdr.CloseAsync();
                 }
 
                 return student;
@@ -133,6 +136,8 @@ namespace SBO.BlaaBog.Domain.Connections
                                 (string)rdr["password"]
                             ));
                     }
+
+                    await rdr.CloseAsync();
                 }
 
                 return students;
@@ -182,6 +187,8 @@ namespace SBO.BlaaBog.Domain.Connections
                                 (string)rdr["password"]
                             ));
                     }
+
+                    await rdr.CloseAsync();
                 }
 
                 return students;
@@ -231,6 +238,8 @@ namespace SBO.BlaaBog.Domain.Connections
                                 (string)rdr["password"]
                             );
                     }
+
+                    await rdr.CloseAsync();
                 }
 
                 return student;
@@ -281,6 +290,8 @@ namespace SBO.BlaaBog.Domain.Connections
                                 (string)rdr["password"]
                             ));
                     }
+
+                    await rdr.CloseAsync();
                 }
 
                 return students;
@@ -330,6 +341,8 @@ namespace SBO.BlaaBog.Domain.Connections
                                 (string)rdr["password"]
                             ));
                     }
+
+                    await rdr.CloseAsync();
                 }
 
                 return students;
