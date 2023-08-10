@@ -20,6 +20,11 @@ namespace SBO.BlaaBog.Domain.Connections
 
         #region Create Comment
 
+        /// <summary>
+        /// Create a comment in the database
+        /// </summary>
+        /// <param name="comment"></param>
+        /// <returns></returns>
         public async Task<bool> CreateCommentAsync(Comment comment)
         {
             SqlCommand sqlCommand = _sql.Execute("spCreateComment");
@@ -49,6 +54,12 @@ namespace SBO.BlaaBog.Domain.Connections
 
         #region Read Comment
 
+
+        /// <summary>
+        /// Get a specific comment from the database
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         public async Task<Comment?> GetCommentAsync(int id)
         {
             SqlCommand sqlCommand = _sql.Execute("spGetComment");
@@ -95,6 +106,10 @@ namespace SBO.BlaaBog.Domain.Connections
             return null;
         }
 
+        /// <summary>
+        /// Get all comments from the database
+        /// </summary>
+        /// <returns></returns>
         public async Task<List<Comment>?> GetCommentsAsync()
         {
             SqlCommand sqlCommand = _sql.Execute("spGetComment");
@@ -141,6 +156,11 @@ namespace SBO.BlaaBog.Domain.Connections
             return null;
         }
 
+        /// <summary>
+        /// Get all non approved comments from the database
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         public async Task<List<Comment>?> GetNonApprovedCommentsAsync(int id)
         {
             SqlCommand sqlCommand = _sql.Execute("spGetNonApprovedComments");
@@ -188,6 +208,12 @@ namespace SBO.BlaaBog.Domain.Connections
             return null;
         }
 
+
+        /// <summary>
+        /// Get all comments from a specific subject
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         public async Task<List<Comment>?> GetCommentsBySubjectAsync(int id)
         {
             SqlCommand sqlCommand = _sql.Execute("spGetCommentsBySubject");
@@ -239,6 +265,11 @@ namespace SBO.BlaaBog.Domain.Connections
 
         #region Update Comment
 
+        /// <summary>
+        /// Update a comment in the database
+        /// </summary>
+        /// <param name="comment"></param>
+        /// <returns></returns>
         public async Task<bool> UpdateCommentAsync(Comment comment)
         {
             SqlCommand sqlCommand = _sql.Execute("spUpdateComment");
@@ -270,6 +301,11 @@ namespace SBO.BlaaBog.Domain.Connections
 
         #region Delete Comment
 
+        /// <summary>
+        /// Delete a comment from the database
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         public async Task<bool> DeleteCommentAsync(int id)
         {
             SqlCommand sqlCommand = _sql.Execute("spDeleteComment");
@@ -298,6 +334,12 @@ namespace SBO.BlaaBog.Domain.Connections
 
         #region Other
 
+        /// <summary>
+        /// Approve a comment in the database
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="approvedBy"></param>
+        /// <returns></returns>
         public async  Task<bool> ApproveCommentAsync(int id, int approvedBy)
         {
             SqlCommand sqlCommand = _sql.Execute("spApproveComment");

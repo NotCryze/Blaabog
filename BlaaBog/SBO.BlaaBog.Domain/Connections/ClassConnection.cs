@@ -21,7 +21,7 @@ namespace SBO.BlaaBog.Domain.Connections
         #region Create Class
 
         /// <summary>
-        /// 
+        /// Create a class in the database
         /// </summary>
         /// <param name="class"></param>
         /// <returns></returns>
@@ -54,7 +54,7 @@ namespace SBO.BlaaBog.Domain.Connections
         #region Read Class
 
         /// <summary>
-        /// 
+        /// Get a specific class from the database
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
@@ -100,7 +100,7 @@ namespace SBO.BlaaBog.Domain.Connections
         }
 
         /// <summary>
-        /// 
+        /// Get all classes from the database
         /// </summary>
         /// <returns></returns>
         public async Task<List<Class>?> GetClassesAsync()
@@ -152,7 +152,7 @@ namespace SBO.BlaaBog.Domain.Connections
         #region Update Class
 
         /// <summary>
-        /// 
+        /// Update a class in the database
         /// </summary>
         /// <param name="class"></param>
         /// <returns></returns>
@@ -186,7 +186,7 @@ namespace SBO.BlaaBog.Domain.Connections
         #region Delete Class
 
         /// <summary>
-        /// 
+        /// Delete a class from the database
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
