@@ -11,6 +11,9 @@ namespace SBO.BlaaBog.Domain.Entities
         private int? _id;
         public int? Id { get { return _id; } }
 
+        private int? _studentId;
+        public int? StudentId { get { return _studentId; } }
+
         private string? _name;
         public string? Name { get { return _name; } }
 
@@ -20,9 +23,10 @@ namespace SBO.BlaaBog.Domain.Entities
         private string? _description;
         public string? Description { get { return _description; } }
 
-        public PendingChange(int? id, string? name, string? image, string? description)
+        public PendingChange(int? id, int? studentId, string? name, string? image, string? description)
         {
             _id = id;
+            _studentId = studentId;
             _name = name;
             _image = image;
             _description = description;

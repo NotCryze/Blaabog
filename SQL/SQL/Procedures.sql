@@ -208,7 +208,7 @@ GO
 */
 
 -- Create Change
-CREATE OR ALTER PROCEDURE spCreateChange
+CREATE OR ALTER PROCEDURE spCreatePendingChange
 	@fk_student INT,
 	@name NVARCHAR(100) = NULL,
 	@image VARCHAR(41) = NULL,
@@ -221,7 +221,7 @@ END
 GO
 
 -- Read Change
-CREATE OR ALTER PROCEDURE spGetChange
+CREATE OR ALTER PROCEDURE spGetPendingChange
 	@id INT
 AS
 BEGIN
@@ -232,8 +232,16 @@ BEGIN
 END
 GO
 
+CREATE OR ALTER PROCEDURE spGetPendingChanges
+AS
+BEGIN
+	SELECT *
+	FROM StudentsPendingChanges
+END
+GO
+
 ---- Update Change
---CREATE OR ALTER PROCEDURE spUpdateChange
+--CREATE OR ALTER PROCEDURE spUpdatePendingChange
 --	@id INT
 --AS
 --BEGIN
@@ -242,7 +250,7 @@ GO
 --GO
 
 -- Delete Change
-CREATE OR ALTER PROCEDURE spDeleteChange
+CREATE OR ALTER PROCEDURE spDeletePendingChange
 	@id INT
 AS
 BEGIN
