@@ -24,7 +24,7 @@ namespace SBO.BlaaBog.Domain.Connections
         /// Create a report in the database
         /// </summary>
         /// <param name="report"></param>
-        /// <returns>bool</returns>
+        /// <returns>true if successful, false if not.</returns>
         public async Task<bool> CreateReportAsync(Report report)
         {
             SqlCommand sqlCommand = _sql.Execute("spCreateReport");
@@ -58,7 +58,7 @@ namespace SBO.BlaaBog.Domain.Connections
         /// Get a specific report from the database
         /// </summary>
         /// <param name="id"></param>
-        /// <returns>Report?</returns>
+        /// <returns>Report if successful, null if not.</returns>
         public async Task<Report?> GetReportAsync(int id)
         {
             SqlCommand sqlCommand = _sql.Execute("spGetReport");
@@ -159,7 +159,7 @@ namespace SBO.BlaaBog.Domain.Connections
         /// Delete a report from the database
         /// </summary>
         /// <param name="id"></param>
-        /// <returns>bool</returns>
+        /// <returns>true if successful, false if not.</returns>
         public async Task<bool> DeleteReportAsync(int id)
         {
             SqlCommand sqlCommand = _sql.Execute("spDeleteReport");

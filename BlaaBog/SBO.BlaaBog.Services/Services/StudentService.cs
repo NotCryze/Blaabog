@@ -23,7 +23,7 @@ namespace SBO.BlaaBog.Services.Services
         /// Creates a student in the database
         /// </summary>
         /// <param name="student"></param>
-        /// <returns> bool </returns>
+        /// <returns>true if successful, false if not.</returns>
         public async Task<bool> CreateStudentAsync(Student student)
         {
             return await _studentConnection.CreateStudentAsync(student);
@@ -37,7 +37,7 @@ namespace SBO.BlaaBog.Services.Services
         /// Gets a student from the database
         /// </summary>
         /// <param name="id"></param>
-        /// <returns> Student </returns>
+        /// <returns>Student if successful, null if not.</returns>
         public async Task<Student?> GetStudentAsync(int id)
         {
             return await _studentConnection.GetStudentAsync(id);
@@ -46,7 +46,7 @@ namespace SBO.BlaaBog.Services.Services
         /// <summary>
         /// Gets all students from the database
         /// </summary>
-        /// <returns> List<Student> </returns>
+        /// <returns>List<Student> if successful, null if not.</returns>
         public async Task<List<Student>?> GetStudentsAsync()
         {
             return await _studentConnection.GetStudentsAsync();
@@ -56,7 +56,7 @@ namespace SBO.BlaaBog.Services.Services
         /// Gets all students from the database that contain the name given
         /// </summary>
         /// <param name="name"></param>
-        /// <returns> List<Student> </returns>
+        /// <returns>List<Student> if successful, null if not.</returns>
         public async Task<List<Student>?> GetStudentsByNameAsync(string name)
         {
             return await _studentConnection.GetStudentsByNameAsync(name);
@@ -66,7 +66,7 @@ namespace SBO.BlaaBog.Services.Services
         /// Gets a student from the database by email
         /// </summary>
         /// <param name="email"></param>
-        /// <returns> Student </returns>
+        /// <returns>Student if successful, null if not.</returns>
         public async Task<Student?> GetStudentByEmailAsync(string email)
         {
             return await _studentConnection.GetStudentByEmailAsync(email);
@@ -76,7 +76,7 @@ namespace SBO.BlaaBog.Services.Services
         /// Gets all students from the database by speciality
         /// </summary>
         /// <param name="speciality"></param>
-        /// <returns> List<Student> </returns>
+        /// <returns>List<Student> if successful, null if not.</returns>
         public async Task<List<Student>?> GetStudentsbySpecialityAsync(string speciality)
         {
             return await _studentConnection.GetStudentsBySpecialityAsync(speciality);
@@ -86,7 +86,7 @@ namespace SBO.BlaaBog.Services.Services
         /// Gets all students from the database by class
         /// </summary>
         /// <param name="class"></param>
-        /// <returns> List<Student> </returns>
+        /// <returns>List<Student> if successful, null if not.</returns>
         public async Task<List<Student>?> GetStudentsByClassAsync(int @class)
         {
             return await _studentConnection.GetStudentsByClassAsync(@class);
@@ -100,7 +100,7 @@ namespace SBO.BlaaBog.Services.Services
         /// Updates a student in the database
         /// </summary>
         /// <param name="student"></param>
-        /// <returns> bool </returns>
+        /// <returns>true if successful, false if not.</returns>
         public async Task<bool> UpdateStudentAsync(Student student)
         {
             return await _studentConnection.UpdateStudentAsync(student);
@@ -114,7 +114,7 @@ namespace SBO.BlaaBog.Services.Services
         /// Deletes a student from the database
         /// </summary>
         /// <param name="id"></param>
-        /// <returns> bool </returns>
+        /// <returns>true if successful, false if not.</returns>
         public async Task<bool> DeleteStudentAsync(int id)
         {
             return await _studentConnection.DeleteStudentAsync(id);

@@ -23,7 +23,7 @@ namespace SBO.BlaaBog.Services.Services
         /// Create a comment in the database
         /// </summary>
         /// <param name="comment"></param>
-        /// <returns>bool</returns>
+        /// <returns>true if successful, false if not.</returns>
         public async Task<bool> CreateCommentAsync(Comment comment)
         {
             return await _commentConnection.CreateCommentAsync(comment);
@@ -37,7 +37,7 @@ namespace SBO.BlaaBog.Services.Services
         /// Get a specific comment from the database
         /// </summary>
         /// <param name="id"></param>
-        /// <returns>Comment?</returns>
+        /// <returns>Comment if successful, null if not.</returns>
         public async Task<Comment?> GetCommentAsync(int id)
         {
             return await _commentConnection.GetCommentAsync(id);
@@ -46,7 +46,7 @@ namespace SBO.BlaaBog.Services.Services
         /// <summary>
         /// Get all comments from the database
         /// </summary>
-        /// <returns>List<Comment>?</returns>
+        /// <returns>Comment if successful, null if not.</returns>
         public async Task<List<Comment>?> GetCommentsAsync()
         {
             return await _commentConnection.GetCommentsAsync();
@@ -56,7 +56,7 @@ namespace SBO.BlaaBog.Services.Services
         /// Get all non approved comments from the database
         /// </summary>
         /// <param name="id"></param>
-        /// <returns>List<Comment>?</returns>
+        /// <returns>Comment if successful, null if not.</returns>
         public async Task<List<Comment>?> GetNonApprovedCommentsAsync(int id)
         {
             return await _commentConnection.GetNonApprovedCommentsAsync(id);
@@ -66,7 +66,7 @@ namespace SBO.BlaaBog.Services.Services
         /// Get all comments from a specific author
         /// </summary>
         /// <param name="id"></param>
-        /// <returns>List<Comment>?</returns>
+        /// <returns>Comment if successful, null if not.</returns>
         public async Task<List<Comment>?> GetCommentsByAuthorAsync(int id)
         {
             return await _commentConnection.GetCommentsByAuthorAsync(id);
@@ -76,7 +76,7 @@ namespace SBO.BlaaBog.Services.Services
         /// Get all comments from a specific subject
         /// </summary>
         /// <param name="id"></param>
-        /// <returns>List<Comment>?</returns>
+        /// <returns>Comment if successful, null if not.</returns>
         public async Task<List<Comment>?> GetCommentsBySubjectAsync(int id)
         {
             return await _commentConnection.GetCommentsBySubjectAsync(id);
@@ -90,7 +90,7 @@ namespace SBO.BlaaBog.Services.Services
         /// Update a comment in the database
         /// </summary>
         /// <param name="comment"></param>
-        /// <returns>bool</returns>
+        /// <returns>true if successful, false if not.</returns>
         public async Task<bool> UpdateCommentAsync(Comment comment)
         {
             return await _commentConnection.UpdateCommentAsync(comment);
@@ -104,7 +104,7 @@ namespace SBO.BlaaBog.Services.Services
         /// Delete a comment from the database
         /// </summary>
         /// <param name="id"></param>
-        /// <returns>bool</returns>
+        /// <returns>true if successful, false if not.</returns>
         public async Task<bool> DeleteCommentAsync(int id)
         {
             return await _commentConnection.DeleteCommentAsync(id);
@@ -119,7 +119,7 @@ namespace SBO.BlaaBog.Services.Services
         /// </summary>
         /// <param name="id"></param>
         /// <param name="approvedBy"></param>
-        /// <returns>bool</returns>
+        /// <returns>true if successful, false if not.</returns>
         public async Task<bool> ApproveCommentAsync(int id, int approvedBy)
         {
             return await _commentConnection.ApproveCommentAsync(id, approvedBy);

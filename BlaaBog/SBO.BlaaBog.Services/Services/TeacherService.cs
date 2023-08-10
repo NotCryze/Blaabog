@@ -22,7 +22,7 @@ namespace SBO.BlaaBog.Services.Services
         /// Creates a teacher in the database
         /// </summary>
         /// <param name="teacher"></param>
-        /// <returns> bool </returns>
+        /// <returns>true if successful, false if not.</returns>
         public async Task<bool> CreateTeacherAsync(Teacher teacher)
         {
             return await _teacherConnection.CreateTeacherAsync(teacher);
@@ -36,7 +36,7 @@ namespace SBO.BlaaBog.Services.Services
         /// Gets a teacher from the database
         /// </summary>
         /// <param name="id"></param>
-        /// <returns> Teacher </returns>
+        /// <returns>Teacher if successful, null if not.</returns>
         public async Task<Teacher?> GetTeacherAsync(int id)
         {
             return await _teacherConnection.GetTeacherAsync(id);
@@ -45,7 +45,7 @@ namespace SBO.BlaaBog.Services.Services
         /// <summary>
         /// Gets all teachers from the database
         /// </summary>
-        /// <returns> List<Teacher> </returns>
+        /// <returns>List<Teacher> if successful, null if not.</returns>
         public async Task<List<Teacher>?> GetTeachersAsync()
         {
             return await _teacherConnection.GetTeachersAsync();
@@ -55,7 +55,7 @@ namespace SBO.BlaaBog.Services.Services
         /// Gets all teachers from the database that contain the name given
         /// </summary>
         /// <param name="name"></param>
-        /// <returns> List<Teacher> </returns>
+        /// <returns>List<Teacher> if successful, null if not.</returns>
         public async Task<List<Teacher>?> GetTeachersByNameAsync(string name)
         {
             return await _teacherConnection.GetTeachersByNameAsync(name);
@@ -69,7 +69,7 @@ namespace SBO.BlaaBog.Services.Services
         /// Updates a teacher in the database
         /// </summary>
         /// <param name="teacher"></param>
-        /// <returns> bool </returns>
+        /// <returns>true if successful, false if not.</returns>
         public async Task<bool> UpdateTeacherAsync(Teacher teacher)
         {
             return await _teacherConnection.UpdateTeacherAsync(teacher);
@@ -83,7 +83,7 @@ namespace SBO.BlaaBog.Services.Services
         /// Deletes a teacher from the database
         /// </summary>
         /// <param name="id"></param>
-        /// <returns> bool </returns>
+        /// <returns>true if successful, false if not.</returns>
         public async Task<bool> DeleteTeacherAsync(int id)
         {
             return await _teacherConnection.DeleteTeacherAsync(id);

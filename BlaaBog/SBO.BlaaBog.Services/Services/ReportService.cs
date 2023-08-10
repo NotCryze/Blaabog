@@ -23,7 +23,7 @@ namespace SBO.BlaaBog.Services.Services
         /// Create a report in the database
         /// </summary>
         /// <param name="report"></param>
-        /// <returns>bool</returns>
+        /// <returns>true if successful, false if not.</returns>
         public async Task<bool> CreateReportAsync(Report report)
         {
             return await _reportConnection.CreateReportAsync(report);
@@ -37,7 +37,7 @@ namespace SBO.BlaaBog.Services.Services
         /// Get a specific report from the database
         /// </summary>
         /// <param name="id"></param>
-        /// <returns>Report?</returns>
+        /// <returns>Report if successful, null if not.</returns>
         public async Task<Report?> GetReportAsync(int id)
         {
             return await _reportConnection.GetReportAsync(id);
@@ -64,7 +64,7 @@ namespace SBO.BlaaBog.Services.Services
         /// Delete a report from the database
         /// </summary>
         /// <param name="id"></param>
-        /// <returns>bool</returns>
+        /// <returns>true if successful, false if not.</returns>
         public async Task<bool> DeleteReportAsync(int id)
         {
             return await _reportConnection.DeleteReportAsync(id);

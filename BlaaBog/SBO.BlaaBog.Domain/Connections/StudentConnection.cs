@@ -22,7 +22,7 @@ namespace SBO.BlaaBog.Domain.Connections
         /// Creates new student in database
         /// </summary>
         /// <param name="student"></param>
-        /// <returns> bool </returns>
+        /// <returns>true if successful, false if not.</returns>
         public async Task<bool> CreateStudentAsync(Student student)
         {
             SqlCommand cmd = _sql.Execute("spCreateStudent");
@@ -57,7 +57,7 @@ namespace SBO.BlaaBog.Domain.Connections
         /// Gets student from database by id
         /// </summary>
         /// <param name="id"></param>
-        /// <returns> Student </returns>
+        /// <returns>Student if successful, null if not.</returns>
         public async Task<Student?> GetStudentAsync(int id)
         {
             SqlCommand cmd = _sql.Execute("spGetStudent");
@@ -108,7 +108,7 @@ namespace SBO.BlaaBog.Domain.Connections
         /// <summary>
         /// Gets all students from database
         /// </summary>
-        /// <returns> List<Student> </returns>
+        /// <returns>List<Student> if successful, null if not.</returns>
         public async Task<List<Student>?> GetStudentsAsync()
         {
             SqlCommand cmd = _sql.Execute("spGetStudents");
@@ -158,7 +158,7 @@ namespace SBO.BlaaBog.Domain.Connections
         /// Gets all students from database that contain the name given
         /// </summary>
         /// <param name="name"></param>
-        /// <returns></returns>
+        /// <returns>List<Student> if successful, null if not.</returns>
         public async Task<List<Student>?> GetStudentsByNameAsync(string name)
         {
             SqlCommand cmd = _sql.Execute("spGetStudentsByName");
@@ -209,7 +209,7 @@ namespace SBO.BlaaBog.Domain.Connections
         /// Gets the student with the email given
         /// </summary>
         /// <param name="email"></param>
-        /// <returns> Student </returns>
+        /// <returns>Student if successful, null if not.</returns>
         public async Task<Student?> GetStudentByEmailAsync(string email)
         {
             SqlCommand cmd = _sql.Execute("spGetStudentByEmail");
@@ -261,7 +261,7 @@ namespace SBO.BlaaBog.Domain.Connections
         /// Gets all students from database that have the speciality given
         /// </summary>
         /// <param name="speciality"></param>
-        /// <returns> List<Student> </returns>
+        /// <returns>List<Student> if successful, null if not.</returns>
         public async Task<List<Student>?> GetStudentsBySpecialityAsync(string speciality)
         {
             SqlCommand cmd = _sql.Execute("spGetStudentBySpeciality");
@@ -312,7 +312,7 @@ namespace SBO.BlaaBog.Domain.Connections
         /// Gets all students from database that are in the class given
         /// </summary>
         /// <param name="class"></param>
-        /// <returns> List<Student> </returns>
+        /// <returns>List<Student> if successful, null if not.</returns>
         public async Task<List<Student>?> GetStudentsByClassAsync(int @class)
         {
             SqlCommand cmd = _sql.Execute("spGetStudentsByClass");
@@ -367,7 +367,7 @@ namespace SBO.BlaaBog.Domain.Connections
         /// Updates the student given
         /// </summary>
         /// <param name="student"></param>
-        /// <returns> bool </returns>
+        /// <returns>true if successful, false if not.</returns>
         public async Task<bool> UpdateStudentAsync(Student student)
         {
             SqlCommand cmd = _sql.Execute("spUpdateStudent");
@@ -409,7 +409,7 @@ namespace SBO.BlaaBog.Domain.Connections
         /// Deletes the student with the id given
         /// </summary>
         /// <param name="id"></param>
-        /// <returns> bool </returns>
+        /// <returns>true if successful, false if not.</returns>
         public async Task<bool> DeleteStudentAsync(int id)
         {
             SqlCommand cmd = _sql.Execute("spDeleteStudent");

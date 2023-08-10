@@ -24,7 +24,7 @@ namespace SBO.BlaaBog.Services.Services
         /// Create a class in the database
         /// </summary>
         /// <param name="class"></param>
-        /// <returns>bool</returns>
+        /// <returns>true if successful, false if not.</returns>
         public async Task<bool> CreateClassAsync(Class @class)
         {
             return await _classConnection.CreateClassAsync(@class);
@@ -38,7 +38,7 @@ namespace SBO.BlaaBog.Services.Services
         /// Get a specific class from the database
         /// </summary>
         /// <param name="id"></param>
-        /// <returns>Class?</returns>
+        /// <returns>Class if successful, null if not.</returns>
         public async Task<Class?> GetClassAsync(int id)
         {
             return await _classConnection.GetClassAsync(id);
@@ -47,7 +47,7 @@ namespace SBO.BlaaBog.Services.Services
         /// <summary>
         /// Get all classes from the database
         /// </summary>
-        /// <returns>List<Class>?</returns>
+        /// <returns>List<Class> if successful, null if not.</returns>
         public async Task<List<Class>?> GetClassesAsync()
         {
             return await _classConnection.GetClassesAsync();
@@ -61,7 +61,7 @@ namespace SBO.BlaaBog.Services.Services
         /// Update a class in the database
         /// </summary>
         /// <param name="class"></param>
-        /// <returns>bool</returns>
+        /// <returns>true if successful, false if not.</returns>
         public async Task<bool> UpdateClassAsync(Class @class)
         {
             return await _classConnection.UpdateClassAsync(@class);
@@ -75,7 +75,7 @@ namespace SBO.BlaaBog.Services.Services
         /// Delete a class from the database
         /// </summary>
         /// <param name="id"></param>
-        /// <returns>bool</returns>
+        /// <returns>true if successful, false if not.</returns>
         public async Task<bool> DeleteClassAsync(int id)
         {
             return await _classConnection.DeleteClassAsync(id);

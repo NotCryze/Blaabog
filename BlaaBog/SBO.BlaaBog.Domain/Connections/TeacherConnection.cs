@@ -21,7 +21,7 @@ namespace SBO.BlaaBog.Domain.Connections
         /// Creates new teacher in database
         /// </summary>
         /// <param name="teacher"></param>
-        /// <returns> bool </returns>
+        /// <returns>true if successful, false if not.</returns>
         public async Task<bool> CreateTeacherAsync(Teacher teacher)
         {
             SqlCommand cmd = _sql.Execute("spCreateTeacher");
@@ -55,7 +55,7 @@ namespace SBO.BlaaBog.Domain.Connections
         /// Gets a specific teacher from database
         /// </summary>
         /// <param name="id"></param>
-        /// <returns> Teacher </returns>
+        /// <returns>Teacher if successful, null if not.</returns>
         public async Task<Teacher?> GetTeacherAsync(int id)
         {
             SqlCommand cmd = _sql.Execute("spGetTeacher");
@@ -98,7 +98,7 @@ namespace SBO.BlaaBog.Domain.Connections
         /// <summary>
         /// Gets all teachers from database
         /// </summary>
-        /// <returns> List<Teacher> </returns>
+        /// <returns>List<Teacher> if successful, null if not.</returns>
         public async Task<List<Teacher>?> GetTeachersAsync()
         {
             SqlCommand cmd = _sql.Execute("spGetTeachers");
@@ -140,7 +140,7 @@ namespace SBO.BlaaBog.Domain.Connections
         /// Gets a list of teachers that contain the name given
         /// </summary>
         /// <param name="name"></param>
-        /// <returns> List<Teacher> </returns>
+        /// <returns>List<Teacher> if successful, null if not.</returns>
         public async Task<List<Teacher>?> GetTeachersByNameAsync(string name)
         {
             SqlCommand cmd = _sql.Execute("spGetTeachersByName");
@@ -187,7 +187,7 @@ namespace SBO.BlaaBog.Domain.Connections
         /// Updates a teacher in database
         /// </summary>
         /// <param name="teacher"></param>
-        /// <returns> bool </returns>
+        /// <returns>true if successful, false if not.</returns>
         public async Task<bool> UpdateTeacherAsync(Teacher teacher)
         {
             SqlCommand cmd = _sql.Execute("spUpdateTeacger");
@@ -222,7 +222,7 @@ namespace SBO.BlaaBog.Domain.Connections
         /// Deletes a teacher from database
         /// </summary>
         /// <param name="id"></param>
-        /// <returns> bool </returns>
+        /// <returns>true if successful, false if not.</returns>
         public async Task<bool> DeleteTeacherAsync(int id)
         {
             SqlCommand cmd = _sql.Execute("spDeleteTeacher");

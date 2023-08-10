@@ -23,7 +23,7 @@ namespace SBO.BlaaBog.Services.Services
         /// Create a pending change in the database
         /// </summary>
         /// <param name="pendingChange"></param>
-        /// <returns>bool</returns>
+        /// <returns>true if successful, false if not.</returns>
         public async Task<bool> CreatePendingChangeAsync(PendingChange pendingChange)
         {
             return await _pendingChangeConnection.CreatePendingChangeAsync(pendingChange);
@@ -37,7 +37,7 @@ namespace SBO.BlaaBog.Services.Services
         /// Get a specific pending change from the database
         /// </summary>
         /// <param name="id"></param>
-        /// <returns>PendingChange?</returns>
+        /// <returns>PendingChange if successful, null if not.</returns>
         public async Task<PendingChange?> GetPendingChangeAsync(int id)
         {
             return await _pendingChangeConnection.GetPendingChangeAsync(id);
@@ -46,7 +46,7 @@ namespace SBO.BlaaBog.Services.Services
         /// <summary>
         /// Get all pending changes from the database
         /// </summary>
-        /// <returns>List<PendingChange>?</returns>
+        /// <returns>PendingChange if successful, null if not.</returns>
         public async Task<List<PendingChange>?> GetPendingChangesAsync()
         {
             return await _pendingChangeConnection.GetPendingChangesAsync();
@@ -62,7 +62,7 @@ namespace SBO.BlaaBog.Services.Services
         /// Delete a pending change from the database
         /// </summary>
         /// <param name="id"></param>
-        /// <returns>bool</returns>
+        /// <returns>true if successful, false if not.</returns>
         public async Task<bool> DeletePendingChangeAsync(int id)
         {
             return await _pendingChangeConnection.DeletePendingChangeAsync(id);
