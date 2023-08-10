@@ -11,6 +11,11 @@ namespace SBO.BlaaBog.Domain.Connections
         private IConfigurationRoot _configuration;
         private string _connectionString;
 
+        /// <summary>
+        /// Executes SQL Stored Procedures
+        /// </summary>
+        /// <param name="storedProcedure"></param>
+        /// <returns>SqlCommand</returns>
         public SqlCommand Execute(string storedProcedure)
         {
             SqlCommand sqlCommand = new SqlCommand(storedProcedure, new SqlConnection(_connectionString));
@@ -20,7 +25,7 @@ namespace SBO.BlaaBog.Domain.Connections
 
         public SQL()
         {
-            var builder = new ConfigurationBuilder().SetBasePath(Directory.GetCurrentDirectory()).AddJsonFile("appsettings.json", optional: true, reloadOnChange: false);
+            IConfigurationBuilder builder = new ConfigurationBuilder().SetBasePath(Directory.GetCurrentDirectory()).AddJsonFile("appsettings.json", optional: true, reloadOnChange: false);
             _configuration = builder.Build();
             _connectionString = _configuration.GetConnectionString("Default");
         }

@@ -24,7 +24,7 @@ namespace SBO.BlaaBog.Domain.Connections
         /// Create a class in the database
         /// </summary>
         /// <param name="class"></param>
-        /// <returns></returns>
+        /// <returns>bool</returns>
         public async Task<bool> CreateClassAsync(Class @class)
         {
             SqlCommand sqlCommand = _sql.Execute("spCreateClass");
@@ -57,7 +57,7 @@ namespace SBO.BlaaBog.Domain.Connections
         /// Get a specific class from the database
         /// </summary>
         /// <param name="id"></param>
-        /// <returns></returns>
+        /// <returns>Class?</returns>
         public async Task<Class?> GetClassAsync(int id)
         {
             SqlCommand sqlCommand = _sql.Execute("spGetClass");
@@ -102,7 +102,7 @@ namespace SBO.BlaaBog.Domain.Connections
         /// <summary>
         /// Get all classes from the database
         /// </summary>
-        /// <returns></returns>
+        /// <returns>List<Class>?</returns>
         public async Task<List<Class>?> GetClassesAsync()
         {
             SqlCommand sqlCommand = _sql.Execute("spGetClasses");
@@ -155,7 +155,7 @@ namespace SBO.BlaaBog.Domain.Connections
         /// Update a class in the database
         /// </summary>
         /// <param name="class"></param>
-        /// <returns></returns>
+        /// <returns>bool</returns>
         public async Task<bool> UpdateClassAsync(Class @class)
         {
             SqlCommand sqlCommand = _sql.Execute("spUpdateClass");
@@ -189,7 +189,7 @@ namespace SBO.BlaaBog.Domain.Connections
         /// Delete a class from the database
         /// </summary>
         /// <param name="id"></param>
-        /// <returns></returns>
+        /// <returns>bool</returns>
         public async Task<bool> DeleteClassAsync(int id)
         {
             SqlCommand sqlCommand = _sql.Execute("spDeleteClass");

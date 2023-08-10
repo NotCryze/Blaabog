@@ -24,7 +24,7 @@ namespace SBO.BlaaBog.Domain.Connections
         /// Create a comment in the database
         /// </summary>
         /// <param name="comment"></param>
-        /// <returns></returns>
+        /// <returns>bool</returns>
         public async Task<bool> CreateCommentAsync(Comment comment)
         {
             SqlCommand sqlCommand = _sql.Execute("spCreateComment");
@@ -59,7 +59,7 @@ namespace SBO.BlaaBog.Domain.Connections
         /// Get a specific comment from the database
         /// </summary>
         /// <param name="id"></param>
-        /// <returns></returns>
+        /// <returns>Comment?</returns>
         public async Task<Comment?> GetCommentAsync(int id)
         {
             SqlCommand sqlCommand = _sql.Execute("spGetComment");
@@ -109,7 +109,7 @@ namespace SBO.BlaaBog.Domain.Connections
         /// <summary>
         /// Get all comments from the database
         /// </summary>
-        /// <returns></returns>
+        /// <returns>List<Comment>?</returns>
         public async Task<List<Comment>?> GetCommentsAsync()
         {
             SqlCommand sqlCommand = _sql.Execute("spGetComment");
@@ -160,10 +160,62 @@ namespace SBO.BlaaBog.Domain.Connections
         /// Get all non approved comments from the database
         /// </summary>
         /// <param name="id"></param>
-        /// <returns></returns>
+        /// <returns>List<Comment>?</returns>
         public async Task<List<Comment>?> GetNonApprovedCommentsAsync(int id)
         {
             SqlCommand sqlCommand = _sql.Execute("spGetNonApprovedComments");
+            sqlCommand.Parameters.AddWithValue("@id", id);
+
+            try
+            {
+                await sqlCommand.Connection.OpenAsync();
+                SqlDataReader sqlDataReader = await sqlCommand.ExecuteReaderAsync();
+
+                List<Comment> comments = new List<Comment>();
+
+                if ( sqlDataReader.HasRows )
+                {
+                    while ( await sqlDataReader.ReadAsync() )
+                    {
+                        comments.Add(new Comment(
+                                sqlDataReader.GetInt32("id"),
+                                sqlDataReader.GetInt32("fk_author"),
+                                sqlDataReader.GetInt32("fk_subject"),
+                                sqlDataReader.GetString("content"),
+                                sqlDataReader.GetBoolean("approved"),
+                                sqlDataReader.GetInt32("approved_by"),
+                                sqlDataReader.GetDateTime("approved_at"),
+                                sqlDataReader.GetDateTime("created_at")
+                            ));
+                    }
+
+                    await sqlDataReader.CloseAsync();
+                }
+
+                await sqlCommand.Connection.CloseAsync();
+
+                return comments;
+            }
+            catch ( SqlException exception )
+            {
+                await Console.Out.WriteLineAsync(exception.Message);
+            }
+            finally
+            {
+                await sqlCommand.Connection.CloseAsync();
+            }
+
+            return null;
+        }
+
+        /// <summary>
+        /// Get all comments from a specific author
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns>List<Comment>?</returns>
+        public async Task<List<Comment>?> GetCommentsByAuthorAsync(int id)
+        {
+            SqlCommand sqlCommand = _sql.Execute("spGetCommentsByAuthor");
             sqlCommand.Parameters.AddWithValue("@id", id);
 
             try
@@ -213,7 +265,7 @@ namespace SBO.BlaaBog.Domain.Connections
         /// Get all comments from a specific subject
         /// </summary>
         /// <param name="id"></param>
-        /// <returns></returns>
+        /// <returns>List<Comment>?</returns>
         public async Task<List<Comment>?> GetCommentsBySubjectAsync(int id)
         {
             SqlCommand sqlCommand = _sql.Execute("spGetCommentsBySubject");
@@ -269,7 +321,7 @@ namespace SBO.BlaaBog.Domain.Connections
         /// Update a comment in the database
         /// </summary>
         /// <param name="comment"></param>
-        /// <returns></returns>
+        /// <returns>bool</returns>
         public async Task<bool> UpdateCommentAsync(Comment comment)
         {
             SqlCommand sqlCommand = _sql.Execute("spUpdateComment");
@@ -305,7 +357,7 @@ namespace SBO.BlaaBog.Domain.Connections
         /// Delete a comment from the database
         /// </summary>
         /// <param name="id"></param>
-        /// <returns></returns>
+        /// <returns>bool</returns>
         public async Task<bool> DeleteCommentAsync(int id)
         {
             SqlCommand sqlCommand = _sql.Execute("spDeleteComment");
@@ -339,8 +391,8 @@ namespace SBO.BlaaBog.Domain.Connections
         /// </summary>
         /// <param name="id"></param>
         /// <param name="approvedBy"></param>
-        /// <returns></returns>
-        public async  Task<bool> ApproveCommentAsync(int id, int approvedBy)
+        /// <returns>bool</returns>
+        public async Task<bool> ApproveCommentAsync(int id, int approvedBy)
         {
             SqlCommand sqlCommand = _sql.Execute("spApproveComment");
             sqlCommand.Parameters.AddWithValue("@id", id);
