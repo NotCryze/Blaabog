@@ -41,6 +41,9 @@ namespace SBO.BlaaBog.Web.Middlewares
                     else if (pathLower.StartsWith("/Teacher/Login".ToLower()) || pathLower.StartsWith("/Teacher/Register".ToLower()))
                     {
                     }
+                    else if (pathLower.StartsWith("/Error".ToLower()))
+                    {
+                    }
                     else
                     {
                         httpContext.Response.Redirect("/Teacher/Login");
@@ -53,7 +56,7 @@ namespace SBO.BlaaBog.Web.Middlewares
                 {
                     if (httpContext.Items["User"] == null)
                     {
-                        if (!pathLower.StartsWith("/Login".ToLower()) && !pathLower.StartsWith("/Register".ToLower()))
+                        if (!pathLower.StartsWith("/Login".ToLower()) && !pathLower.StartsWith("/Register".ToLower()) && !pathLower.StartsWith("/Error".ToLower()))
                         {
                             httpContext.Response.Redirect("/Login");
                             return;
