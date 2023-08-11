@@ -1,3 +1,5 @@
+using SBO.BlaaBog.Web.Middlewares;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -21,5 +23,7 @@ app.UseRouting();
 app.UseAuthorization();
 
 app.MapRazorPages();
+
+app.UseAuthMiddleware();
 
 app.Run();
