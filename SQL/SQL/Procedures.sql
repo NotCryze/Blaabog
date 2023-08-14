@@ -559,3 +559,53 @@ BEGIN
 		AND deleted = 0
 END
 GO
+
+
+/*
+	Teacher Tokens
+*/
+
+-- Create Token
+CREATE OR ALTER PROCEDURE spCreateTeacherToken
+	@token CHAR(6)
+AS
+BEGIN
+	INSERT INTO TeacherTokens(token)
+	VALUES (@token)
+END
+GO
+
+-- Read Token
+CREATE OR ALTER PROCEDURE spGetTeacherToken
+	@id INT
+AS
+BEGIN
+	SELECT *
+	FROM TeacherTokens
+	WHERE
+		id = @id
+		AND deleted = 0
+END
+GO
+
+CREATE OR ALTER PROCEDURE spGetTeacherTokens
+AS
+BEGIN
+	SELECT *
+	FROM TeacherTokens
+	WHERE
+		AND deleted = 0
+END
+GO
+
+CREATE OR ALTER PROCEDURE spGetTeacherTokenByToken
+	@token CHAR(6)
+AS
+BEGIN
+	SELECT *
+	FROM TeacherTokens
+	WHERE
+		token = @token
+		AND deleted = 0
+END
+GO
