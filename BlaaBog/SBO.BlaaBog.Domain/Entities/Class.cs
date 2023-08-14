@@ -22,6 +22,8 @@ namespace SBO.BlaaBog.Domain.Entities
         private List<Student>? _students;
         public List<Student>? Students { get { return _students; } }
 
+        public dynamic Dynamic { get; set; }
+
         public Class(int? id, DateOnly startDate, string token) 
         {
             _id = id;

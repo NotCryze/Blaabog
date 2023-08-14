@@ -45,6 +45,16 @@ namespace SBO.BlaaBog.Services.Services
         }
 
         /// <summary>
+        /// Get a specific class by token from the database
+        /// </summary>
+        /// <param name="token"></param>
+        /// <returns>Class if successful, null if not.</returns>
+        public async Task<Class?> GetClassByTokenAsync(string token)
+        {
+            return await _classConnection.GetClassByTokenAsync(token);
+        }
+
+        /// <summary>
         /// Get all classes from the database
         /// </summary>
         /// <returns>List<Class> if successful, null if not.</returns>

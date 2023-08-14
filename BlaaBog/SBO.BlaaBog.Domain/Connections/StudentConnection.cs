@@ -1,6 +1,7 @@
 ﻿using SBO.BlaaBog.Domain.Entities;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Data.SqlClient;
 using System.Runtime.Intrinsics.Arm;
 using System.Threading.Tasks;
@@ -22,13 +23,15 @@ namespace SBO.BlaaBog.Domain.Connections
         /// Creates new student in database
         /// </summary>
         /// <param name="student"></param>
+        /// <param name="classId"></param>
         /// <returns>true if successful, false if not.</returns>
-        public async Task<bool> CreateStudentAsync(Student student)
+        public async Task<bool> CreateStudentAsync(Student student, int classId)
         {
             SqlCommand cmd = _sql.Execute("spCreateStudent");
             cmd.Parameters.AddWithValue("@name", student.Name);
             cmd.Parameters.AddWithValue("@email", student.Email);
             cmd.Parameters.AddWithValue("@password", student.Password);
+            cmd.Parameters.AddWithValue("@class", classId);
 
             try
             {
@@ -78,11 +81,11 @@ namespace SBO.BlaaBog.Domain.Connections
                                 (int)rdr["id"],
                                 (string)rdr["name"],
                                 (string)rdr["image"],
-                                (string)rdr["description"],
+                                await rdr.IsDBNullAsync("description") ? null : (string)rdr["description"],
                                 (string)rdr["email"],
-                                (string)rdr["speciality"],
-                                (int)rdr["classId"],
-                                (DateOnly)rdr["endDate"],
+                                await rdr.IsDBNullAsync("speciality") ? null : (string)rdr["speciality"],
+                                (int)rdr["fk_class"],
+                                await rdr.IsDBNullAsync("end_date") ? null : (DateOnly)rdr["end_date"],
                                 (string)rdr["password"]
                         );
                     }
@@ -128,11 +131,11 @@ namespace SBO.BlaaBog.Domain.Connections
                                 (int)rdr["id"],
                                 (string)rdr["name"],
                                 (string)rdr["image"],
-                                (string)rdr["description"],
+                                await rdr.IsDBNullAsync("description") ? null : (string)rdr["description"],
                                 (string)rdr["email"],
-                                (string)rdr["speciality"],
-                                (int)rdr["classId"],
-                                (DateOnly)rdr["endDate"],
+                                await rdr.IsDBNullAsync("speciality") ? null : (string)rdr["speciality"],
+                                (int)rdr["fk_class"],
+                                await rdr.IsDBNullAsync("end_date") ? null : (DateOnly)rdr["end_date"],
                                 (string)rdr["password"]
                             ));
                     }
@@ -179,11 +182,11 @@ namespace SBO.BlaaBog.Domain.Connections
                                 (int)rdr["id"],
                                 (string)rdr["name"],
                                 (string)rdr["image"],
-                                (string)rdr["description"],
+                                await rdr.IsDBNullAsync("description") ? null : (string)rdr["description"],
                                 (string)rdr["email"],
-                                (string)rdr["speciality"],
-                                (int)rdr["classId"],
-                                (DateOnly)rdr["endDate"],
+                                await rdr.IsDBNullAsync("speciality") ? null : (string)rdr["speciality"],
+                                (int)rdr["fk_class"],
+                                await rdr.IsDBNullAsync("end_date") ? null : (DateOnly)rdr["end_date"],
                                 (string)rdr["password"]
                             ));
                     }
@@ -230,11 +233,11 @@ namespace SBO.BlaaBog.Domain.Connections
                                 (int)rdr["id"],
                                 (string)rdr["name"],
                                 (string)rdr["image"],
-                                (string)rdr["description"],
+                                await rdr.IsDBNullAsync("description") ? null : (string)rdr["description"],
                                 (string)rdr["email"],
-                                (string)rdr["speciality"],
-                                (int)rdr["classId"],
-                                (DateOnly)rdr["endDate"],
+                                await rdr.IsDBNullAsync("speciality") ? null : (string)rdr["speciality"],
+                                (int)rdr["fk_class"],
+                                await rdr.IsDBNullAsync("end_date") ? null : (DateOnly)rdr["end_date"],
                                 (string)rdr["password"]
                             );
                     }
@@ -282,11 +285,11 @@ namespace SBO.BlaaBog.Domain.Connections
                                 (int)rdr["id"],
                                 (string)rdr["name"],
                                 (string)rdr["image"],
-                                (string)rdr["description"],
+                                await rdr.IsDBNullAsync("description") ? null : (string)rdr["description"],
                                 (string)rdr["email"],
-                                (string)rdr["speciality"],
-                                (int)rdr["classId"],
-                                (DateOnly)rdr["endDate"],
+                                await rdr.IsDBNullAsync("speciality") ? null : (string)rdr["speciality"],
+                                (int)rdr["fk_class"],
+                                await rdr.IsDBNullAsync("end_date") ? null : (DateOnly)rdr["end_date"],
                                 (string)rdr["password"]
                             ));
                     }
@@ -333,11 +336,11 @@ namespace SBO.BlaaBog.Domain.Connections
                                 (int)rdr["id"],
                                 (string)rdr["name"],
                                 (string)rdr["image"],
-                                (string)rdr["description"],
+                                await rdr.IsDBNullAsync("description") ? null : (string)rdr["description"],
                                 (string)rdr["email"],
-                                (string)rdr["speciality"],
-                                (int)rdr["classId"],
-                                (DateOnly)rdr["endDate"],
+                                await rdr.IsDBNullAsync("speciality") ? null : (string)rdr["speciality"],
+                                (int)rdr["fk_class"],
+                                await rdr.IsDBNullAsync("end_date") ? null : (DateOnly)rdr["end_date"],
                                 (string)rdr["password"]
                             ));
                     }

@@ -9,7 +9,7 @@ GO
 -- Create Class
 CREATE OR ALTER PROCEDURE spCreateClass
 	@start_date DATE,
-	@token CHAR(5)
+	@token CHAR(6)
 AS
 BEGIN
 	INSERT INTO Classes(start_date, token)
@@ -37,6 +37,18 @@ BEGIN
 	SELECT *
 	FROM Classes
 	WHERE deleted = 0
+END
+GO
+
+CREATE OR ALTER PROCEDURE spGetClassByToken
+	@token CHAR(6)
+AS
+BEGIN
+	SELECT *
+	FROM Classes
+	WHERE
+		token = @token
+		AND deleted = 0
 END
 GO
 
@@ -81,11 +93,12 @@ GO
 CREATE OR ALTER PROCEDURE spCreateStudent
 	@name NVARCHAR(100),
 	@email NVARCHAR(320),
-	@password VARCHAR(60)
+	@password VARCHAR(60),
+	@class INT
 AS
 BEGIN
-	INSERT INTO Students(name, email, password)
-	VALUES (@name, @email, @password)
+	INSERT INTO Students(name, email, password, fk_class)
+	VALUES (@name, @email, @password, @class)
 END
 GO
 

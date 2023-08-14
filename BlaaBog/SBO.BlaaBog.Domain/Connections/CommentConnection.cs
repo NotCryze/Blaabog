@@ -81,8 +81,8 @@ namespace SBO.BlaaBog.Domain.Connections
                                 sqlDataReader.GetInt32("fk_subject"),
                                 sqlDataReader.GetString("content"),
                                 sqlDataReader.GetBoolean("approved"),
-                                sqlDataReader.GetInt32("approved_by"),
-                                sqlDataReader.GetDateTime("approved_at"),
+                                await sqlDataReader.IsDBNullAsync("approved_by") ? null : await sqlDataReader.IsDBNullAsync("approved_by") ? null : sqlDataReader.GetInt32("approved_by"),
+                                await sqlDataReader.IsDBNullAsync("approved_at") ? null : await sqlDataReader.IsDBNullAsync("approved_at") ? null : sqlDataReader.GetDateTime("approved_at"),
                                 sqlDataReader.GetDateTime("created_at")
                             );
                     }
@@ -131,8 +131,8 @@ namespace SBO.BlaaBog.Domain.Connections
                                 sqlDataReader.GetInt32("fk_subject"),
                                 sqlDataReader.GetString("content"),
                                 sqlDataReader.GetBoolean("approved"),
-                                sqlDataReader.GetInt32("approved_by"),
-                                sqlDataReader.GetDateTime("approved_at"),
+                                await sqlDataReader.IsDBNullAsync("approved_by") ? null : sqlDataReader.GetInt32("approved_by"),
+                                await sqlDataReader.IsDBNullAsync("approved_at") ? null : sqlDataReader.GetDateTime("approved_at"),
                                 sqlDataReader.GetDateTime("created_at")
                             ));
                     }
@@ -183,8 +183,8 @@ namespace SBO.BlaaBog.Domain.Connections
                                 sqlDataReader.GetInt32("fk_subject"),
                                 sqlDataReader.GetString("content"),
                                 sqlDataReader.GetBoolean("approved"),
-                                sqlDataReader.GetInt32("approved_by"),
-                                sqlDataReader.GetDateTime("approved_at"),
+                                await sqlDataReader.IsDBNullAsync("approved_by") ? null : sqlDataReader.GetInt32("approved_by"),
+                                await sqlDataReader.IsDBNullAsync("approved_at") ? null : sqlDataReader.GetDateTime("approved_at"),
                                 sqlDataReader.GetDateTime("created_at")
                             ));
                     }
@@ -235,8 +235,8 @@ namespace SBO.BlaaBog.Domain.Connections
                                 sqlDataReader.GetInt32("fk_subject"),
                                 sqlDataReader.GetString("content"),
                                 sqlDataReader.GetBoolean("approved"),
-                                sqlDataReader.GetInt32("approved_by"),
-                                sqlDataReader.GetDateTime("approved_at"),
+                                await sqlDataReader.IsDBNullAsync("approved_by") ? null : sqlDataReader.GetInt32("approved_by"),
+                                await sqlDataReader.IsDBNullAsync("approved_at") ? null : sqlDataReader.GetDateTime("approved_at"),
                                 sqlDataReader.GetDateTime("created_at")
                             ));
                     }
@@ -288,8 +288,8 @@ namespace SBO.BlaaBog.Domain.Connections
                                 sqlDataReader.GetInt32("fk_subject"),
                                 sqlDataReader.GetString("content"),
                                 sqlDataReader.GetBoolean("approved"),
-                                sqlDataReader.GetInt32("approved_by"),
-                                sqlDataReader.GetDateTime("approved_at"),
+                                await sqlDataReader.IsDBNullAsync("approved_by") ? null : sqlDataReader.GetInt32("approved_by"),
+                                await sqlDataReader.IsDBNullAsync("approved_at") ? null : sqlDataReader.GetDateTime("approved_at"),
                                 sqlDataReader.GetDateTime("created_at")
                             ));
                     }

@@ -54,7 +54,7 @@ namespace SBO.BlaaBog.Web.Pages.Teachers
                 }
             }
             else
-            {
+        {
                 await Console.Out.WriteLineAsync("Student is null");
             }
 
