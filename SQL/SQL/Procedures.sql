@@ -565,7 +565,7 @@ GO
 	Teacher Tokens
 */
 
--- Create Token
+-- Create Teacher Token
 CREATE OR ALTER PROCEDURE spCreateTeacherToken
 	@token CHAR(6)
 AS
@@ -575,7 +575,7 @@ BEGIN
 END
 GO
 
--- Read Token
+-- Read Teacher Token
 CREATE OR ALTER PROCEDURE spGetTeacherToken
 	@id INT
 AS
@@ -606,6 +606,48 @@ BEGIN
 	FROM TeacherTokens
 	WHERE
 		token = @token
+		AND deleted = 0
+END
+GO
+
+-- Update Teacher Token
+--CREATE OR ALTER PROCEDURE spUpdateTeacherToken
+--	@id INT,
+--	@teacher INT = NULL
+--AS
+--BEGIN
+--	UPDATE TeacherTokens
+--	SET
+--		fk_teacher = @teacher
+--	WHERE
+--		id = @id
+--		AND deleted = 0
+--END
+--GO
+
+-- Delete Teacher Token
+CREATE OR ALTER PROCEDURE spDeleteTeacherToken
+	@id INT
+AS
+BEGIN
+	UPDATE TeacherTokens
+	SET deleted = 1
+	WHERE
+		id = @id
+		AND deleted = 0
+END
+GO
+
+-- Other
+CREATE OR ALTER PROCEDURE spUseTeacherToken
+	@id INT,
+	@teacher INT
+AS
+BEGIN
+	UPDATE TeacherTokens
+	SET fk_teacher = @teacher
+	WHERE
+		id = @id
 		AND deleted = 0
 END
 GO
