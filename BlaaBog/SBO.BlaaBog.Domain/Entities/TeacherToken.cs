@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace SBO.BlaaBog.Domain.Entities
 {
-    internal class TeacherToken
+    public class TeacherToken
     {
         private int? _id;
         public int? Id { get { return _id; } }
