@@ -7,6 +7,8 @@ namespace SBO.BlaaBog.Web.Pages
     {
         public void OnGet()
         {
+            HttpContext.Session.SetString("LoggedIn", "1");
+            Console.WriteLine(HttpContext.Session.GetString("LoggedIn"));
         }
     }
 }

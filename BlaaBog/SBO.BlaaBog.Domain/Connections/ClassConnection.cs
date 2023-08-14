@@ -100,6 +100,52 @@ namespace SBO.BlaaBog.Domain.Connections
         }
 
         /// <summary>
+        /// Get a specific class by token from the database
+        /// </summary>
+        /// <param name="token"></param>
+        /// <returns>Class if successful, null if not.</returns>
+        public async Task<Class?> GetClassByTokenAsync(string token)
+        {
+            SqlCommand sqlCommand = _sql.Execute("spGetClassByToken");
+            sqlCommand.Parameters.AddWithValue("@token", token);
+            try
+            {
+                await sqlCommand.Connection.OpenAsync();
+                SqlDataReader sqlDataReader = await sqlCommand.ExecuteReaderAsync();
+
+                Class @class = null;
+
+                if ( sqlDataReader.HasRows )
+                {
+                    while ( await sqlDataReader.ReadAsync() )
+                    {
+                        @class = new Class(
+                                sqlDataReader.GetInt32("id"),
+                                new DateOnly(sqlDataReader.GetDateTime("start_date").Year, sqlDataReader.GetDateTime("start_date").Month, sqlDataReader.GetDateTime("start_date").Day),
+                                sqlDataReader.GetString("token")
+                            );
+                    }
+
+                    await sqlDataReader.CloseAsync();
+                }
+
+                await sqlCommand.Connection.CloseAsync();
+
+                return @class;
+            }
+            catch ( SqlException exception )
+            {
+                await Console.Out.WriteLineAsync(exception.Message);
+            }
+            finally
+            {
+                await sqlCommand.Connection.CloseAsync();
+            }
+
+            return null;
+        }
+
+        /// <summary>
         /// Get all classes from the database
         /// </summary>
         /// <returns>List<Class> if successful, null if not.</returns>

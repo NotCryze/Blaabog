@@ -12,7 +12,7 @@ namespace SBO.BlaaBog.Services.Services
     {
 
         private StudentConnection _studentConnection;
-        public StudentService(TeacherConnection teacherConnection)
+        public StudentService()
         {
             _studentConnection = new StudentConnection();
         }
@@ -23,10 +23,11 @@ namespace SBO.BlaaBog.Services.Services
         /// Creates a student in the database
         /// </summary>
         /// <param name="student"></param>
+        /// <param name="classId"></param>
         /// <returns>true if successful, false if not.</returns>
-        public async Task<bool> CreateStudentAsync(Student student)
+        public async Task<bool> CreateStudentAsync(Student student, int classId)
         {
-            return await _studentConnection.CreateStudentAsync(student);
+            return await _studentConnection.CreateStudentAsync(student, classId);
         }
 
         #endregion

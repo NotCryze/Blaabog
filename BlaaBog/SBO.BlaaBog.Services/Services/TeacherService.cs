@@ -11,7 +11,7 @@ namespace SBO.BlaaBog.Services.Services
     public class TeacherService
     {
         private TeacherConnection _teacherConnection;
-        public TeacherService(TeacherConnection teacherConnection)
+        public TeacherService()
         {
             _teacherConnection = new TeacherConnection();
         }

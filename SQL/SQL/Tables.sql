@@ -15,7 +15,7 @@ DROP TABLE IF EXISTS Classes;
 CREATE TABLE Classes(
     id INT PRIMARY KEY IDENTITY(1, 1) NOT NULL,
     start_date DATE NOT NULL,
-    token CHAR(5) NOT NULL,
+    token CHAR(6) UNIQUE NOT NULL,
     deleted BIT NOT NULL DEFAULT 0
 );
 GO

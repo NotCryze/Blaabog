@@ -79,9 +79,9 @@ namespace SBO.BlaaBog.Domain.Connections
                         pendingChange = new PendingChange(
                                 sqlDataReader.GetInt32("id"),
                                 sqlDataReader.GetInt32("fk_student"),
-                                sqlDataReader.GetString("name"),
-                                sqlDataReader.GetString("image"),
-                                sqlDataReader.GetString("description")
+                                await sqlDataReader.IsDBNullAsync("name") ? null : sqlDataReader.GetString("name"),
+                                await sqlDataReader.IsDBNullAsync("image") ? null : sqlDataReader.GetString("image"),
+                                await sqlDataReader.IsDBNullAsync("description") ? null : sqlDataReader.GetString("description")
                             );
                     }
 
@@ -128,9 +128,9 @@ namespace SBO.BlaaBog.Domain.Connections
                         pendingChanges.Add(new PendingChange(
                                 sqlDataReader.GetInt32("id"),
                                 sqlDataReader.GetInt32("fk_student"),
-                                sqlDataReader.GetString("name"),
-                                sqlDataReader.GetString("image"),
-                                sqlDataReader.GetString("description")
+                                await sqlDataReader.IsDBNullAsync("name") ? null : sqlDataReader.GetString("name"),
+                                await sqlDataReader.IsDBNullAsync("image") ? null : sqlDataReader.GetString("image"),
+                                await sqlDataReader.IsDBNullAsync("description") ? null : sqlDataReader.GetString("description")
                             ));
                     }
 
