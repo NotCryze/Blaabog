@@ -73,7 +73,6 @@ namespace SBO.BlaaBog.Web.Pages
                     else
                     {
                         ModelState.AddModelError("Register.Token", "Token does not exist");
-                        return Page();
                     }
                 }
                 else

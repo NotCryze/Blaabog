@@ -19,7 +19,7 @@ namespace SBO.BlaaBog.Web.Pages.Teachers
             _teacherService = new TeacherService();
             _cache = cache;
         }
-
+        
         public async Task<IActionResult> OnGetAsync()
         {
             return Page();
