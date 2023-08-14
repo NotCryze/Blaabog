@@ -1,20 +1,20 @@
 ﻿@page
-@model SBO.BlaaBog.Web.Pages.Teacher.RegisterModel
+@model SBO.BlaaBog.Web.Pages.Teachers.LoginModel
 @{
-    ViewData["Title"] = "Teacher Register";
+    ViewData["Title"] = "Teacher Login";
 }
 
 <div class="container">
     <div class="col-md-4 offset-md-4">
-        <h2 class="mb-4 text-center">Register</h2>
+        <h2 class="mb-4 text-center">Login</h2>
 
         <ul class="nav nav-tabs">
 
             <li class="nav-item w-50 text-center">
-                <a class="nav-link text-reset" asp-page="/Register">Student</a>
+                <a class="nav-link text-reset" asp-page="/Login">Student</a>
             </li>
             <li class="nav-item w-50 text-center">
-                <a class="nav-link active" aria-current="page" asp-page="/Teacher/Register">Teacher</a>
+                <a class="nav-link active" aria-current="page" asp-page="/Teachers/Login">Teacher</a>
             </li>
 
         </ul>
@@ -22,21 +22,22 @@
         <div class="card p-4 card-fix-top">
 
             <div class="text-center">
-                <h3>Welcome!</h3>
+                <h3>Welcome back!</h3>
             </div>
 
-            <form>
+            <form method="post">
                 <div class="mb-3">
                     <label for="email" class="form-label">Email</label>
-                    <input type="email" class="form-control" id="email" placeholder="Email" required>
+                    <input asp-for="@Model.Login.Email" type="email" class="form-control" id="email" placeholder="Email" required>
                 </div>
                 <div class="mb-3">
                     <label for="password" class="form-label">Password</label>
-                    <input type="password" class="form-control" id="password" placeholder="Password" required>
+                    <input asp-for="@Model.Login.Password" type="password" class="form-control" id="password" placeholder="Password" required>
                 </div>
                 <button type="submit" class="btn btn-primary w-100">Login</button>
             </form>
-            <p class="mt-3 text-center">Already have an account? <a asp-page="/Teacher/Login">Login</a></p>
+
+            <p class="mt-3 text-center">Don't have an account? <a href="#">Register</a></p>
         </div>
     </div>
 </div>

@@ -12,7 +12,7 @@ namespace SBO.BlaaBog.Services.Services
     {
 
         private StudentConnection _studentConnection;
-        public StudentService(TeacherConnection teacherConnection)
+        public StudentService()
         {
             _studentConnection = new StudentConnection();
         }

@@ -311,6 +311,18 @@ BEGIN
 END
 GO
 
+CREATE OR ALTER PROCEDURE spGetTeacherByEmail
+	@email NVARCHAR(320)
+AS
+BEGIN
+	SELECT *
+	FROM Teachers
+	WHERE 
+		email = @email
+		AND deleted = 0
+END
+GO
+
 -- Update Teacher
 CREATE OR ALTER PROCEDURE spUpdateTeacher
 	@id INT,
@@ -404,7 +416,7 @@ BEGIN
 	SELECT *
 	FROM Comments
 	WHERE
-		fk_author_student = @id
+		fk_author = @id
 		AND approved = 1
 		AND deleted = 0
 END
@@ -417,7 +429,7 @@ BEGIN
 	SELECT *
 	FROM Comments
 	WHERE
-		fk_subject_student = @id
+		fk_subject = @id
 		AND approved = 1
 		AND deleted = 0
 END

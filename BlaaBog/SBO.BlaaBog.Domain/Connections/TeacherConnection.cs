@@ -179,6 +179,50 @@ namespace SBO.BlaaBog.Domain.Connections
             return null;
         }
 
+        /// <summary>
+        /// Gets a teacher by email
+        /// </summary>
+        /// <param name="email"></param>
+        /// <returns>Teacher if successful, null if not.</returns>
+        public async Task<Teacher?> GetTeacherByEmailAsync(string email)
+        {
+            SqlCommand cmd = _sql.Execute("spGetTeacherByEmail");
+            cmd.Parameters.AddWithValue("@email", email);
+            Teacher teacher = null;
+            try
+            {
+                await cmd.Connection.OpenAsync();
+                SqlDataReader rdr = await cmd.ExecuteReaderAsync();
+                if ( rdr.HasRows )
+                {
+                    while ( await rdr.ReadAsync() )
+                    {
+                        teacher = new Teacher(
+                        (int)rdr["id"],
+                        (string)rdr["name"],
+                        (string)rdr["email"],
+                        (string)rdr["password"],
+                        (bool)rdr["admin"]
+                        );
+                    }
+
+                    await rdr.CloseAsync();
+                }
+                await cmd.Connection.CloseAsync();
+
+                return teacher;
+            }
+            catch ( SqlException ex )
+            {
+                await Console.Out.WriteLineAsync(ex.Message);
+            }
+            finally
+            {
+                await cmd.Connection.CloseAsync();
+            }
+            return null;
+        }
+
         #endregion
 
         #region Update

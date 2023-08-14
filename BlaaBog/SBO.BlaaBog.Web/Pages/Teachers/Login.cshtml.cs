@@ -1,20 +1,22 @@
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Caching.Memory;
 using SBO.BlaaBog.Domain.Entities;
 using SBO.BlaaBog.Services.Services;
 using SBO.BlaaBog.Web.DTO;
+using System.Runtime.CompilerServices;
 using BC = BCrypt.Net.BCrypt;
 
-namespace SBO.BlaaBog.Web.Pages
+namespace SBO.BlaaBog.Web.Pages.Teachers
 {
     public class LoginModel : PageModel
     {
-        private readonly StudentService _studentService;
+        private readonly TeacherService _teacherService;
         private readonly IMemoryCache _cache;
         public LoginModel(IMemoryCache cache)
         {
-            _studentService = new StudentService();
+            _teacherService = new TeacherService();
             _cache = cache;
         }
 
@@ -33,17 +35,18 @@ namespace SBO.BlaaBog.Web.Pages
                 return Page();
             }
 
-            Student? student = await _studentService.GetStudentByEmailAsync(Login.Email);
+            Teacher? teacher = await _teacherService.GetTeacherByEmailAsync(Login.Email);
 
-            if (student != null)
+            if (teacher != null)
             {
-                bool validatePassword = BC.EnhancedVerify(Login.Password, student.Password);
-                if (validatePassword) 
+                bool validatePassword = BC.EnhancedVerify(Login.Password, teacher.Password);
+                if (validatePassword)
                 {
-                    HttpContext.Session.SetInt32("Id", Convert.ToInt32(student.Id));
-                    HttpContext.Session.SetString("Name", student.Name);
-                    _cache.Set(HttpContext.Session.Id, student);
-                    return RedirectToPage("/Index");
+
+                    HttpContext.Session.SetInt32("Id", Convert.ToInt32(teacher.Id));
+                    HttpContext.Session.SetString("Name", teacher.Name);
+                    _cache.Set(HttpContext.Session.Id, teacher);
+                    return Redirect("/Teachers/Index");
                 }
                 else
                 {
@@ -54,6 +57,9 @@ namespace SBO.BlaaBog.Web.Pages
             {
                 await Console.Out.WriteLineAsync("Student is null");
             }
+
+
+
 
             return Page();
         }

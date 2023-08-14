@@ -11,7 +11,7 @@ namespace SBO.BlaaBog.Services.Services
     public class TeacherService
     {
         private TeacherConnection _teacherConnection;
-        public TeacherService(TeacherConnection teacherConnection)
+        public TeacherService()
         {
             _teacherConnection = new TeacherConnection();
         }
@@ -59,6 +59,16 @@ namespace SBO.BlaaBog.Services.Services
         public async Task<List<Teacher>?> GetTeachersByNameAsync(string name)
         {
             return await _teacherConnection.GetTeachersByNameAsync(name);
+        }
+
+        /// <summary>
+        /// Gets a teacher from the database that has the given email
+        /// </summary>
+        /// <param name="email"></param>
+        /// <returns>Teacher if successful, null if not.</returns>
+        public async Task<Teacher?> GetTeacherByEmailAsync(string email)
+        {
+            return await _teacherConnection.GetTeacherByEmailAsync(email);
         }
 
         #endregion
