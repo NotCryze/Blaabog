@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Caching.Memory;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
 using SBO.BlaaBog.Domain.Entities;
 using SBO.BlaaBog.Services.Services;
 using SBO.BlaaBog.Web.DTO;
@@ -27,8 +28,6 @@ namespace SBO.BlaaBog.Web.Pages
 
         public async Task<IActionResult> OnGetAsync()
         {
-            await Console.Out.WriteLineAsync("Hello");
-
             return Page();
         }
 
@@ -40,17 +39,27 @@ namespace SBO.BlaaBog.Web.Pages
         {
             try
             {
+                Class? classFound = await _classService.GetClassByTokenAsync(Register.Token);
+                Student? studentFound = await _studentService.GetStudentByEmailAsync(Register.Email);
+
+                if (classFound == null)
+                {
+                    ModelState.AddModelError("Register.Token", "Token does not exist");
+                }
+
+                if (studentFound != null)
+                {
+                    ModelState.AddModelError("Register.Email", "Email already in use");
+                }
+
                 if (!ModelState.IsValid)
                 {
                     return Page();
                 }
 
-                Student? studentFound = await _studentService.GetStudentByEmailAsync(Register.Email);
 
                 if (studentFound == null)
                 {
-                    Class? classFound = await _classService.GetClassByTokenAsync(Register.Token);
-
                     if (classFound != null && classFound.Token == Register.Token)
                     {
                         string passwordHash = BC.EnhancedHashPassword(Register.Password);
@@ -68,6 +77,12 @@ namespace SBO.BlaaBog.Web.Pages
                             HttpContext.Session.SetInt32("Id", Convert.ToInt32(createdStudent.Id));
                             HttpContext.Session.SetString("Name", createdStudent.Name);
                             _cache.Set(HttpContext.Session.Id, createdStudent);
+
+                            return RedirectToPage("/Index");
+                        }
+                        else
+                        {
+                            ModelState.AddModelError("Register", "Something went wrong");
                         }
                     }
                     else
@@ -77,7 +92,7 @@ namespace SBO.BlaaBog.Web.Pages
                 }
                 else
                 {
-                    ModelState.AddModelError("Register.Email", "Email already exists");
+                    ModelState.AddModelError("Register.Email", "Email already in use");
                 }
             }
             catch (Exception exception)

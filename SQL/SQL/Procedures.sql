@@ -593,8 +593,7 @@ AS
 BEGIN
 	SELECT *
 	FROM TeacherTokens
-	WHERE
-		AND deleted = 0
+	WHERE deleted = 0
 END
 GO
 

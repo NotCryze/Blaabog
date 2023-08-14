@@ -47,12 +47,14 @@ namespace SBO.BlaaBog.Web.Pages
                 }
                 else
                 {
-                    await Console.Out.WriteLineAsync("Wrong Password");
+                    await Console.Out.WriteLineAsync("Wrong password");
+                    ModelState.AddModelError("Login", "Wrong email or password");
                 }
             }
             else
             {
                 await Console.Out.WriteLineAsync("Student is null");
+                ModelState.AddModelError("Login", "Wrong email or password");
             }
 
             return Page();

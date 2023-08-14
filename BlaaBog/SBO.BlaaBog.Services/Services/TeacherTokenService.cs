@@ -13,7 +13,7 @@ namespace SBO.BlaaBog.Services.Services
         private TeacherTokenConnection _teacherTokenConnection;
         public TeacherTokenService()
         {
-            _teacherTokenConnection = new TeacherConnection();
+            _teacherTokenConnection = new TeacherTokenConnection();
         }
 
         #region Create
@@ -58,7 +58,7 @@ namespace SBO.BlaaBog.Services.Services
         /// <returns>TeacherToken if successful, null if not.</returns>
         public async Task<TeacherToken?> GetTeacherTokenByTokenAsync(string token)
         {
-            return await _teacherTokenConnection.GetTeacherTokenByToken(token);
+            return await _teacherTokenConnection.GetTeacherTokenByTokenAsync(token);
         }
 
         #endregion
@@ -72,7 +72,7 @@ namespace SBO.BlaaBog.Services.Services
         /// <returns>true if successful, false if not.</returns>
         public async Task<bool> DeleteTeacherTokenAsync(int id)
         {
-            return await _teacherTokenConnection.DeleteTeacherToken(id);
+            return await _teacherTokenConnection.DeleteTeacherTokenAsync(id);
         }
 
         #endregion

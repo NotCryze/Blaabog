@@ -4,32 +4,27 @@ using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
+using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace SBO.BlaaBog.Domain.Connections
 {
-    public class ClassConnection
+    public class TeacherTokenConnection
     {
         private SQL _sql;
 
-        public ClassConnection()
+        public TeacherTokenConnection()
         {
             _sql = new SQL();
         }
 
-        #region Create Class
+        #region Create Teacher Token
 
-        /// <summary>
-        /// Create a class in the database
-        /// </summary>
-        /// <param name="class"></param>
-        /// <returns>true if successful, false if not.</returns>
-        public async Task<bool> CreateClassAsync(Class @class)
+        public async Task<bool> CreateTeacherTokenAsync(TeacherToken teacherToken)
         {
-            SqlCommand sqlCommand = _sql.Execute("spCreateClass");
-            sqlCommand.Parameters.AddWithValue("@start_date", @class.StartDate);
-            sqlCommand.Parameters.AddWithValue("@token", @class.Token);
+            SqlCommand sqlCommand = _sql.Execute("spCreateTeacherToken");
+            sqlCommand.Parameters.AddWithValue("@token", teacherToken.Token);
             try
             {
                 await sqlCommand.Connection.OpenAsync();
@@ -51,32 +46,28 @@ namespace SBO.BlaaBog.Domain.Connections
 
         #endregion
 
-        #region Read Class
+        #region Read Teacher Token
 
-        /// <summary>
-        /// Get a specific class from the database
-        /// </summary>
-        /// <param name="id"></param>
-        /// <returns>Class if successful, null if not.</returns>
-        public async Task<Class?> GetClassAsync(int id)
+        public async Task<TeacherToken?> GetTeacherTokenAsync(int id)
         {
-            SqlCommand sqlCommand = _sql.Execute("spGetClass");
+            SqlCommand sqlCommand = _sql.Execute("spCreateTeacherToken");
             sqlCommand.Parameters.AddWithValue("@id", id);
             try
             {
                 await sqlCommand.Connection.OpenAsync();
                 SqlDataReader sqlDataReader = await sqlCommand.ExecuteReaderAsync();
 
-                Class @class = null;
+                TeacherToken? teacherToken = null;
 
                 if ( sqlDataReader.HasRows )
                 {
                     while ( await sqlDataReader.ReadAsync() )
                     {
-                        @class = new Class(
+                        teacherToken = new TeacherToken(
                                 sqlDataReader.GetInt32("id"),
-                                new DateOnly(sqlDataReader.GetDateTime("start_date").Year, sqlDataReader.GetDateTime("start_date").Month, sqlDataReader.GetDateTime("start_date").Day),
-                                sqlDataReader.GetString("token")
+                                sqlDataReader.GetString("token"),
+                                await sqlDataReader.IsDBNullAsync("fk_teacher") ? null : sqlDataReader.GetInt32("fk_teacher"),
+                                sqlDataReader.GetDateTime("created_at")
                             );
                     }
 
@@ -85,7 +76,7 @@ namespace SBO.BlaaBog.Domain.Connections
 
                 await sqlCommand.Connection.CloseAsync();
 
-                return @class;
+                return teacherToken;
             }
             catch ( SqlException exception )
             {
@@ -99,30 +90,67 @@ namespace SBO.BlaaBog.Domain.Connections
             return null;
         }
 
-        /// <summary>
-        /// Get a specific class by token from the database
-        /// </summary>
-        /// <param name="token"></param>
-        /// <returns>Class if successful, null if not.</returns>
-        public async Task<Class?> GetClassByTokenAsync(string token)
+        public async Task<List<TeacherToken>> GetTeacherTokensAsync()
         {
-            SqlCommand sqlCommand = _sql.Execute("spGetClassByToken");
+            SqlCommand sqlCommand = _sql.Execute("spGetTeacherTokens");
+            try
+            {
+                await sqlCommand.Connection.OpenAsync();
+                SqlDataReader sqlDataReader = await sqlCommand.ExecuteReaderAsync();
+
+                List<TeacherToken> teacherTokens = new List<TeacherToken>();
+
+                if ( sqlDataReader.HasRows )
+                {
+                    while ( await sqlDataReader.ReadAsync() )
+                    {
+                        teacherTokens.Add(new TeacherToken(
+                                sqlDataReader.GetInt32("id"),
+                                sqlDataReader.GetString("token"),
+                                await sqlDataReader.IsDBNullAsync("fk_teacher") ? null : sqlDataReader.GetInt32("fk_teacher"),
+                                sqlDataReader.GetDateTime("created_at")
+                            ));
+                    }
+
+                    await sqlDataReader.CloseAsync();
+                }
+
+                await sqlCommand.Connection.CloseAsync();
+
+                return teacherTokens;
+            }
+            catch ( SqlException exception )
+            {
+                await Console.Out.WriteLineAsync(exception.Message);
+            }
+            finally
+            {
+                await sqlCommand.Connection.CloseAsync();
+            }
+
+            return null;
+        }
+
+        public async Task<TeacherToken?> GetTeacherTokenByTokenAsync(string token)
+        {
+            SqlCommand sqlCommand = _sql.Execute("spTeacherTokenByToken");
             sqlCommand.Parameters.AddWithValue("@token", token);
             try
             {
                 await sqlCommand.Connection.OpenAsync();
                 SqlDataReader sqlDataReader = await sqlCommand.ExecuteReaderAsync();
 
-                Class @class = null;
+                TeacherToken? teacherToken = null;
 
                 if ( sqlDataReader.HasRows )
                 {
                     while ( await sqlDataReader.ReadAsync() )
                     {
-                        @class = new Class(
+                        teacherToken = new TeacherToken(
                                 sqlDataReader.GetInt32("id"),
-                                new DateOnly(sqlDataReader.GetDateTime("start_date").Year, sqlDataReader.GetDateTime("start_date").Month, sqlDataReader.GetDateTime("start_date").Day),
-                                sqlDataReader.GetString("token")
+                                sqlDataReader.GetString("token"),
+                                await sqlDataReader.IsDBNullAsync("fk_teacher") ? null : sqlDataReader.GetInt32("fk_teacher"),
+                                sqlDataReader.GetDateTime("created_at")
                             );
                     }
 
@@ -131,55 +159,7 @@ namespace SBO.BlaaBog.Domain.Connections
 
                 await sqlCommand.Connection.CloseAsync();
 
-                return @class;
-            }
-            catch ( SqlException exception )
-            {
-                await Console.Out.WriteLineAsync(exception.Message);
-            }
-            finally
-            {
-                await sqlCommand.Connection.CloseAsync();
-            }
-
-            return null;
-        }
-
-        /// <summary>
-        /// Get all classes from the database
-        /// </summary>
-        /// <returns>List<Class> if successful, null if not.</returns>
-        public async Task<List<Class>?> GetClassesAsync()
-        {
-            SqlCommand sqlCommand = _sql.Execute("spGetClasses");
-            try
-            {
-                await sqlCommand.Connection.OpenAsync();
-                SqlDataReader sqlDataReader = await sqlCommand.ExecuteReaderAsync();
-
-                List<Class> @class = new List<Class>();
-
-                if ( sqlDataReader.HasRows )
-                {
-                    while ( await sqlDataReader.ReadAsync() )
-                    {
-                        @class.Add(new Class(
-                                sqlDataReader.GetInt32("id"),
-                                new DateOnly(
-                                        sqlDataReader.GetDateTime("start_date").Year,
-                                        sqlDataReader.GetDateTime("start_date").Month,
-                                        sqlDataReader.GetDateTime("start_date").Day
-                                    ),
-                                sqlDataReader.GetString("token"))
-                            );
-                    }
-
-                    await sqlDataReader.CloseAsync();
-                }
-
-                await sqlCommand.Connection.CloseAsync();
-
-                return @class;
+                return teacherToken;
             }
             catch ( SqlException exception )
             {
@@ -195,50 +175,15 @@ namespace SBO.BlaaBog.Domain.Connections
 
         #endregion
 
-        #region Update Class
-
-        /// <summary>
-        /// Update a class in the database
-        /// </summary>
-        /// <param name="class"></param>
-        /// <returns>true if successful, false if not.</returns>
-        public async Task<bool> UpdateClassAsync(Class @class)
-        {
-            SqlCommand sqlCommand = _sql.Execute("spUpdateClass");
-            sqlCommand.Parameters.AddWithValue("@id", @class.Id);
-            sqlCommand.Parameters.AddWithValue("@start_date", @class.StartDate);
-            sqlCommand.Parameters.AddWithValue("@token", @class.Token);
-            try
-            {
-                await sqlCommand.Connection.OpenAsync();
-                int rowsAffected = await sqlCommand.ExecuteNonQueryAsync();
-                await sqlCommand.Connection.CloseAsync();
-                return rowsAffected > 0;
-            }
-            catch ( SqlException exception )
-            {
-                await Console.Out.WriteLineAsync(exception.Message);
-            }
-            finally
-            {
-                await sqlCommand.Connection.CloseAsync();
-            }
-
-            return false;
-        }
+        #region Update Teacher Token
 
         #endregion
 
-        #region Delete Class
+        #region Delete Teacher Token
 
-        /// <summary>
-        /// Delete a class from the database
-        /// </summary>
-        /// <param name="id"></param>
-        /// <returns>true if successful, false if not.</returns>
-        public async Task<bool> DeleteClassAsync(int id)
+        public async Task<bool> DeleteTeacherTokenAsync(int id)
         {
-            SqlCommand sqlCommand = _sql.Execute("spDeleteClass");
+            SqlCommand sqlCommand = _sql.Execute("spDeleteTeacherToken");
             sqlCommand.Parameters.AddWithValue("@id", id);
             try
             {
@@ -254,6 +199,29 @@ namespace SBO.BlaaBog.Domain.Connections
             finally
             {
                 await sqlCommand.Connection.CloseAsync();
+            }
+            return false;
+        }
+
+        #endregion
+
+        #region Other
+
+        public async Task<bool> UseTeacherTokenAsync(int id, int teacherId)
+        {
+            SqlCommand sqlCommand = _sql.Execute("spUseTeacherToken");
+            sqlCommand.Parameters.AddWithValue("@id", id);
+            sqlCommand.Parameters.AddWithValue("@teacher", teacherId);
+            try
+            {
+                await sqlCommand.Connection.OpenAsync();
+                int rowsAffected = await sqlCommand.ExecuteNonQueryAsync();
+                await sqlCommand.Connection.CloseAsync();
+                return rowsAffected > 0;
+            }
+            catch ( SqlException sqlException )
+            {
+                await Console.Out.WriteLineAsync(sqlException.Message);
             }
 
             return false;

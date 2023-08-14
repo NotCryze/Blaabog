@@ -46,7 +46,7 @@ namespace SBO.BlaaBog.Web.Pages.Teachers
                     HttpContext.Session.SetInt32("Id", Convert.ToInt32(teacher.Id));
                     HttpContext.Session.SetString("Name", teacher.Name);
                     _cache.Set(HttpContext.Session.Id, teacher);
-                    return Redirect("/Teachers/Index");
+                    return RedirectToPage("/Teachers/Index");
                 }
                 else
                 {

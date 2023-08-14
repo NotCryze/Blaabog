@@ -29,10 +29,12 @@
                 <div class="mb-3">
                     <label for="email" class="form-label">Email</label>
                     <input asp-for="@Model.Login.Email" type="email" class="form-control" id="email" placeholder="Email" required>
+                    <span asp-validation-for="Login.Email"></span>
                 </div>
                 <div class="mb-3">
                     <label for="password" class="form-label">Password</label>
                     <input asp-for="@Model.Login.Password" type="password" class="form-control" id="password" placeholder="Password" required>
+                    <span asp-validation-for="Login.Password"></span>
                 </div>
                 <button type="submit" class="btn btn-primary w-100">Login</button>
             </form>

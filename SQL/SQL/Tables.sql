@@ -20,6 +20,9 @@ CREATE TABLE Classes(
 );
 GO
 
+INSERT INTO Classes(start_date, token)
+VALUES ('14-01-2023', '123456')
+
 
 DROP TABLE IF EXISTS Students;
 CREATE TABLE Students(
@@ -35,6 +38,9 @@ CREATE TABLE Students(
     deleted BIT NOT NULL DEFAULT 0
 );
 GO
+
+INSERT INTO Students(name, email, fk_class, password)
+VALUES ('Student', 'student@example.com', 1, '$2a$11$TwxkzN1iqAnRMQ4IRjTbWO.DhhZPdA64EYBwa3VZOMQasmw44MdYW')
 
 
 DROP TABLE IF EXISTS StudentsPendingChanges;
