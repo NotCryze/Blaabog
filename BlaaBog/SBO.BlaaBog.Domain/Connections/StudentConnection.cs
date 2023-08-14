@@ -85,7 +85,7 @@ namespace SBO.BlaaBog.Domain.Connections
                                 (string)rdr["email"],
                                 await rdr.IsDBNullAsync("speciality") ? null : (string)rdr["speciality"],
                                 (int)rdr["fk_class"],
-                                await rdr.IsDBNullAsync("end_date") ? null : (DateOnly)rdr["end_date"],
+                               await rdr.IsDBNullAsync("end_date") ? null : new DateOnly(rdr.GetDateTime("end_date").Year, rdr.GetDateTime("end_date").Month, rdr.GetDateTime("end_date").Day),
                                 (string)rdr["password"]
                         );
                     }
@@ -135,7 +135,7 @@ namespace SBO.BlaaBog.Domain.Connections
                                 (string)rdr["email"],
                                 await rdr.IsDBNullAsync("speciality") ? null : (string)rdr["speciality"],
                                 (int)rdr["fk_class"],
-                                await rdr.IsDBNullAsync("end_date") ? null : (DateOnly)rdr["end_date"],
+                               await rdr.IsDBNullAsync("end_date") ? null : new DateOnly(rdr.GetDateTime("end_date").Year, rdr.GetDateTime("end_date").Month, rdr.GetDateTime("end_date").Day),
                                 (string)rdr["password"]
                             ));
                     }
@@ -186,7 +186,7 @@ namespace SBO.BlaaBog.Domain.Connections
                                 (string)rdr["email"],
                                 await rdr.IsDBNullAsync("speciality") ? null : (string)rdr["speciality"],
                                 (int)rdr["fk_class"],
-                                await rdr.IsDBNullAsync("end_date") ? null : (DateOnly)rdr["end_date"],
+                               await rdr.IsDBNullAsync("end_date") ? null : new DateOnly(rdr.GetDateTime("end_date").Year, rdr.GetDateTime("end_date").Month, rdr.GetDateTime("end_date").Day),
                                 (string)rdr["password"]
                             ));
                     }
@@ -237,7 +237,7 @@ namespace SBO.BlaaBog.Domain.Connections
                                 (string)rdr["email"],
                                 await rdr.IsDBNullAsync("speciality") ? null : (string)rdr["speciality"],
                                 (int)rdr["fk_class"],
-                                await rdr.IsDBNullAsync("end_date") ? null : (DateOnly)rdr["end_date"],
+                               await rdr.IsDBNullAsync("end_date") ? null : new DateOnly(rdr.GetDateTime("end_date").Year, rdr.GetDateTime("end_date").Month, rdr.GetDateTime("end_date").Day),
                                 (string)rdr["password"]
                             );
                     }
@@ -289,7 +289,7 @@ namespace SBO.BlaaBog.Domain.Connections
                                 (string)rdr["email"],
                                 await rdr.IsDBNullAsync("speciality") ? null : (string)rdr["speciality"],
                                 (int)rdr["fk_class"],
-                                await rdr.IsDBNullAsync("end_date") ? null : (DateOnly)rdr["end_date"],
+                               await rdr.IsDBNullAsync("end_date") ? null : new DateOnly(rdr.GetDateTime("end_date").Year, rdr.GetDateTime("end_date").Month, rdr.GetDateTime("end_date").Day),
                                 (string)rdr["password"]
                             ));
                     }
@@ -340,7 +340,7 @@ namespace SBO.BlaaBog.Domain.Connections
                                 (string)rdr["email"],
                                 await rdr.IsDBNullAsync("speciality") ? null : (string)rdr["speciality"],
                                 (int)rdr["fk_class"],
-                                await rdr.IsDBNullAsync("end_date") ? null : (DateOnly)rdr["end_date"],
+                               await rdr.IsDBNullAsync("end_date") ? null : new DateOnly(rdr.GetDateTime("end_date").Year, rdr.GetDateTime("end_date").Month, rdr.GetDateTime("end_date").Day),
                                 (string)rdr["password"]
                             ));
                     }
