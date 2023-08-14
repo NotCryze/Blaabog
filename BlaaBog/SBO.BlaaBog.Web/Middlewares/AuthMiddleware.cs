@@ -1,8 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Caching.Memory;
-using Newtonsoft.Json;
+﻿using Microsoft.Extensions.Caching.Memory;
 using SBO.BlaaBog.Domain.Entities;
-using System.Reflection.Metadata.Ecma335;
 
 namespace SBO.BlaaBog.Web.Middlewares
 {
@@ -19,25 +16,9 @@ namespace SBO.BlaaBog.Web.Middlewares
 
         public async Task Invoke(HttpContext httpContext)
         {
-            //httpContext.Items["User"] = new Teacher(1, "Name", "Email", "Password", false);
-            //httpContext.Items["User"] = new Student(1, "Name", "Image", "Description", "Email", "Speciality", 1, new DateOnly(), "Password");
-
             httpContext.Items["User"] = _cache.Get(httpContext.Session.Id);
 
-            await Console.Out.WriteLineAsync(httpContext.Session.Id);
-            await Console.Out.WriteLineAsync(httpContext.Session.GetInt32("LoggedIn").ToString());
-
-            if (_cache.Get(httpContext.Session.Id) != null)
-            {
-                await Console.Out.WriteLineAsync(_cache.Get(httpContext.Session.Id).ToString());
-            }
-
             PathString path = httpContext.Request.Path;
-
-            if (httpContext.Items["User"] is Teacher)
-            {
-                await Console.Out.WriteLineAsync("Hello lol");
-            }
 
 
             if (path.HasValue)
@@ -45,8 +26,7 @@ namespace SBO.BlaaBog.Web.Middlewares
                 string pathLower = path.Value.ToLower();
 
                 // Method 1
-
-                if (pathLower.StartsWith("/Teacher".ToLower()))
+                if (pathLower.StartsWith("/Teachers".ToLower()))
                 {
                     if (httpContext.Items["User"] is Teacher)
                     {
@@ -87,20 +67,6 @@ namespace SBO.BlaaBog.Web.Middlewares
         public static IApplicationBuilder UseAuthMiddleware(this IApplicationBuilder builder)
         {
             return builder.UseMiddleware<AuthMiddleware>();
-        }
-    }
-
-    public static class SessionExtensions
-    {
-        public static void SetObject(this ISession session, string key, object value)
-        {
-            session.SetString(key, JsonConvert.SerializeObject(value));
-        }
-
-        public static T GetObject<T>(this ISession session, string key)
-        {
-            var value = session.GetString(key);
-            return value == null ? default(T) : JsonConvert.DeserializeObject<T>(value);
         }
     }
 }
