@@ -19,5 +19,10 @@ namespace SBO.BlaaBog.Web.DTO
         [Required]
         [StringLength(512, MinimumLength = 4)]
         public string Password { get; set; }
+
+        [Required]
+        [StringLength(512, MinimumLength = 4)]
+        [Compare("Password")]
+        public string ConfirmPassword { get; set; }
     }
 }
