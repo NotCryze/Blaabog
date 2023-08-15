@@ -559,3 +559,94 @@ BEGIN
 		AND deleted = 0
 END
 GO
+
+
+/*
+	Teacher Tokens
+*/
+
+-- Create Teacher Token
+CREATE OR ALTER PROCEDURE spCreateTeacherToken
+	@token CHAR(6)
+AS
+BEGIN
+	INSERT INTO TeacherTokens(token)
+	VALUES (@token)
+END
+GO
+
+-- Read Teacher Token
+CREATE OR ALTER PROCEDURE spGetTeacherToken
+	@id INT
+AS
+BEGIN
+	SELECT *
+	FROM TeacherTokens
+	WHERE
+		id = @id
+		AND deleted = 0
+END
+GO
+
+CREATE OR ALTER PROCEDURE spGetTeacherTokens
+AS
+BEGIN
+	SELECT *
+	FROM TeacherTokens
+	WHERE deleted = 0
+END
+GO
+
+CREATE OR ALTER PROCEDURE spGetTeacherTokenByToken
+	@token CHAR(6)
+AS
+BEGIN
+	SELECT *
+	FROM TeacherTokens
+	WHERE
+		token = @token
+		AND deleted = 0
+END
+GO
+
+-- Update Teacher Token
+--CREATE OR ALTER PROCEDURE spUpdateTeacherToken
+--	@id INT,
+--	@teacher INT = NULL
+--AS
+--BEGIN
+--	UPDATE TeacherTokens
+--	SET
+--		fk_teacher = @teacher
+--	WHERE
+--		id = @id
+--		AND deleted = 0
+--END
+--GO
+
+-- Delete Teacher Token
+CREATE OR ALTER PROCEDURE spDeleteTeacherToken
+	@id INT
+AS
+BEGIN
+	UPDATE TeacherTokens
+	SET deleted = 1
+	WHERE
+		id = @id
+		AND deleted = 0
+END
+GO
+
+-- Other
+CREATE OR ALTER PROCEDURE spUseTeacherToken
+	@id INT,
+	@teacher INT
+AS
+BEGIN
+	UPDATE TeacherTokens
+	SET fk_teacher = @teacher
+	WHERE
+		id = @id
+		AND deleted = 0
+END
+GO

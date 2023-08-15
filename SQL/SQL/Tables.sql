@@ -20,6 +20,9 @@ CREATE TABLE Classes(
 );
 GO
 
+INSERT INTO Classes(start_date, token)
+VALUES (GETDATE(), '123456')
+
 
 DROP TABLE IF EXISTS Students;
 CREATE TABLE Students(
@@ -35,6 +38,9 @@ CREATE TABLE Students(
     deleted BIT NOT NULL DEFAULT 0
 );
 GO
+
+INSERT INTO Students(name, email, fk_class, password)
+VALUES ('Student', 'student@example.com', 1, '$2a$11$TwxkzN1iqAnRMQ4IRjTbWO.DhhZPdA64EYBwa3VZOMQasmw44MdYW')
 
 
 DROP TABLE IF EXISTS StudentsPendingChanges;
@@ -60,7 +66,7 @@ CREATE TABLE Teachers(
 GO
 
 INSERT INTO Teachers(name, email, admin, password)
-VALUES ('Administrator', 'admin@example.com', 1, '$2a$11$TwxkzN1iqAnRMQ4IRjTbWO.DhhZPdA64EYBwa3VZOMQasmw44MdYW')
+VALUES ('Teacher', 'teacher@example.com', 1, '$2a$11$TwxkzN1iqAnRMQ4IRjTbWO.DhhZPdA64EYBwa3VZOMQasmw44MdYW')
 GO
 
 
@@ -85,6 +91,18 @@ CREATE TABLE Reports(
 	fk_comment INT NOT NULL FOREIGN KEY REFERENCES Comments(id),
 	reason NVARCHAR(250) NOT NULL,
 	created_at DATETIME NOT NULL DEFAULT GETUTCDATE(),
-	deleted BIT NOT NULL
+	deleted BIT NOT NULL DEFAULT 0
 );
 GO
+
+
+DROP TABLE IF EXISTS TeacherTokens;
+CREATE TABLE TeacherTokens(
+	id INT PRIMARY KEY IDENTITY(1, 1) NOT NULL,
+	token CHAR(6) NOT NULL,
+	fk_teacher INT FOREIGN KEY REFERENCES Teachers(id) DEFAULT NULL,
+	created_at DATETIME NOT NULL DEFAULT GETUTCDATE(),
+	deleted BIT NOT NULL DEFAULT 0
+);
+
+INSERT INTO TeacherTokens(token) VALUES ('123456');

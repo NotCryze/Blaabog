@@ -5,6 +5,7 @@ using Microsoft.Extensions.Caching.Memory;
 using SBO.BlaaBog.Domain.Entities;
 using SBO.BlaaBog.Services.Services;
 using SBO.BlaaBog.Web.DTO;
+using System.Data.SqlClient;
 using System.Runtime.CompilerServices;
 using BC = BCrypt.Net.BCrypt;
 
@@ -30,36 +31,43 @@ namespace SBO.BlaaBog.Web.Pages.Teachers
 
         public async Task<IActionResult> OnPostAsync()
         {
-            if (!ModelState.IsValid)
+            try
             {
-                return Page();
-            }
-
-            Teacher? teacher = await _teacherService.GetTeacherByEmailAsync(Login.Email);
-
-            if (teacher != null)
-            {
-                bool validatePassword = BC.EnhancedVerify(Login.Password, teacher.Password);
-                if (validatePassword)
+                if (!ModelState.IsValid)
                 {
+                    return Page();
+                }
 
-                    HttpContext.Session.SetInt32("Id", Convert.ToInt32(teacher.Id));
-                    HttpContext.Session.SetString("Name", teacher.Name);
-                    _cache.Set(HttpContext.Session.Id, teacher);
-                    return Redirect("/Teachers/Index");
+                Teacher? teacher = await _teacherService.GetTeacherByEmailAsync(Login.Email);
+
+                if (teacher != null)
+                {
+                    bool validatePassword = BC.EnhancedVerify(Login.Password, teacher.Password);
+                    if (validatePassword)
+                    {
+
+                        HttpContext.Session.SetInt32("Id", Convert.ToInt32(teacher.Id));
+                        HttpContext.Session.SetString("Name", teacher.Name);
+                        _cache.Set(HttpContext.Session.Id, teacher);
+                        return RedirectToPage("/Teachers/Index");
+                    }
+                    else
+                    {
+                        await Console.Out.WriteLineAsync("Wrong Password");
+                        ModelState.AddModelError("Login", "Wrong email or password");
+                    }
                 }
                 else
                 {
-                    await Console.Out.WriteLineAsync("Wrong Password");
+                    await Console.Out.WriteLineAsync("Teacher is null");
+                    ModelState.AddModelError("Login", "Wrong email or password");
                 }
             }
-            else
-        {
-                await Console.Out.WriteLineAsync("Student is null");
+            catch (Exception exception)
+            {
+                await Console.Out.WriteLineAsync(exception.Message);
+                ModelState.AddModelError("Login", "Something went wrong");
             }
-
-
-
 
             return Page();
         }

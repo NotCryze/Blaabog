@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Caching.Memory;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
 using SBO.BlaaBog.Domain.Entities;
 using SBO.BlaaBog.Services.Services;
 using SBO.BlaaBog.Web.DTO;
@@ -27,8 +28,6 @@ namespace SBO.BlaaBog.Web.Pages
 
         public async Task<IActionResult> OnGetAsync()
         {
-            await Console.Out.WriteLineAsync("Hello");
-
             return Page();
         }
 
@@ -40,50 +39,53 @@ namespace SBO.BlaaBog.Web.Pages
         {
             try
             {
+                Class? classFound = await _classService.GetClassByTokenAsync(Register.Token);
+                Student? studentFound = await _studentService.GetStudentByEmailAsync(Register.Email);
+
+                if (classFound == null)
+                {
+                    ModelState.AddModelError("Register.Token", "Token does not exist");
+                }
+
+                if (studentFound != null)
+                {
+                    ModelState.AddModelError("Register.Email", "Email already in use");
+                }
+
                 if (!ModelState.IsValid)
                 {
                     return Page();
                 }
 
-                Student? studentFound = await _studentService.GetStudentByEmailAsync(Register.Email);
 
-                if (studentFound == null)
+                if (studentFound == null && classFound != null && classFound.Token == Register.Token)
                 {
-                    Class? classFound = await _classService.GetClassByTokenAsync(Register.Token);
+                    string passwordHash = BC.EnhancedHashPassword(Register.Password);
+                    Student student = new Student(0, Register.Name, null, null, Register.Email, null, 0, null, passwordHash);
+                    bool success = await _studentService.CreateStudentAsync(student, Convert.ToInt32(classFound.Id));
 
-                    if (classFound != null && classFound.Token == Register.Token)
+                    if (success)
                     {
-                        string passwordHash = BC.EnhancedHashPassword(Register.Password);
+                        Student createdStudent = await _studentService.GetStudentByEmailAsync(Register.Email);
 
-                        Student student = new Student(0, Register.Name, null, null, Register.Email, null, 0, null, passwordHash);
+                        HttpContext.Session.Clear();
 
-                        bool success = await _studentService.CreateStudentAsync(student, Convert.ToInt32(classFound.Id));
+                        HttpContext.Session.SetInt32("Id", Convert.ToInt32(createdStudent.Id));
+                        HttpContext.Session.SetString("Name", createdStudent.Name);
+                        _cache.Set(HttpContext.Session.Id, createdStudent);
 
-                        if (success)
-                        {
-                            Student createdStudent = await _studentService.GetStudentByEmailAsync(Register.Email);
-
-                            HttpContext.Session.Clear();
-
-                            HttpContext.Session.SetInt32("Id", Convert.ToInt32(createdStudent.Id));
-                            HttpContext.Session.SetString("Name", createdStudent.Name);
-                            _cache.Set(HttpContext.Session.Id, createdStudent);
-                        }
+                        return RedirectToPage("/Index");
                     }
                     else
                     {
-                        ModelState.AddModelError("Register.Token", "Token does not exist");
-                        return Page();
+                        ModelState.AddModelError("Register", "Something went wrong");
                     }
-                }
-                else
-                {
-                    ModelState.AddModelError("Register.Email", "Email already exists");
                 }
             }
             catch (Exception exception)
             {
                 await Console.Out.WriteLineAsync(exception.Message);
+                ModelState.AddModelError("Register", "Something went wrong");
             }
 
             return Page();

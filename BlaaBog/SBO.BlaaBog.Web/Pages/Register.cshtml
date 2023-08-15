@@ -1,5 +1,7 @@
 ﻿@page
 @model SBO.BlaaBog.Web.Pages.RegisterModel
+@using Microsoft.AspNetCore.Mvc.ModelBinding
+@using Microsoft.AspNetCore.Mvc
 @{
     ViewData["Title"] = "Student Register";
 }
@@ -27,54 +29,31 @@
 
             <form method="post">
                 <div class="mb-3">
-                    <div class="row">
-                        <div class="col">
-                            <label for="token" class="form-label col">Token</label>
-                        </div>
-                        <div class="col-auto me-auto">
-                            <span asp-validation-for="Register.Token" class="text-danger col-auto me-auto"></span>
-                        </div>
-                    </div>
-                    <input type="text" asp-for="Register.Token" class="form-control" id="token" placeholder="Token" required>
+                    <label for="token" class="form-label col">Token</label>
+                    <input type="text" asp-for="Register.Token" value="@Model.Register.Token" class="form-control @(ModelState.GetFieldValidationState("Register.Token") == ModelValidationState.Invalid ? "is-invalid" : ModelState.GetValidationState("Register.Token") == ModelValidationState.Valid ? "is-valid" : "")" id="token" placeholder="Token" required>
+                    <span asp-validation-for="Register.Token" class="invalid-feedback"></span>
+
                 </div>
                 <div class="mb-3">
-                    <div class="row">
-                        <div class="col">
-                            <label for="name" class="form-label">Name</label>
-                        </div>
-
-                        <div class="col-auto me-auto">
-                            <span asp-validation-for="Register.Name" class="text-danger"></span>
-                        </div>
-                    </div>
-                    <input type="text" asp-for="Register.Name" class="form-control" id="name" placeholder="Name" required>
+                    <label for="name" class="form-label">Name</label>
+                    <input type="text" asp-for="Register.Name" value="@Model.Register.Name" class="form-control @(ModelState.GetFieldValidationState("Register.Name") == ModelValidationState.Invalid ? "is-invalid" : ModelState.GetValidationState("Register.Name") == ModelValidationState.Valid ? "is-valid" : "")" id="name" placeholder="Name" required>
+                    <span asp-validation-for="Register.Name" class="invalid-feedback"></span>
                 </div>
                 <div class="mb-3">
-                    <div class="row">
-                        <div class="col">
-                            <label for="email" class="form-label">Email</label>
-                        </div>
-
-                        <div class="col-auto me-auto">
-                            <span asp-validation-for="Register.Email" class="text-danger"></span>
-                        </div>
-                    </div>
-                    <input type="email" asp-for="Register.Email" class="form-control" id="email" placeholder="Email" required>
+                    <label for="email" class="form-label">Email</label>
+                    <input type="email" asp-for="Register.Email" value="@Model.Register.Email" class="form-control @(ModelState.GetFieldValidationState("Register.Email") == ModelValidationState.Invalid ? "is-invalid" : ModelState.GetValidationState("Register.Email") == ModelValidationState.Valid ? "is-valid" : "")" id="email" placeholder="Email" required>
+                    <span asp-validation-for="Register.Email" class="invalid-feedback"></span>
                 </div>
                 <div class="mb-3">
-                    <div class="row">
-                        <div class="col">
-                            <label for="password" class="form-label">Password</label>
-                        </div>
-
-                        <div class="col-auto me-auto">
-                            <span asp-validation-for="Register.Password" class="text-danger"></span>
-                        </div>
-                    </div>
-                    <input type="password" asp-for="Register.Password" class="form-control" id="password" placeholder="Password" required>
+                    <label for="password" class="form-label">Password</label>
+                    <input type="password" asp-for="Register.Password" class="form-control @(ModelState.GetFieldValidationState("Register.Password") == ModelValidationState.Invalid ? "is-invalid" : ModelState.GetValidationState("Register.Password") == ModelValidationState.Valid ? "is-valid" : "")" id="password" placeholder="Password" required>
+                    <span asp-validation-for="Register.Password" class="invalid-feedback"></span>
                 </div>
 
-                <button type="submit" class="btn btn-primary w-100">Register</button>
+                <div class="mb-3">
+                    <button type="submit" class="btn btn-primary w-100 @(ModelState.GetFieldValidationState("Register") == ModelValidationState.Invalid ? "is-invalid" : ModelState.GetValidationState("Register") == ModelValidationState.Valid ? "is-valid" : "")">Register</button>
+                    <span asp-validation-for="Register" class="invalid-feedback w-100 text-center"></span>
+                </div>
             </form>
 
             <p class="mt-3 text-center">Already have an account? <a asp-page="/Login">Login</a></p>
