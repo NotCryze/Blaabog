@@ -30,18 +30,18 @@
             <form method="post">
                 <div class="mb-3">
                     <label for="token" class="form-label col">Token</label>
-                    <input type="text" asp-for="Register.Token" value="@Model.Register.Token" class="form-control @(ModelState.GetFieldValidationState("Register.Token") == ModelValidationState.Invalid ? "is-invalid" : ModelState.GetValidationState("Register.Token") == ModelValidationState.Valid ? "is-valid" : "")" id="token" placeholder="Token" required>
+                    <input type="text" asp-for="Register.Token" class="form-control @(ModelState.GetFieldValidationState("Register.Token") == ModelValidationState.Invalid ? "is-invalid" : ModelState.GetValidationState("Register.Token") == ModelValidationState.Valid ? "is-valid" : "")" id="token" placeholder="Token" required>
                     <span asp-validation-for="Register.Token" class="invalid-feedback"></span>
 
                 </div>
                 <div class="mb-3">
                     <label for="name" class="form-label">Name</label>
-                    <input type="text" asp-for="Register.Name" value="@Model.Register.Name" class="form-control @(ModelState.GetFieldValidationState("Register.Name") == ModelValidationState.Invalid ? "is-invalid" : ModelState.GetValidationState("Register.Name") == ModelValidationState.Valid ? "is-valid" : "")" id="name" placeholder="Name" required>
+                    <input type="text" asp-for="Register.Name" class="form-control @(ModelState.GetFieldValidationState("Register.Name") == ModelValidationState.Invalid ? "is-invalid" : ModelState.GetValidationState("Register.Name") == ModelValidationState.Valid ? "is-valid" : "")" id="name" placeholder="Name" required>
                     <span asp-validation-for="Register.Name" class="invalid-feedback"></span>
                 </div>
                 <div class="mb-3">
                     <label for="email" class="form-label">Email</label>
-                    <input type="email" asp-for="Register.Email" value="@Model.Register.Email" class="form-control @(ModelState.GetFieldValidationState("Register.Email") == ModelValidationState.Invalid ? "is-invalid" : ModelState.GetValidationState("Register.Email") == ModelValidationState.Valid ? "is-valid" : "")" id="email" placeholder="Email" required>
+                    <input type="email" asp-for="Register.Email" class="form-control @(ModelState.GetFieldValidationState("Register.Email") == ModelValidationState.Invalid ? "is-invalid" : ModelState.GetValidationState("Register.Email") == ModelValidationState.Valid ? "is-valid" : "")" id="email" placeholder="Email" required>
                     <span asp-validation-for="Register.Email" class="invalid-feedback"></span>
                 </div>
                 <div class="mb-3">
