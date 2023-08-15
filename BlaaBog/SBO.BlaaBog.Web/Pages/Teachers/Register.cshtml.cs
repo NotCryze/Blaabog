@@ -31,57 +31,60 @@ namespace SBO.BlaaBog.Web.Pages.Teachers
 
         public async Task<IActionResult> OnPostAsync()
         {
+            await Console.Out.WriteLineAsync(Register.Token);
+
             try
             {
+                TeacherToken? tokenFound = await _teacherTokenService.GetTeacherTokenByTokenAsync(Register.Token);
+                Teacher? teacherFound = await _teacherService.GetTeacherByEmailAsync(Register.Email);
+
+                if (tokenFound == null)
+                {
+                    ModelState.AddModelError("Register.Token", "Token does not exist");
+                }
+
+                if (teacherFound != null)
+                {
+                    ModelState.AddModelError("Register.Email", "Email already in use");
+                }
+
                 if (!ModelState.IsValid)
                 {
                     return Page();
                 }
 
-                Teacher? teacherFound = await _teacherService.GetTeacherByEmailAsync(Register.Email);
-
-                if (teacherFound == null)
+                if (teacherFound == null && tokenFound != null && tokenFound.Token == Register.Token)
                 {
-                    TeacherToken? tokenFound = await _teacherTokenService.GetTeacherTokenByTokenAsync(Register.Token);
+                    string passwordHash = BC.EnhancedHashPassword(Register.Password);
 
-                    if (tokenFound != null && tokenFound.Token == Register.Token)
+                    Teacher teacher = new Teacher(0, Register.Name, Register.Email, passwordHash, false);
+
+                    bool success = await _teacherService.CreateTeacherAsync(teacher);
+
+                    if (success)
                     {
-                        string passwordHash = BC.EnhancedHashPassword(Register.Password);
+                        Teacher createdTeacher = await _teacherService.GetTeacherByEmailAsync(teacher.Email);
 
-                        Teacher teacher = new Teacher(0, Register.Name, Register.Email, passwordHash, false);
+                        bool tokenUpdated = await _teacherTokenService.UseTeacherTokenAsync(Convert.ToInt32(tokenFound.Id), Convert.ToInt32(createdTeacher.Id));
 
-                        bool success = await _teacherService.CreateTeacherAsync(teacher);
+                        HttpContext.Session.Clear();
 
-                        if (success)
-                        {
-                            Teacher createdTeacher = await _teacherService.GetTeacherByEmailAsync(teacher.Email);
+                        HttpContext.Session.SetInt32("Id", Convert.ToInt32(createdTeacher.Id));
+                        HttpContext.Session.SetString("Name", createdTeacher.Name);
+                        _cache.Set(HttpContext.Session.Id, createdTeacher);
 
-                            HttpContext.Session.Clear();
-
-                            HttpContext.Session.SetInt32("Id", Convert.ToInt32(createdTeacher.Id));
-                            HttpContext.Session.SetString("Name", createdTeacher.Name);
-                            _cache.Set(HttpContext.Session.Id, createdTeacher);
-
-                            return RedirectToPage("/Teachers/Index");
-                        }
-                        else
-                        {
-                            ModelState.AddModelError("Register", "Something went wrong");
-                        }
+                        return RedirectToPage("/Teachers/Index");
                     }
                     else
                     {
-                        ModelState.AddModelError("Register.Token", "Token not found");
+                        ModelState.AddModelError("Register", "Something went wrong");
                     }
-                }
-                else
-                {
-                    ModelState.AddModelError("Register.Email", "Email already in use");
                 }
             }
             catch (Exception exception)
             {
                 await Console.Out.WriteLineAsync(exception.Message);
+                ModelState.AddModelError("Register", "Something went wrong");
             }
 
             return Page();

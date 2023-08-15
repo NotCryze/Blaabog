@@ -46,11 +46,14 @@
                 </div>
                 <div class="mb-3">
                     <label for="password" class="form-label">Password</label>
-                    <input type="password" asp-for="Register.Password" value="@Model.Register.Password" class="form-control @(ModelState.GetFieldValidationState("Register.Password") == ModelValidationState.Invalid ? "is-invalid" : ModelState.GetValidationState("Register.Password") == ModelValidationState.Valid ? "is-valid" : "")" id="password" placeholder="Password" required>
+                    <input type="password" asp-for="Register.Password" class="form-control @(ModelState.GetFieldValidationState("Register.Password") == ModelValidationState.Invalid ? "is-invalid" : ModelState.GetValidationState("Register.Password") == ModelValidationState.Valid ? "is-valid" : "")" id="password" placeholder="Password" required>
                     <span asp-validation-for="Register.Password" class="invalid-feedback"></span>
                 </div>
 
-                <button type="submit" class="btn btn-primary w-100">Register</button>
+                <div class="mb-3">
+                    <button type="submit" class="btn btn-primary w-100 @(ModelState.GetFieldValidationState("Register") == ModelValidationState.Invalid ? "is-invalid" : ModelState.GetValidationState("Register") == ModelValidationState.Valid ? "is-valid" : "")">Register</button>
+                    <span asp-validation-for="Register" class="invalid-feedback w-100 text-center"></span>
+                </div>
             </form>
 
             <p class="mt-3 text-center">Already have an account? <a asp-page="/Login">Login</a></p>

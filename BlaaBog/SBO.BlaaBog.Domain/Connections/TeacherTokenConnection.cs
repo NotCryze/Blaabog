@@ -133,7 +133,7 @@ namespace SBO.BlaaBog.Domain.Connections
 
         public async Task<TeacherToken?> GetTeacherTokenByTokenAsync(string token)
         {
-            SqlCommand sqlCommand = _sql.Execute("spTeacherTokenByToken");
+            SqlCommand sqlCommand = _sql.Execute("spGetTeacherTokenByToken");
             sqlCommand.Parameters.AddWithValue("@token", token);
             try
             {

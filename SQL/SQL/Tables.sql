@@ -21,7 +21,7 @@ CREATE TABLE Classes(
 GO
 
 INSERT INTO Classes(start_date, token)
-VALUES ('14-01-2023', '123456')
+VALUES (GETDATE(), '123456')
 
 
 DROP TABLE IF EXISTS Students;
@@ -66,7 +66,7 @@ CREATE TABLE Teachers(
 GO
 
 INSERT INTO Teachers(name, email, admin, password)
-VALUES ('Administrator', 'admin@example.com', 1, '$2a$11$TwxkzN1iqAnRMQ4IRjTbWO.DhhZPdA64EYBwa3VZOMQasmw44MdYW')
+VALUES ('Teacher', 'teacher@example.com', 1, '$2a$11$TwxkzN1iqAnRMQ4IRjTbWO.DhhZPdA64EYBwa3VZOMQasmw44MdYW')
 GO
 
 
@@ -99,8 +99,10 @@ GO
 DROP TABLE IF EXISTS TeacherTokens;
 CREATE TABLE TeacherTokens(
 	id INT PRIMARY KEY IDENTITY(1, 1) NOT NULL,
-	token CHAR(8) NOT NULL,
+	token CHAR(6) NOT NULL,
 	fk_teacher INT FOREIGN KEY REFERENCES Teachers(id) DEFAULT NULL,
 	created_at DATETIME NOT NULL DEFAULT GETUTCDATE(),
 	deleted BIT NOT NULL DEFAULT 0
 );
+
+INSERT INTO TeacherTokens(token) VALUES ('123456');

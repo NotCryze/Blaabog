@@ -58,46 +58,34 @@ namespace SBO.BlaaBog.Web.Pages
                 }
 
 
-                if (studentFound == null)
+                if (studentFound == null && classFound != null && classFound.Token == Register.Token)
                 {
-                    if (classFound != null && classFound.Token == Register.Token)
+                    string passwordHash = BC.EnhancedHashPassword(Register.Password);
+                    Student student = new Student(0, Register.Name, null, null, Register.Email, null, 0, null, passwordHash);
+                    bool success = await _studentService.CreateStudentAsync(student, Convert.ToInt32(classFound.Id));
+
+                    if (success)
                     {
-                        string passwordHash = BC.EnhancedHashPassword(Register.Password);
+                        Student createdStudent = await _studentService.GetStudentByEmailAsync(Register.Email);
 
-                        Student student = new Student(0, Register.Name, null, null, Register.Email, null, 0, null, passwordHash);
+                        HttpContext.Session.Clear();
 
-                        bool success = await _studentService.CreateStudentAsync(student, Convert.ToInt32(classFound.Id));
+                        HttpContext.Session.SetInt32("Id", Convert.ToInt32(createdStudent.Id));
+                        HttpContext.Session.SetString("Name", createdStudent.Name);
+                        _cache.Set(HttpContext.Session.Id, createdStudent);
 
-                        if (success)
-                        {
-                            Student createdStudent = await _studentService.GetStudentByEmailAsync(Register.Email);
-
-                            HttpContext.Session.Clear();
-
-                            HttpContext.Session.SetInt32("Id", Convert.ToInt32(createdStudent.Id));
-                            HttpContext.Session.SetString("Name", createdStudent.Name);
-                            _cache.Set(HttpContext.Session.Id, createdStudent);
-
-                            return RedirectToPage("/Index");
-                        }
-                        else
-                        {
-                            ModelState.AddModelError("Register", "Something went wrong");
-                        }
+                        return RedirectToPage("/Index");
                     }
                     else
                     {
-                        ModelState.AddModelError("Register.Token", "Token does not exist");
+                        ModelState.AddModelError("Register", "Something went wrong");
                     }
-                }
-                else
-                {
-                    ModelState.AddModelError("Register.Email", "Email already in use");
                 }
             }
             catch (Exception exception)
             {
                 await Console.Out.WriteLineAsync(exception.Message);
+                ModelState.AddModelError("Register", "Something went wrong");
             }
 
             return Page();
