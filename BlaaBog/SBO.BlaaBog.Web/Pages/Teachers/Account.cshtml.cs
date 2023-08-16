@@ -18,18 +18,32 @@ namespace SBO.BlaaBog.Web.Pages.Teachers
         [BindProperty]
         public TeacherAccountDTO Account { get; set; }
 
-        public async Task<IActionResult> OnGet()
-        {
-            if (HttpContext.Items["User"] is Student)
-            {
-                return RedirectToPage("/Account");
-            }
+        [BindProperty]
+        public ChangePasswordDTO ChangePassword { get; set; }
 
+        public async Task<IActionResult> OnGetAsync()
+        {
             Teacher teacher = await _teacherService.GetTeacherAsync(Convert.ToInt32(HttpContext.Session.GetInt32("Id")));
 
             Account = new TeacherAccountDTO { Name = teacher.Name, Email = teacher.Email };
 
             return Page();
+        }
+
+        public async Task<IActionResult> OnPostAsync()
+        {
+            if (!ModelState.IsValid)
+            {
+                return Page();
+            }
+
+            Teacher teacher = await _teacherService.GetTeacherAsync(Convert.ToInt32(HttpContext.Session.GetInt32("Id")));
+
+            Teacher newTeacher = new Teacher(teacher.Id, Account.Name, Account.Email, teacher.Password, teacher.Admin);
+
+            await _teacherService.UpdateTeacherAsync(newTeacher);
+
+            return RedirectToPage("/Teachers/Index");
         }
     }
 }

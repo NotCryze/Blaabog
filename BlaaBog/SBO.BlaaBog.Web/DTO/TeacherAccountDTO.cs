@@ -16,5 +16,9 @@ namespace SBO.BlaaBog.Web.DTO
         [StringLength(512, MinimumLength = 4)]
         [DataType(DataType.Password)]
         public string Password { get; set; }
+
+        [Required]
+        [DataType(DataType.Upload)]
+        public IFormFile Image { get; set; }
     }
 }
