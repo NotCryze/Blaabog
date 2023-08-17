@@ -18,4 +18,8 @@
     <ProjectReference Include="..\SBO.BlaaBog.Services\SBO.BlaaBog.Services.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="wwwroot\img\" />
+  </ItemGroup>
+
 </Project>

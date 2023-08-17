@@ -39,8 +39,8 @@ CREATE TABLE Students(
 );
 GO
 
-INSERT INTO Students(name, email, fk_class, password)
-VALUES ('Student', 'student@example.com', 1, '$2a$11$TwxkzN1iqAnRMQ4IRjTbWO.DhhZPdA64EYBwa3VZOMQasmw44MdYW')
+INSERT INTO Students(name, email, fk_class, password, end_date)
+VALUES ('Student', 'student@example.com', 1, '$2a$11$TwxkzN1iqAnRMQ4IRjTbWO.DhhZPdA64EYBwa3VZOMQasmw44MdYW', GETDATE())
 
 
 DROP TABLE IF EXISTS StudentsPendingChanges;
