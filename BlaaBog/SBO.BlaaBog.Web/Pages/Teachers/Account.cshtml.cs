@@ -1,9 +1,12 @@
+using BCrypt.Net;
 using Microsoft.AspNetCore.CookiePolicy;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using SBO.BlaaBog.Domain.Entities;
 using SBO.BlaaBog.Services.Services;
 using SBO.BlaaBog.Web.DTO;
+using System.ComponentModel.DataAnnotations;
 
 namespace SBO.BlaaBog.Web.Pages.Teachers
 {
@@ -23,27 +26,84 @@ namespace SBO.BlaaBog.Web.Pages.Teachers
 
         public async Task<IActionResult> OnGetAsync()
         {
-            Teacher teacher = await _teacherService.GetTeacherAsync(Convert.ToInt32(HttpContext.Session.GetInt32("Id")));
+            try
+            {
+                Teacher teacher = await _teacherService.GetTeacherAsync(Convert.ToInt32(HttpContext.Session.GetInt32("Id")));
 
-            Account = new TeacherAccountDTO { Name = teacher.Name, Email = teacher.Email };
+                Account = new TeacherAccountDTO { Name = teacher.Name, Email = teacher.Email };
+            }
+            catch (Exception exception)
+            {
+                await Console.Out.WriteLineAsync(exception.Message);
+            }
 
             return Page();
         }
 
         public async Task<IActionResult> OnPostAsync()
         {
-            if (!ModelState.IsValid)
+            try
             {
-                return Page();
+                if (ModelState.GetFieldValidationState("Account.Name") == ModelValidationState.Invalid
+                || ModelState.GetFieldValidationState("Account.Email") == ModelValidationState.Invalid)
+                {
+                    return await OnGetAsync();
+                }
+
+                Teacher teacher = await _teacherService.GetTeacherAsync(Convert.ToInt32(HttpContext.Session.GetInt32("Id")));
+
+                Teacher newTeacher = new Teacher(teacher.Id, Account.Name, Account.Email, teacher.Password, teacher.Admin);
+
+                await _teacherService.UpdateTeacherAsync(newTeacher);
+            }
+            catch (Exception exception)
+            {
+                await Console.Out.WriteLineAsync(exception.Message);
             }
 
-            Teacher teacher = await _teacherService.GetTeacherAsync(Convert.ToInt32(HttpContext.Session.GetInt32("Id")));
+            return await OnGetAsync();
+        }
 
-            Teacher newTeacher = new Teacher(teacher.Id, Account.Name, Account.Email, teacher.Password, teacher.Admin);
+        public async Task<IActionResult> OnPostChangePasswordAsync()
+        {
+            try
+            {
+                Teacher teacher = await _teacherService.GetTeacherAsync(Convert.ToInt32(HttpContext.Session.GetInt32("Id")));
 
-            await _teacherService.UpdateTeacherAsync(newTeacher);
+                if (!BCrypt.Net.BCrypt.EnhancedVerify(ChangePassword.Old, teacher.Password))
+                {
+                    ModelState.AddModelError("ChangePassword.Old", "Incorrect Password");
+                }
 
-            return RedirectToPage("/Teachers/Index");
+                if (ModelState.GetFieldValidationState("ChangePassword.Old") == ModelValidationState.Invalid
+                    || ModelState.GetFieldValidationState("ChangePassword.New") == ModelValidationState.Invalid
+                    || ModelState.GetFieldValidationState("ChangePassword.Confirm") == ModelValidationState.Invalid
+                    )
+                {
+                    return await OnGetAsync();
+                }
+
+                string passwordHash = BCrypt.Net.BCrypt.EnhancedHashPassword(ChangePassword.New);
+
+                Teacher newTeacher = new Teacher(teacher.Id, teacher.Name, teacher.Email, passwordHash, teacher.Admin);
+
+                bool success = await _teacherService.UpdateTeacherAsync(newTeacher);
+
+                if (success)
+                {
+                    return RedirectToPage("/Teachers/Account");
+                }
+                else
+                {
+                    ModelState.AddModelError("ChangePassword", "Something went wrong");
+                }
+            }
+            catch (Exception exception)
+            {
+                await Console.Out.WriteLineAsync(exception.Message);
+            }
+
+            return await OnGetAsync();
         }
     }
 }

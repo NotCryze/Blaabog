@@ -8,7 +8,7 @@
 <div class="row">
     <div class="col-4">
         <div class="card">
-            <form class="mb-3" method="post">
+            <form class="mb-3" method="post" enctype="multipart/form-data">
                 <div class="card-header">
                     <div class="row">
                         <div class="col">
@@ -33,6 +33,9 @@
                         <input asp-for="Account.Email" class="form-control @(ModelState.GetFieldValidationState("Account.Email") == ModelValidationState.Invalid ? "is-invalid" : ModelState.GetValidationState("Account.Email") == ModelValidationState.Valid ? "is-valid" : "")" />
                         <span asp-validation-for="Account.Email" class="invalid-feedback"></span>
                     </div>
+
+                    <span class="is-invalid"></span>
+                    <span asp-validation-for="Account" class="invalid-feedback"></span>
                 </div>
             </form>
         </div>
@@ -40,7 +43,7 @@
 
     <div class="col-4">
         <div class="card">
-            <form>
+            <form method="post" asp-page-handler="ChangePassword">
                 <div class="card-header">
                     <div class="row">
                         <div class="col">
@@ -56,21 +59,21 @@
 
                 <div class="card-body">
                     <div class="mb-3">
-                        <label asp-for="ChangePassword.OldPassword" class="form-label">Old Password</label>
-                        <input asp-for="ChangePassword.OldPassword" class="form-control @(ModelState.GetFieldValidationState("ChangePassword.OldPassword") == ModelValidationState.Invalid ? "is-invalid" : ModelState.GetValidationState("ChangePassword.OldPassword") == ModelValidationState.Valid ? "is-valid" : "")" />
-                        <span asp-validation-for="ChangePassword.OldPassword" class="invalid-feedback"></span>
+                        <label asp-for="ChangePassword.Old" class="form-label">Old Password</label>
+                        <input asp-for="ChangePassword.Old" class="form-control @(ModelState.GetFieldValidationState("ChangePassword.Old") == ModelValidationState.Invalid ? "is-invalid" : ModelState.GetValidationState("ChangePassword.Old") == ModelValidationState.Valid ? "is-valid" : "")" />
+                        <span asp-validation-for="ChangePassword.Old" class="invalid-feedback"></span>
                     </div>
 
                     <div class="mb-3">
-                        <label asp-for="ChangePassword.NewPassword" class="form-label">New Password</label>
-                        <input asp-for="ChangePassword.NewPassword" class="form-control @(ModelState.GetFieldValidationState("ChangePassword.NewPassword") == ModelValidationState.Invalid ? "is-invalid" : ModelState.GetValidationState("ChangePassword.NewPassword") == ModelValidationState.Valid ? "is-valid" : "")" />
-                        <span asp-validation-for="ChangePassword.NewPassword" class="invalid-feedback"></span>
+                        <label asp-for="ChangePassword.New" class="form-label">New Password</label>
+                        <input asp-for="ChangePassword.New" class="form-control @(ModelState.GetFieldValidationState("ChangePassword.New") == ModelValidationState.Invalid ? "is-invalid" : ModelState.GetValidationState("ChangePassword.New") == ModelValidationState.Valid ? "is-valid" : "")" />
+                        <span asp-validation-for="ChangePassword.New" class="invalid-feedback"></span>
                     </div>
 
                     <div class="mb-3">
-                        <label asp-for="ChangePassword.ConfirmPassword" class="form-label">Confirm Password</label>
-                        <input asp-for="ChangePassword.ConfirmPassword" class="form-control @(ModelState.GetFieldValidationState("ChangePassword.ConfirmPassword") == ModelValidationState.Invalid ? "is-invalid" : ModelState.GetValidationState("ChangePassword.ConfirmPassword") == ModelValidationState.Valid ? "is-valid" : "")" />
-                        <span asp-validation-for="ChangePassword.ConfirmPassword" class="invalid-feedback"></span>
+                        <label asp-for="ChangePassword.Confirm" class="form-label">Confirm Password</label>
+                        <input asp-for="ChangePassword.Confirm" class="form-control @(ModelState.GetFieldValidationState("ChangePassword.Confirm") == ModelValidationState.Invalid ? "is-invalid" : ModelState.GetValidationState("ChangePassword.Confirm") == ModelValidationState.Valid ? "is-valid" : "")" />
+                        <span asp-validation-for="ChangePassword.Confirm" class="invalid-feedback"></span>
                     </div>
                 </div>
             </form>

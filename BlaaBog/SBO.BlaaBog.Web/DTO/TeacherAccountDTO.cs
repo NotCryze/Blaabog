@@ -11,14 +11,5 @@ namespace SBO.BlaaBog.Web.DTO
         [Required]
         [EmailAddress]
         public string Email { get; set; }
-
-        [Required]
-        [StringLength(512, MinimumLength = 4)]
-        [DataType(DataType.Password)]
-        public string Password { get; set; }
-
-        [Required]
-        [DataType(DataType.Upload)]
-        public IFormFile Image { get; set; }
     }
 }

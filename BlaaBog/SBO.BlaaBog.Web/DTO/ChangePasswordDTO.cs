@@ -7,17 +7,17 @@ namespace SBO.BlaaBog.Web.DTO
         [Required]
         [StringLength(512, MinimumLength = 4)]
         [DataType(DataType.Password)]
-        public string OldPassword { get; set; }
+        public string Old{ get; set; }
 
         [Required]
         [StringLength(512, MinimumLength = 4)]
         [DataType(DataType.Password)]
-        public string NewPassword { get; set; }
+        public string New{ get; set; }
 
         [Required]
         [StringLength(512, MinimumLength = 4)]
         [DataType(DataType.Password)]
-        [Compare("NewPassword")]
-        public string ConfirmPassword { get; set; }
+        [Compare("New", ErrorMessage = "Passwords do not match.")]
+        public string Confirm { get; set; }
     }
 }
