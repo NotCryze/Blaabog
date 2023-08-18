@@ -7,12 +7,12 @@ namespace SBO.BlaaBog.Web.DTO
         [Required]
         [StringLength(512, MinimumLength = 4)]
         [DataType(DataType.Password)]
-        public string Old{ get; set; }
+        public string Old { get; set; }
 
         [Required]
         [StringLength(512, MinimumLength = 4)]
         [DataType(DataType.Password)]
-        public string New{ get; set; }
+        public string New { get; set; }
 
         [Required]
         [StringLength(512, MinimumLength = 4)]

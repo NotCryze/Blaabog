@@ -380,8 +380,8 @@ namespace SBO.BlaaBog.Domain.Connections
             cmd.Parameters.AddWithValue("@description", student.Description);
             cmd.Parameters.AddWithValue("@email", student.Email);
             cmd.Parameters.AddWithValue("@speciality", student.Speciality);
-            cmd.Parameters.AddWithValue("@classId", student.ClassId);
-            cmd.Parameters.AddWithValue("@endDate", student.EndDate);
+            cmd.Parameters.AddWithValue("@fk_class", student.ClassId);
+            cmd.Parameters.AddWithValue("@end_date", student.EndDate.Value.ToDateTime(TimeOnly.MinValue));
             cmd.Parameters.AddWithValue("@password", student.Password);
 
             try
