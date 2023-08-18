@@ -10,9 +10,6 @@ namespace SBO.BlaaBog.Web.DTO
         [StringLength(100)]
         public string? Name { get; set; }
 
-        [DataType(DataType.Upload)]
-        public IFormFile? Image { get; set; }
-
         [StringLength(4000)]
         [DataType(DataType.MultilineText)]
         public string? Description { get; set; }

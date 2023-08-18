@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using SBO.BlaaBog.Domain.Entities;
@@ -54,19 +55,23 @@ namespace SBO.BlaaBog.Web.Pages
             return Page();
         }
 
-
-
+        #region Change Account Details
         public async Task<IActionResult> OnPostChangeAccountDetailsAsync()
         {
             try
             {
                 ModelState.Remove(nameof(Image));
+                ModelState.Remove(nameof(Password));
 
                 bool emailExists = await _service.GetStudentByEmailAsync(Student.Email) != null;
+                Student oldStudent = await _service.GetStudentAsync(Convert.ToInt32(HttpContext.Session.GetInt32("Id")));
 
                 if (emailExists)
                 {
-                    ModelState.AddModelError("Student.Email", "Email already exists.");
+                    if (!(oldStudent.Email == Student.Email))
+                    {
+                        ModelState.AddModelError("Student.Email", "Email already exists.");
+                    }
                 }
 
                 if (Student.EndDate < DateOnly.FromDateTime(DateTime.Now))
@@ -74,11 +79,14 @@ namespace SBO.BlaaBog.Web.Pages
                     ModelState.AddModelError("Student.EndDate", "End date can not be in the past.");
                 }
 
-                if (ModelState.IsValid)
+                if (ModelState.GetFieldValidationState("Student.Name") == ModelValidationState.Valid
+                    && ModelState.GetFieldValidationState("Student.Email") == ModelValidationState.Valid
+                    && ModelState.GetFieldValidationState("Student.Speciality") == ModelValidationState.Valid
+                    && ModelState.GetFieldValidationState("Student.EndDate") == ModelValidationState.Valid
+                    && ModelState.GetFieldValidationState("Student.Description") == ModelValidationState.Valid)
                 {
-                    Student oldStudent = await _service.GetStudentAsync(Convert.ToInt32(HttpContext.Session.GetInt32("Id")));
-                    Student updatedStudent = new Student(Convert.ToInt32(HttpContext.Session.GetInt32("id")), Student.Name, oldStudent.Image, Student.Description, Student.Email, Student.Speciality, oldStudent.ClassId, Student.EndDate, oldStudent.Password);
-                    await _service.UpdateStudentAsync(updatedStudent);
+                    Student updatedStudent = new Student(Convert.ToInt32(HttpContext.Session.GetInt32("Id")), Student.Name, oldStudent.Image, Student.Description, Student.Email, Student.Speciality, oldStudent.ClassId, Student.EndDate, oldStudent.Password);
+                    bool test = await _service.UpdateStudentAsync(updatedStudent);
                     return Redirect("/Account");
                 }
             }
@@ -91,6 +99,7 @@ namespace SBO.BlaaBog.Web.Pages
 
             return await OnGetAsync();
         }
+        #endregion
 
         #region Change Password
 
@@ -108,9 +117,14 @@ namespace SBO.BlaaBog.Web.Pages
 
                 if (validatePassword)
                 {
-                    Student updatedStudent = new Student(Convert.ToInt32(HttpContext.Session.GetInt32("Id")), student.Name, student.Image, student.Description, student.Email, student.Speciality, student.ClassId, student.EndDate, BC.EnhancedHashPassword(Password.New));
-                    await _service.UpdateStudentAsync(updatedStudent);
-                    //return Redirect
+                    if (ModelState.GetFieldValidationState("Password.Old") == ModelValidationState.Valid
+                    && ModelState.GetFieldValidationState("Password.New") == ModelValidationState.Valid
+                    && ModelState.GetFieldValidationState("Password.Confirm") == ModelValidationState.Valid)
+                    {
+                        Student updatedStudent = new Student(Convert.ToInt32(HttpContext.Session.GetInt32("Id")), student.Name, student.Image, student.Description, student.Email, student.Speciality, student.ClassId, student.EndDate, BC.EnhancedHashPassword(Password.New));
+                        await _service.UpdateStudentAsync(updatedStudent);
+                        return Redirect("/Account");
+                    }
                 }
                 else
                 {

@@ -8,6 +8,7 @@
 
 <div class="row">
     <div class="col-md-4">
+
         <div class="card mb-3">
             <form method="post" asp-page-handler="UpdateProfilePicture" enctype="multipart/form-data">
                 <div class="card-header">
@@ -29,44 +30,11 @@
                 </div>
             </form>
         </div>
+        
+    </div>
+    <div class="col-md-8">
 
         <div class="card mb-3">
-            <form method="post" asp-page-handler="ChangePassword">
-                <div class="card-header">
-                    <div class="row">
-                        <div class="col">
-                            <h4 class="mb-0">Change Password</h4>
-                        </div>
-                        <div class="col-auto me-auto">
-                            <button type="reset" class="btn btn-sm btn-outline-danger"><i class="fa-solid fa-xmark fa-fw"></i></button>
-                            <button type="submit" class="btn btn-outline-primary btn-sm"><i class="fa-solid fa-check fa-fw"></i></button>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="card-body">
-                    <div class="mb-3">
-                        <label asp-for="Password.Old" class="form-label">Old Password</label>
-                        <input asp-for="Password.Old" class="form-control @(ModelState.GetFieldValidationState("Password.Old") == ModelValidationState.Invalid ? "is-invalid" : "")" placeholder="Old Password" autocomplete="off" />
-                        <span asp-validation-for="Password.Old" class="invalid-feedback w-100 text-center"></span>
-                    </div>
-                    <div class="mb-3">
-                        <label asp-for="Password.New" class="form-label">New Password</label>
-                        <input asp-for="Password.New" class="form-control @(ModelState.GetFieldValidationState("Password.New") == ModelValidationState.Invalid ? "is-invalid" : "")" placeholder="New Password" autocomplete="off" />
-                        <span asp-validation-for="Password.New" class="invalid-feedback w-100 text-center"></span>
-                    </div>
-                    <div>
-                        <label asp-for="Password.Confirm" class="form-label">Confirm Password</label>
-                        <input asp-for="Password.Confirm" class="form-control @(ModelState.GetFieldValidationState("Password.Confirm") == ModelValidationState.Invalid ? "is-invalid" : "")" placeholder="Confirm Password" autocomplete="off" />
-                        <span asp-validation-for="Password.Confirm" class="invalid-feedback w-100 text-center"></span>
-                        <span asp-validation-for="Password" class="invalid-feedback w-100 text-center"></span>
-                    </div>
-                </div>
-            </form>
-        </div>
-    </div>
-    <div class="col-md-8 mb-3">
-        <div class="card">
             <form method="post" asp-page-handler="ChangeAccountDetails" >
                 <div class="card-header">
                     <div class="row">
@@ -109,8 +77,45 @@
                         <textarea asp-for="Student.Description" type="text" rows="3" class="form-control @(ModelState.GetFieldValidationState("Student.Description") == ModelValidationState.Invalid ? "is-invalid" : "")" placeholder="Description" />@Model.Student.Description</textarea>
                         <span asp-validation-for="Student.Description" class="invalid-feedback w-100 text-center"></span>
                     </div>
+                        <span asp-validation-for="Student" class="invalid-feedback w-100 text-center"></span>
                 </div>
             </form>
         </div>
+
+        <div class="card mb-3">
+            <form method="post" asp-page-handler="ChangePassword">
+                <div class="card-header">
+                    <div class="row">
+                        <div class="col">
+                            <h4 class="mb-0">Change Password</h4>
+                        </div>
+                        <div class="col-auto me-auto">
+                            <button type="reset" class="btn btn-sm btn-outline-danger"><i class="fa-solid fa-xmark fa-fw"></i></button>
+                            <button type="submit" class="btn btn-outline-primary btn-sm"><i class="fa-solid fa-check fa-fw"></i></button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card-body">
+                    <div class="mb-3">
+                        <label asp-for="Password.Old" class="form-label">Old Password</label>
+                        <input asp-for="Password.Old" class="form-control @(ModelState.GetFieldValidationState("Password.Old") == ModelValidationState.Invalid ? "is-invalid" : "")" placeholder="Old Password" autocomplete="off" />
+                        <span asp-validation-for="Password.Old" class="invalid-feedback w-100 text-center"></span>
+                    </div>
+                    <div class="mb-3">
+                        <label asp-for="Password.New" class="form-label">New Password</label>
+                        <input asp-for="Password.New" class="form-control @(ModelState.GetFieldValidationState("Password.New") == ModelValidationState.Invalid ? "is-invalid" : "")" placeholder="New Password" autocomplete="off" />
+                        <span asp-validation-for="Password.New" class="invalid-feedback w-100 text-center"></span>
+                    </div>
+                    <div>
+                        <label asp-for="Password.Confirm" class="form-label">Confirm Password</label>
+                        <input asp-for="Password.Confirm" class="form-control @(ModelState.GetFieldValidationState("Password.Confirm") == ModelValidationState.Invalid ? "is-invalid" : "")" placeholder="Confirm Password" autocomplete="off" />
+                        <span asp-validation-for="Password.Confirm" class="invalid-feedback w-100 text-center"></span>
+                        <span asp-validation-for="Password" class="invalid-feedback w-100 text-center"></span>
+                    </div>
+                </div>
+            </form>
+        </div>
+
     </div>
 </div>
