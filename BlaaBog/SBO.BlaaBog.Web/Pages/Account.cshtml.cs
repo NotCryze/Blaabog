@@ -7,7 +7,6 @@ using SBO.BlaaBog.Services.Services;
 using SBO.BlaaBog.Web.DTO;
 using SBO.BlaaBog.Web.Extensions.DataAnnotations;
 using System.ComponentModel.DataAnnotations;
-using SBO.BlaaBog.Web.Extensions;
 using BC = BCrypt.Net.BCrypt;
 
 namespace SBO.BlaaBog.Web.Pages
