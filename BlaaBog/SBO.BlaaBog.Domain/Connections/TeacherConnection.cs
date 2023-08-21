@@ -234,10 +234,10 @@ namespace SBO.BlaaBog.Domain.Connections
         /// <returns>true if successful, false if not.</returns>
         public async Task<bool> UpdateTeacherAsync(Teacher teacher)
         {
-            SqlCommand cmd = _sql.Execute("spUpdateTeacger");
+            SqlCommand cmd = _sql.Execute("spUpdateTeacher");
             cmd.Parameters.AddWithValue("@id", teacher.Id);
             cmd.Parameters.AddWithValue("@name", teacher.Name);
-            cmd.Parameters.AddWithValue("@email", teacher);
+            cmd.Parameters.AddWithValue("@email", teacher.Email);
             cmd.Parameters.AddWithValue("@password", teacher.Password);
             cmd.Parameters.AddWithValue("@admin", teacher.Admin);
             try
