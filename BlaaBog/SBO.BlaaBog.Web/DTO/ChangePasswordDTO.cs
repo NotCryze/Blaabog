@@ -14,7 +14,7 @@ namespace SBO.BlaaBog.Web.DTO
         public string New { get; set; }
 
         [Required]
-        [StringLength(512, MinimumLength = 4)]
+        [StringLength(512)]
         [DataType(DataType.Password)]
         [Compare("New", ErrorMessage = "Passwords do not match.")]
         public string Confirm { get; set; }
