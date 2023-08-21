@@ -5,7 +5,9 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using SBO.BlaaBog.Domain.Entities;
 using SBO.BlaaBog.Services.Services;
 using SBO.BlaaBog.Web.DTO;
+using SBO.BlaaBog.Web.Extensions.DataAnnotations;
 using System.ComponentModel.DataAnnotations;
+using SBO.BlaaBog.Web.Extensions;
 using BC = BCrypt.Net.BCrypt;
 
 namespace SBO.BlaaBog.Web.Pages
@@ -149,53 +151,51 @@ namespace SBO.BlaaBog.Web.Pages
         #region Update Profile Picture
 
         [BindProperty]
+        [Required]
         [DataType(DataType.Upload)]
+        [FileTypesAttributes(new String[] { "png", "jpg", "jpeg", "gif" })]
         public IFormFile Image { get; set; }
 
         public async Task<IActionResult> OnPostUpdateProfilePictureAsync()
         {
-            List<string> allowedExtensions = new List<string> { "png", "jpg", "jpeg", "gif" };
             try
             {
-                if (allowedExtensions.Contains(Image.ContentType.Split('/').Last()))
+                if (ModelState.GetFieldValidationState("Image") == ModelValidationState.Invalid)
                 {
-                    Guid guid = Guid.NewGuid();
-                    string fileName = guid.ToString() + "." + Image.ContentType.Split('/').Last();
-                    string filePath = Path.Combine(_environment.ContentRootPath, "wwwroot\\img\\", fileName);
-                    using (FileStream fileStream = new FileStream(filePath, FileMode.Create))
-                    {
-                        await Image.CopyToAsync(fileStream);
-                    }
-
-                    Student student = await _service.GetStudentAsync(Convert.ToInt32(HttpContext.Session.GetInt32("Id")));
-
-                    if (student.Image != null || student.Image == "default.png")
-                    {
-                        string oldFilePath = Path.Combine(_environment.ContentRootPath, "wwwroot\\img\\", student.Image);
-                        if (System.IO.File.Exists(oldFilePath))
-                        {
-                            System.IO.File.Delete(oldFilePath);
-                        }
-                    }
-
-                    await _service.UpdateStudentAsync(new Student(student.Id, student.Name, fileName, student.Description, student.Email, student.Speciality, student.ClassId, student.EndDate, student.Password));
-                    return Redirect("/Account");
-                }
-                else
-                {
-                    ModelState.AddModelError("Image", $"Only | {string.Join(" | ", allowedExtensions)} | files are allowed.");
                     return await OnGetAsync();
                 }
 
+                Guid guid = Guid.NewGuid();
+                string fileName = guid.ToString() + "." + Image.ContentType.Split('/').Last();
+                string filePath = Path.Combine(_environment.ContentRootPath, "wwwroot\\img\\", fileName);
+                using (FileStream fileStream = new FileStream(filePath, FileMode.Create))
+                {
+                    await Image.CopyToAsync(fileStream);
+                }
+
+                Student student = await _service.GetStudentAsync(Convert.ToInt32(HttpContext.Session.GetInt32("Id")));
+
+                if (student.Image != null || student.Image == "default.png")
+                {
+                    string oldFilePath = Path.Combine(_environment.ContentRootPath, "wwwroot\\img\\", student.Image);
+                    if (System.IO.File.Exists(oldFilePath))
+                    {
+                        System.IO.File.Delete(oldFilePath);
+                    }
+                }
+
+                await _service.UpdateStudentAsync(new Student(student.Id, student.Name, fileName, student.Description, student.Email, student.Speciality, student.ClassId, student.EndDate, student.Password));
+                return Redirect("/Account");
             }
             catch (Exception ex)
             {
                 await Console.Out.WriteLineAsync(ex.Message);
                 ModelState.AddModelError("Image", "Something went wrong.");
             }
-            return await OnGetAsync();
 
+            return await OnGetAsync();
         }
+
         #endregion
 
     }
