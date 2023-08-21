@@ -76,7 +76,10 @@ namespace SBO.BlaaBog.Web.Pages
 
                 if (Student.EndDate < DateOnly.FromDateTime(DateTime.Now))
                 {
-                    ModelState.AddModelError("Student.EndDate", "End date can not be in the past.");
+                    if (!(oldStudent.EndDate == Student.EndDate))
+                    {
+                        ModelState.AddModelError("Student.EndDate", "End date can not be in the past.");
+                    }
                 }
 
                 if (ModelState.GetFieldValidationState("Student.Name") == ModelValidationState.Valid
