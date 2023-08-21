@@ -5,7 +5,6 @@ namespace SBO.BlaaBog.Web.DTO
     public class ChangePasswordDTO
     {
         [Required]
-        [StringLength(512, MinimumLength = 4)]
         [DataType(DataType.Password)]
         public string Old { get; set; }
 
