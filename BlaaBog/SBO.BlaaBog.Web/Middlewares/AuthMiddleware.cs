@@ -31,10 +31,16 @@ namespace SBO.BlaaBog.Web.Middlewares
                 // Method 1
                 if (pathLower.StartsWith("/Teachers".ToLower()))
                 {
-                    if (!(httpContext.Items["User"] is Teacher)
-                        || !(pathLower.StartsWith("/Teachers/Login".ToLower()) || pathLower.StartsWith("/Teachers/Register".ToLower()))
-                        || !(pathLower.StartsWith("/Error".ToLower()))
-                        )
+                    if (httpContext.Items["User"] is Teacher)
+                    {
+                    }
+                    else if (pathLower.StartsWith("/Teachers/Login".ToLower()) || pathLower.StartsWith("/Teachers/Register".ToLower()))
+                    {
+                    }
+                    else if (pathLower.StartsWith("/Error".ToLower()))
+                    {
+                    }
+                    else
                     {
                         httpContext.Response.Redirect("/Teachers/Login");
                         return;
