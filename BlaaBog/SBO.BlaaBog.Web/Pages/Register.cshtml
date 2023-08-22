@@ -49,6 +49,11 @@
                     <input type="password" asp-for="Register.Password" class="form-control @(ModelState.GetFieldValidationState("Register.Password") == ModelValidationState.Invalid ? "is-invalid" : ModelState.GetValidationState("Register.Password") == ModelValidationState.Valid ? "is-valid" : "")" id="password" placeholder="Password" required>
                     <span asp-validation-for="Register.Password" class="invalid-feedback"></span>
                 </div>
+                <div class="mb-3">
+                    <label for="confirmPassword" class="form-label">Confirm Password</label>
+                    <input type="password" asp-for="Register.ConfirmPassword" class="form-control @(ModelState.GetFieldValidationState("Register.ConfirmPassword") == ModelValidationState.Invalid ? "is-invalid" : ModelState.GetValidationState("Register.ConfirmPassword") == ModelValidationState.Valid ? "is-valid" : "")" id="confirmPassword" placeholder="Confirm Password" required>
+                    <span asp-validation-for="Register.ConfirmPassword" class="invalid-feedback"></span>
+                </div>
 
                 <div class="mb-3">
                     <button type="submit" class="btn btn-primary w-100 @(ModelState.GetFieldValidationState("Register") == ModelValidationState.Invalid ? "is-invalid" : ModelState.GetValidationState("Register") == ModelValidationState.Valid ? "is-valid" : "")">Register</button>
