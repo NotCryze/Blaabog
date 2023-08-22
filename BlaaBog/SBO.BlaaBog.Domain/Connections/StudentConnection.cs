@@ -83,7 +83,7 @@ namespace SBO.BlaaBog.Domain.Connections
                                 (string)rdr["image"],
                                 await rdr.IsDBNullAsync("description") ? null : (string)rdr["description"],
                                 (string)rdr["email"],
-                                await rdr.IsDBNullAsync("speciality") ? null : (string)rdr["speciality"],
+                                (Specialities)rdr.GetByte("speciality"),
                                 (int)rdr["fk_class"],
                                await rdr.IsDBNullAsync("end_date") ? null : new DateOnly(rdr.GetDateTime("end_date").Year, rdr.GetDateTime("end_date").Month, rdr.GetDateTime("end_date").Day),
                                 (string)rdr["password"]
@@ -133,7 +133,7 @@ namespace SBO.BlaaBog.Domain.Connections
                                 (string)rdr["image"],
                                 await rdr.IsDBNullAsync("description") ? null : (string)rdr["description"],
                                 (string)rdr["email"],
-                                await rdr.IsDBNullAsync("speciality") ? null : (string)rdr["speciality"],
+                                (Specialities)rdr.GetByte("speciality"),
                                 (int)rdr["fk_class"],
                                await rdr.IsDBNullAsync("end_date") ? null : new DateOnly(rdr.GetDateTime("end_date").Year, rdr.GetDateTime("end_date").Month, rdr.GetDateTime("end_date").Day),
                                 (string)rdr["password"]
@@ -184,7 +184,7 @@ namespace SBO.BlaaBog.Domain.Connections
                                 (string)rdr["image"],
                                 await rdr.IsDBNullAsync("description") ? null : (string)rdr["description"],
                                 (string)rdr["email"],
-                                await rdr.IsDBNullAsync("speciality") ? null : (string)rdr["speciality"],
+                                (Specialities)rdr.GetByte("speciality"),
                                 (int)rdr["fk_class"],
                                await rdr.IsDBNullAsync("end_date") ? null : new DateOnly(rdr.GetDateTime("end_date").Year, rdr.GetDateTime("end_date").Month, rdr.GetDateTime("end_date").Day),
                                 (string)rdr["password"]
@@ -235,7 +235,7 @@ namespace SBO.BlaaBog.Domain.Connections
                                 (string)rdr["image"],
                                 await rdr.IsDBNullAsync("description") ? null : (string)rdr["description"],
                                 (string)rdr["email"],
-                                await rdr.IsDBNullAsync("speciality") ? null : (string)rdr["speciality"],
+                                (Specialities)rdr.GetByte("speciality"),
                                 (int)rdr["fk_class"],
                                await rdr.IsDBNullAsync("end_date") ? null : new DateOnly(rdr.GetDateTime("end_date").Year, rdr.GetDateTime("end_date").Month, rdr.GetDateTime("end_date").Day),
                                 (string)rdr["password"]
@@ -287,7 +287,7 @@ namespace SBO.BlaaBog.Domain.Connections
                                 (string)rdr["image"],
                                 await rdr.IsDBNullAsync("description") ? null : (string)rdr["description"],
                                 (string)rdr["email"],
-                                await rdr.IsDBNullAsync("speciality") ? null : (string)rdr["speciality"],
+                                (Specialities)rdr.GetByte("speciality"),
                                 (int)rdr["fk_class"],
                                await rdr.IsDBNullAsync("end_date") ? null : new DateOnly(rdr.GetDateTime("end_date").Year, rdr.GetDateTime("end_date").Month, rdr.GetDateTime("end_date").Day),
                                 (string)rdr["password"]
@@ -338,7 +338,7 @@ namespace SBO.BlaaBog.Domain.Connections
                                 (string)rdr["image"],
                                 await rdr.IsDBNullAsync("description") ? null : (string)rdr["description"],
                                 (string)rdr["email"],
-                                await rdr.IsDBNullAsync("speciality") ? null : (string)rdr["speciality"],
+                                (Specialities)rdr.GetByte("speciality"),
                                 (int)rdr["fk_class"],
                                await rdr.IsDBNullAsync("end_date") ? null : new DateOnly(rdr.GetDateTime("end_date").Year, rdr.GetDateTime("end_date").Month, rdr.GetDateTime("end_date").Day),
                                 (string)rdr["password"]

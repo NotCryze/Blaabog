@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml.Schema;
 
 namespace SBO.BlaaBog.Domain.Entities
 {
@@ -23,8 +24,8 @@ namespace SBO.BlaaBog.Domain.Entities
         private string _email;
         public string Email { get { return _email; } }
 
-        private string? _speciality;
-        public string? Speciality { get { return _speciality; } }
+        private Specialities? _speciality;
+        public Specialities? Speciality { get { return _speciality; } }
 
         private int _classId;
         public int ClassId { get { return _classId; } }
@@ -41,7 +42,7 @@ namespace SBO.BlaaBog.Domain.Entities
         private List<Comment>? _comments;
         public List<Comment>? Comments { get { return _comments; } }
 
-        public Student(int? id, string name, string image, string? description, string email, string? speciality, int classId, DateOnly? endDate, string password)
+        public Student(int? id, string name, string image, string? description, string email, Specialities? speciality, int classId, DateOnly? endDate, string password)
         {
             _id = id;
             _name = name;

@@ -1,5 +1,6 @@
 ﻿@page
 @using Microsoft.AspNetCore.Mvc.ModelBinding;
+@using SBO.BlaaBog.Domain.Entities;
 @model SBO.BlaaBog.Web.Pages.AccountModel
 @{
     ViewData["Title"] = "Account";
@@ -64,7 +65,7 @@
                     <div class="row">
                         <div class="col-md mb-3">
                             <label asp-for="Student.Speciality" class="form-label">Speciality</label>
-                            <select asp-for="Student.Speciality" asp-items="Model.Specialities" class="form-select @(ModelState.GetFieldValidationState("Student.Speciality") == ModelValidationState.Invalid ? "is-invalid" : ModelState.GetValidationState("Student.Speciality") == ModelValidationState.Valid ? "is-valid" : "")"></select>
+                            <select asp-for="Student.Speciality" asp-items="Model.SpecialitiesList" class="form-select @(ModelState.GetFieldValidationState("Student.Speciality") == ModelValidationState.Invalid ? "is-invalid" : ModelState.GetValidationState("Student.Speciality") == ModelValidationState.Valid ? "is-valid" : "")"></select>
                             <span asp-validation-for="Student.Speciality" class="invalid-feedback w-100 text-center"></span>
                         </div>
                         <div class="col-md mb-3">

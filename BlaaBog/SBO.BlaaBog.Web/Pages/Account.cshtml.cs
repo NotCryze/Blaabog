@@ -2,6 +2,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.AspNetCore.Mvc.ViewFeatures;
+using Microsoft.OpenApi.Extensions;
 using SBO.BlaaBog.Domain.Entities;
 using SBO.BlaaBog.Services.Services;
 using SBO.BlaaBog.Web.DTO;
@@ -23,7 +25,7 @@ namespace SBO.BlaaBog.Web.Pages
 
         [BindProperty]
         public StudentAccountDTO Student { get; set; }
-        public List<SelectListItem> Specialities { get; set; } = new List<SelectListItem>();
+        public List<SelectListItem> SpecialitiesList { get; set; } = new List<SelectListItem>();
         public string ImageName { get; set; }
         public async Task<IActionResult> OnGetAsync()
         {
@@ -43,15 +45,20 @@ namespace SBO.BlaaBog.Web.Pages
                 EndDate = student.EndDate
             };
 
-            ImageName = student.Image;
+            //SpecialitiesList = new List<SelectListItem>
+            //{
+            //    new SelectListItem { Text = nameof(Specialities.None), Value = Specialities.None.ToString() },
+            //    new SelectListItem { Text = nameof(Specialities.ITSupporter), Value = Specialities.ITSupporter.ToString() },
+            //    new SelectListItem { Text = nameof(Specialities.Programmer), Value = Specialities.Programmer.ToString() },
+            //    new SelectListItem { Text = nameof(Specialities.Infrastructure), Value = Specialities.Infrastructure.ToString() },
+            //};
 
-            Specialities = new List<SelectListItem>
+            foreach (Specialities speciality in Enum.GetValues<Specialities>())
             {
-                new SelectListItem { Text = "N/A", Value = null, Selected = Student?.Speciality == null },
-                new SelectListItem { Text = "IT Support", Value = "IT Support", Selected = Student?.Speciality == "IT Support" },
-                new SelectListItem { Text = "Programmør", Value = "Programmør", Selected = Student?.Speciality == "Programmør" },
-                new SelectListItem { Text = "Infrastruktur", Value = "Infrastruktur", Selected = Student?.Speciality == "Infrastruktur" }
-            };
+                SpecialitiesList.Add(new SelectListItem { Text = EnumExtensions.GetDisplayName(speciality), Value = speciality.ToString(), Selected = speciality == student.Speciality });
+            }
+
+            ImageName = student.Image;
 
             return Page();
         }
