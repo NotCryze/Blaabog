@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -11,7 +11,7 @@ namespace SBO.BlaaBog.Domain.Entities
         private int? _id;
         public int? Id { get { return _id; } }
 
-        public string Name { get { return _startDate.ToString("MM:yyyy"); } }
+        public string Name { get { return _startDate.ToString("MM-yyyy"); } }
 
         private DateOnly _startDate;
         public DateOnly StartDate { get { return _startDate; } }
