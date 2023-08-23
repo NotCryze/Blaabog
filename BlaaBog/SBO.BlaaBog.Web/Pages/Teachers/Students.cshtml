@@ -1,0 +1,119 @@
+﻿@page
+@using Microsoft.AspNetCore.Mvc.ModelBinding;
+@using SBO.BlaaBog.Domain.Entities;
+@using SBO.BlaaBog.Web.DTO;
+@model SBO.BlaaBog.Web.Pages.Teachers.StudentsModel
+@{
+    ViewData["Title"] = "Students";
+}
+
+<div>
+    <table id="students" class="table table-striped ">
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Speciality</th>
+                <th>End Date</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (StudentAccountDTO student in Model.Students)
+            {
+                <tr>
+                    <td>@student.Id</td>
+                    <td>@student.Name</td>
+                    <td>@student.Email</td>
+                    <td>@student.Speciality</td>
+                    <td>@student.EndDate</td>
+                    <td class="d-flex justify-content-end">
+                        <button class="btn btn-outline-primary me-2" data-bs-toggle="modal" data-bs-target="#edit-@student.Id-Modal"><i class="fa-solid fa-pen fa-fw"></i></button>
+                        <form method="post" asp-page-handler="DeleteStudent" asp-route-id="@student.Id">
+                            <button type="submit" class="btn btn-outline-danger"><i class="fa-solid fa-trash-can fa-fw"></i></button>
+                        </form>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+
+@foreach (StudentAccountDTO student in Model.Students)
+{
+    <div class="modal fade" id="edit-@student.Id-Modal" tabindex="-1" aria-labelledby="edit-@student.Id-Modal" aria-hidden="false">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <form method="post" asp-page-handler="EditStudent" asp-route-id="@student.Id">
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-5" id="edit-@student.Id-Modal">Edit Class</h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="mb-3">
+                            <label asp-for="Student.Name" class="form-label">Name</label>
+                            <input asp-for="Student.Name" type="text" value="@student.Name" class="form-control @(ModelState.GetFieldValidationState("Student.Name") == ModelValidationState.Invalid ? "is-invalid" : ModelState.GetValidationState("Student.Name") == ModelValidationState.Valid ? "is-valid" : "")" required />
+                            <span asp-validation-for="Student.Name" class="invalid-feedback w-100 text-center"></span>
+                        </div>
+                        <div class="mb-3">
+                            <label asp-for="Student.Email" class="form-label">Email</label>
+                            <input asp-for="Student.Email" type="text" value="@student.Email" class="form-control @(ModelState.GetFieldValidationState("Student.Email") == ModelValidationState.Invalid ? "is-invalid" : ModelState.GetValidationState("Student.Email") == ModelValidationState.Valid ? "is-valid" : "")" required />
+                            <span asp-validation-for="Student.Email" class="invalid-feedback w-100 text-center"></span>
+                        </div>
+                        <div class="mb-3">
+                            <label asp-for="Student.Speciality" class="form-label">Speciality</label>
+                            <select asp-for="Student.Speciality" asp-items="@student.SpecialitiesList" class="form-select @(ModelState.GetFieldValidationState("Student.Speciality") == ModelValidationState.Invalid ? "is-invalid" : ModelState.GetValidationState("Student.Speciality") == ModelValidationState.Valid ? "is-valid" : "")" required></select>
+                            <span asp-validation-for="Student.Speciality" class="invalid-feedback w-100 text-center"></span>
+                        </div>
+                        <div class="mb-3">
+                            <label asp-for="Student.EndDate" class="form-label">End Date</label>
+                            <input asp-for="Student.EndDate" type="date" value="@(student.EndDate == null ? "" : student.EndDate.Value.ToString("yyyy-MM-dd"))" class="form-control @(ModelState.GetFieldValidationState("Student.EndDate") == ModelValidationState.Invalid ? "is-invalid" : ModelState.GetValidationState("Student.EndDate") == ModelValidationState.Valid ? "is-valid" : "")" />
+                            <span asp-validation-for="Student.EndDate" class="invalid-feedback w-100 text-center"></span>
+                        </div>
+                        <div class="mb-3">
+                            <label asp-for="Student.Description" class="form-label">Description</label>
+                            <textarea asp-for="Student.Description" id="studentdesc-@student.Id" rows="3" class="form-control @(ModelState.GetFieldValidationState("Student.Description") == ModelValidationState.Invalid ? "is-invalid" : ModelState.GetValidationState("Student.Description") == ModelValidationState.Valid ? "is-valid" : "")"></textarea>
+                            <span asp-validation-for="Student.Description" class="invalid-feedback w-100 text-center"></span>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="reset" class="btn btn-danger" data-bs-dismiss="modal"><i class="fa-solid fa-xmark fa-fw"></i></button>
+                        <button type="submit" class="btn btn-success"><i class="fa-solid fa-check fa-fw"></i></button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        var studentDesc = document.getElementById("studentdesc-@student.Id").defaultValue = "@student.Description";
+    </script>
+}
+
+@section Scripts {
+    <script>
+        new DataTable(
+            '#students',
+            {
+                "columnDefs": [
+                    {
+                        "orderable": false,
+                        "targets": -1
+                    },
+                    {
+                        "orderable": true,
+                        "targets": 0
+                    }
+                ],
+                "order": [
+                    [
+                        0,
+                        "desc"
+                    ]
+                ]
+            }
+        );
+    </script>
+    }

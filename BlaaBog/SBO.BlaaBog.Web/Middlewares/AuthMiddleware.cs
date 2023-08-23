@@ -23,7 +23,6 @@ namespace SBO.BlaaBog.Web.Middlewares
 
             PathString path = httpContext.Request.Path;
 
-
             if (path.HasValue)
             {
                 string pathLower = path.Value.ToLower();
