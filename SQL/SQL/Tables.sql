@@ -31,7 +31,7 @@ CREATE TABLE Students(
     image VARCHAR(41) NOT NULL DEFAULT 'default.png',
     description NVARCHAR(4000) DEFAULT NULL,
     email NVARCHAR(320) UNIQUE NOT NULL,
-    speciality VARCHAR(15) DEFAULT NULL, -- IT Supporter | Programmering | Infrastruktur
+    speciality TINYINT DEFAULT 0, -- 0: None | 1: IT Supporter | 2: Programming | 3: Infrastructure
     fk_class INT NOT NULL FOREIGN KEY REFERENCES Classes(id),
     end_date DATE DEFAULT NULL,
     password VARCHAR(60) NOT NULL,

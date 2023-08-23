@@ -161,7 +161,7 @@ END
 GO
 
 CREATE OR ALTER PROCEDURE spGetStudentsBySpeciality
-	@speciality VARCHAR(15)
+	@speciality TINYINT
 AS
 BEGIN
 	SELECT *
@@ -192,7 +192,7 @@ CREATE OR ALTER PROCEDURE spUpdateStudent
 	@image VARCHAR(41) = NULL,
 	@description NVARCHAR(4000) = NULL,
 	@email NVARCHAR(320) = NULL,
-	@speciality VARCHAR(15) = NULL,
+	@speciality TINYINT = NULL,
 	@fk_class INT = NULL,
 	@end_date DATE = NULL,
 	@password VARCHAR(60) = NULL

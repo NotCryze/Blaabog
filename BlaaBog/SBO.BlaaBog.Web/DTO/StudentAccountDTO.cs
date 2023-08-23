@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using SBO.BlaaBog.Domain.Entities;
 using System.ComponentModel.DataAnnotations;
 
 namespace SBO.BlaaBog.Web.DTO
@@ -20,8 +21,7 @@ namespace SBO.BlaaBog.Web.DTO
         public string? Email { get; set; }
 
         [Required]
-        [StringLength(15)]
-        public string Speciality { get; set; }
+        public Specialities? Speciality { get; set; }
 
         [Required]
         [DataType(DataType.Date)]
