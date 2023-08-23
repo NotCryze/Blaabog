@@ -23,7 +23,6 @@ namespace SBO.BlaaBog.Web.DTO
         [Required]
         public Specialities? Speciality { get; set; }
 
-        [Required]
         [DataType(DataType.Date)]
         public DateOnly? EndDate { get; set; }
     }
