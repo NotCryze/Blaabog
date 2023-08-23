@@ -92,5 +92,19 @@ namespace SBO.BlaaBog.Services.Services
         }
 
         #endregion
+
+        #region
+
+        /// <summary>
+        /// Checks if a class token exists in the database
+        /// </summary>
+        /// <param name="token"></param>
+        /// <returns>Returns the amount of tokens found</returns>
+        public async Task<int> CheckClassTokenAsync(string token)
+        {
+            return await _classConnection.CheckClassTokenAsync(token);
+        }
+
+        #endregion
     }
 }
