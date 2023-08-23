@@ -1,0 +1,158 @@
+﻿@page
+@using Microsoft.AspNetCore.Mvc.ModelBinding;
+@using SBO.BlaaBog.Domain.Entities;
+@model SBO.BlaaBog.Web.Pages.Teachers.AccountsModel
+@{
+    ViewData["Title"] = "Accounts";
+}
+
+
+<div class="row mb-3">
+    <div class="col d-flex justify-content-end">
+        <button class="btn btn-primary float-right" data-bs-toggle="modal" data-bs-target="#create-account-modal"><i class="fa-solid fa-plus fa-fw"></i></button>
+    </div>
+</div>
+<div>
+    <table id="accounts" class="table table-striped">
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Admin</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (Teacher teacher in Model.Teachers)
+            {
+                <tr>
+                    <td>@teacher.Id</td>
+                    <td>@teacher.Name</td>
+                    <td>@teacher.Email</td>
+                    <td>@teacher.Admin</td>
+                    <td class="d-flex justify-content-end">
+                        <button class="btn btn-outline-primary me-2" data-bs-toggle="modal" data-bs-target="#edit-@teacher.Id-modal"><i class="fa-solid fa-pen fa-fw"></i></button>
+                        <form method="post" asp-page-handler="Delete" asp-route-id="@teacher.Id">
+                            <button type="submit" class="btn btn-outline-danger"><i class="fa-solid fa-trash-can fa-fw"></i></button>
+                        </form>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+<div class="modal fade" id="create-account-modal" tabindex="-1" aria-labelledby="create-account-modal-label" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <form method="post" asp-page-handler="Create">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="create-account-modal-label">Create Teacher</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label class="form-label">Name</label>
+                        <input asp-for="CreateAccount.Name" class="form-control @(ModelState.GetFieldValidationState("CreateAccount.Name") == ModelValidationState.Invalid ? "is-invalid" : ModelState.GetValidationState("CreateAccount.Name") == ModelValidationState.Valid ? "is-valid" : "")" required />
+                        <span asp-validation-for="CreateAccount.Name" class="invalid-feedback w-100 text-center"></span>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Email</label>
+                        <input asp-for="CreateAccount.Email" class="form-control @(ModelState.GetFieldValidationState("CreateAccount.Email") == ModelValidationState.Invalid ? "is-invalid" : ModelState.GetValidationState("CreateAccount.Email") == ModelValidationState.Valid ? "is-valid" : "")" required />
+                        <span asp-validation-for="CreateAccount.Email" class="invalid-feedback w-100 text-center"></span>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Password</label>
+                        <input asp-for="CreateAccount.Password" class="form-control @(ModelState.GetFieldValidationState("CreateAccount.Password") == ModelValidationState.Invalid ? "is-invalid" : ModelState.GetValidationState("CreateAccount.Password") == ModelValidationState.Valid ? "is-valid" : "")" required />
+                        <span asp-validation-for="CreateAccount.Password" class="invalid-feedback w-100 text-center"></span>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Confirm Password</label>
+                        <input asp-for="CreateAccount.ConfirmPassword" class="form-control @(ModelState.GetFieldValidationState("CreateAccount.ConfirmPassword") == ModelValidationState.Invalid ? "is-invalid" : ModelState.GetValidationState("CreateAccount.ConfirmPassword") == ModelValidationState.Valid ? "is-valid" : "")" required />
+                        <span asp-validation-for="CreateAccount.ConfirmPassword" class="invalid-feedback w-100 text-center"></span>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="reset" class="btn btn-danger" data-bs-dismiss="modal"><i class="fa-solid fa-xmark fa-fw"></i></button>
+                    <button type="submit" class="btn btn-success"><i class="fa-solid fa-check fa-fw"></i></button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+
+@foreach (Teacher teacher in Model.Teachers)
+{
+    <div class="modal fade" id="edit-@teacher.Id-modal" tabindex="-1" aria-labelledby="edit-@teacher.Id-modal" aria-hidden="false">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <form method="post" asp-page-handler="Edit" asp-route-id="@teacher.Id">
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-5">Edit Teacher</h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="mb-3">
+                            <div class="mb-3">
+                                <label for="name" class="form-label">Name</label>
+                                <input type="text" asp-for="EditAccount.Name" class="form-control @(ModelState.GetFieldValidationState("EditAccount.Name") == ModelValidationState.Invalid ? "is-invalid" : ModelState.GetValidationState("EditAccount.Name") == ModelValidationState.Valid ? "is-valid" : "")" id="name" placeholder="Name" required>
+                                <span asp-validation-for="EditAccount.Name" class="invalid-feedback"></span>
+                            </div>
+                            <div class="mb-3">
+                                <label for="email" class="form-label">Email</label>
+                                <input type="email" asp-for="EditAccount.Email" class="form-control @(ModelState.GetFieldValidationState("EditAccount.Email") == ModelValidationState.Invalid ? "is-invalid" : ModelState.GetValidationState("EditAccount.Email") == ModelValidationState.Valid ? "is-valid" : "")" id="email" placeholder="Email" required>
+                                <span asp-validation-for="EditAccount.Email" class="invalid-feedback"></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="reset" class="btn btn-danger" data-bs-dismiss="modal"><i class="fa-solid fa-xmark fa-fw"></i></button>
+                        <button type="submit" class="btn btn-success"><i class="fa-solid fa-check fa-fw"></i></button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+}
+
+
+
+@section Scripts {
+    @if (ModelState.GetFieldValidationState("StartDate") == ModelValidationState.Invalid)
+    {
+        <script>
+            const createAccountModal = new bootstrap.Modal('#create-account-modal')
+            createAccountModal.show();
+        </script>
+    }
+
+    <script>
+        new DataTable(
+            '#accounts',
+            {
+                "columnDefs": [
+                    {
+                        "orderable": false,
+                        "targets": -1
+                    },
+                    {
+                        "orderable": true,
+                        "targets": 0
+                    }
+                ],
+                "order": [
+                    [
+                        0,
+                        "desc"
+                    ]
+                ]
+            }
+        );
+    </script>
+}
