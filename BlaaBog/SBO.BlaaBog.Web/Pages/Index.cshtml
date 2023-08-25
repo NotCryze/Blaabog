@@ -3,3 +3,43 @@
 @{
     ViewData["Title"] = "Home";
 }
+
+<div class="accordion" id="accordionExample">
+    @foreach (var classItem in Model.Classes)
+    {
+        <div class="accordion-item">
+            <h2 class="accordion-header">
+                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapse@classItem.Id" aria-expanded="true" aria-controls="collapse@classItem.Id">
+                    @classItem.Name
+                </button>
+            </h2>
+            <div id="collapse@classItem.Id" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
+                <div class="accordion-body">
+                    <ul>
+                        @foreach (var student in classItem.Students)
+                        {
+                            <div class="col-md-3 mb-3">
+                                <a class="text-decoration-none" href="/Students/@student.Id">
+                                    <div class="card" style="width: 18rem;">
+                                        <img style="aspect-ratio:1/1" src="~/img/@student.Image" class="img-fluid rounded card-img-top w-100 h-100" alt="...">
+                                        <div class="card-body">
+                                            <h5 class="card-title text-center text-nowrap overflow-hidden" style="text-overflow:ellipsis" data-bs-toggle="tooltip" data-bs-title="@student.Name">@student.Name</h5>
+                                        </div>
+                                    </div>
+                                </a>
+                            </div>
+
+                        }
+                    </ul>
+                </div>
+            </div>
+        </div>
+    }
+
+</div>
+@section Scripts{
+    <script>
+        const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]')
+        const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl))
+    </script>
+}

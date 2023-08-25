@@ -319,7 +319,7 @@ namespace SBO.BlaaBog.Domain.Connections
         public async Task<List<Student>?> GetStudentsByClassAsync(int @class)
         {
             SqlCommand cmd = _sql.Execute("spGetStudentsByClass");
-            cmd.Parameters.AddWithValue("@class", @class);
+            cmd.Parameters.AddWithValue("@id", @class);
 
             List<Student> students = new List<Student>();
 

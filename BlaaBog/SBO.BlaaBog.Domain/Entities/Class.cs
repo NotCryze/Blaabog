@@ -11,7 +11,7 @@ namespace SBO.BlaaBog.Domain.Entities
         private int? _id;
         public int? Id { get { return _id; } }
 
-        public string Name { get { return _startDate.ToString("MM:yyyy"); } }
+        public string Name { get { return _startDate.ToString("MM-yyyy"); } }
 
         private DateOnly _startDate;
         public DateOnly StartDate { get { return _startDate; } }
@@ -20,7 +20,7 @@ namespace SBO.BlaaBog.Domain.Entities
         public string Token { get { return _token; } }
 
         private List<Student>? _students;
-        public List<Student>? Students { get { return _students; } }
+        public List<Student>? Students { get { return _students; } set { _students = value; } }
 
         public dynamic Dynamic { get; set; }
 
