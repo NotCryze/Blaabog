@@ -101,12 +101,12 @@
                         <div class="mb-3">
                             <div class="mb-3">
                                 <label for="name" class="form-label">Name</label>
-                                <input type="text" asp-for="EditAccount.Name" class="form-control @(ModelState.GetFieldValidationState("EditAccount.Name") == ModelValidationState.Invalid ? "is-invalid" : ModelState.GetValidationState("EditAccount.Name") == ModelValidationState.Valid ? "is-valid" : "")" id="name" placeholder="Name" required>
+                                <input type="text" value="@teacher.Name" asp-for="EditAccount.Name" class="form-control @(ModelState.GetFieldValidationState("EditAccount.Name") == ModelValidationState.Invalid ? "is-invalid" : ModelState.GetValidationState("EditAccount.Name") == ModelValidationState.Valid ? "is-valid" : "")" id="name" placeholder="Name" required>
                                 <span asp-validation-for="EditAccount.Name" class="invalid-feedback"></span>
                             </div>
                             <div class="mb-3">
                                 <label for="email" class="form-label">Email</label>
-                                <input type="email" asp-for="EditAccount.Email" class="form-control @(ModelState.GetFieldValidationState("EditAccount.Email") == ModelValidationState.Invalid ? "is-invalid" : ModelState.GetValidationState("EditAccount.Email") == ModelValidationState.Valid ? "is-valid" : "")" id="email" placeholder="Email" required>
+                                <input type="email" value="@teacher.Email" asp-for="EditAccount.Email" class="form-control @(ModelState.GetFieldValidationState("EditAccount.Email") == ModelValidationState.Invalid ? "is-invalid" : ModelState.GetValidationState("EditAccount.Email") == ModelValidationState.Valid ? "is-valid" : "")" id="email" placeholder="Email" required>
                                 <span asp-validation-for="EditAccount.Email" class="invalid-feedback"></span>
                             </div>
                         </div>
