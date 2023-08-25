@@ -7,7 +7,7 @@ namespace SBO.BlaaBog.Web.Pages
     {
         public void OnGet(int id)
         {
-
+            Console.WriteLine("Test");
         }
     }
 }
