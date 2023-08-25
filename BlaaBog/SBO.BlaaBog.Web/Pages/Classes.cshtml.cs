@@ -18,7 +18,7 @@ namespace SBO.BlaaBog.Web.Pages
         public List<Student> Students { get; set; }
         public Class Class { get; set; }
 
-        public async Task<IActionResult> OnGet(int id)
+        public async Task<IActionResult> OnGetAsync(int id)
         {
             Students = await _studentService.GetStudentsByClassAsync(id);
             Class = await _classService.GetClassAsync(id);
