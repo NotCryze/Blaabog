@@ -316,10 +316,10 @@ namespace SBO.BlaaBog.Domain.Connections
         /// </summary>
         /// <param name="class"></param>
         /// <returns>List<Student> if successful, null if not.</returns>
-        public async Task<List<Student>?> GetStudentsByClassAsync(int @class)
+        public async Task<List<Student>?> GetStudentsByClassAsync(int id)
         {
             SqlCommand cmd = _sql.Execute("spGetStudentsByClass");
-            cmd.Parameters.AddWithValue("@class", @class);
+            cmd.Parameters.AddWithValue("@id", id);
 
             List<Student> students = new List<Student>();
 

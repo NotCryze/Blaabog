@@ -27,3 +27,8 @@ body {
     border-top-left-radius: unset;
     border-top-right-radius: unset;
 }
+
+.custom-tooltip {
+    --bs-tooltip-bg: var(--bd-violet-bg);
+    --bs-tooltip-color: var(--bs-white);
+}
