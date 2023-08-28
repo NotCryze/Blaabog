@@ -316,10 +316,10 @@ namespace SBO.BlaaBog.Domain.Connections
         /// </summary>
         /// <param name="class"></param>
         /// <returns>List<Student> if successful, null if not.</returns>
-        public async Task<List<Student>?> GetStudentsByClassAsync(int @class)
+        public async Task<List<Student>?> GetStudentsByClassAsync(int id)
         {
             SqlCommand cmd = _sql.Execute("spGetStudentsByClass");
-            cmd.Parameters.AddWithValue("@id", @class);
+            cmd.Parameters.AddWithValue("@id", id);
 
             List<Student> students = new List<Student>();
 
@@ -381,7 +381,7 @@ namespace SBO.BlaaBog.Domain.Connections
             cmd.Parameters.AddWithValue("@email", student.Email);
             cmd.Parameters.AddWithValue("@speciality", student.Speciality);
             cmd.Parameters.AddWithValue("@fk_class", student.ClassId);
-            cmd.Parameters.AddWithValue("@end_date", student.EndDate.Value.ToDateTime(TimeOnly.MinValue));
+            cmd.Parameters.AddWithValue("@end_date", student.EndDate == null ? null : student.EndDate.Value.ToDateTime(TimeOnly.MinValue));
             cmd.Parameters.AddWithValue("@password", student.Password);
 
             try

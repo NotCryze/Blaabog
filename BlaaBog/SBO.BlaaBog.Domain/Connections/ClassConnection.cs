@@ -28,7 +28,7 @@ namespace SBO.BlaaBog.Domain.Connections
         public async Task<bool> CreateClassAsync(Class @class)
         {
             SqlCommand sqlCommand = _sql.Execute("spCreateClass");
-            sqlCommand.Parameters.AddWithValue("@start_date", @class.StartDate);
+            sqlCommand.Parameters.AddWithValue("@start_date", @class.StartDate.ToDateTime(TimeOnly.MinValue));
             sqlCommand.Parameters.AddWithValue("@token", @class.Token);
             try
             {
@@ -206,7 +206,7 @@ namespace SBO.BlaaBog.Domain.Connections
         {
             SqlCommand sqlCommand = _sql.Execute("spUpdateClass");
             sqlCommand.Parameters.AddWithValue("@id", @class.Id);
-            sqlCommand.Parameters.AddWithValue("@start_date", @class.StartDate);
+            sqlCommand.Parameters.AddWithValue("@start_date", @class.StartDate.ToDateTime(TimeOnly.MinValue));
             sqlCommand.Parameters.AddWithValue("@token", @class.Token);
             try
             {
@@ -257,6 +257,42 @@ namespace SBO.BlaaBog.Domain.Connections
             }
 
             return false;
+        }
+
+        #endregion
+
+        #region Misc
+
+        /// <summary>
+        /// Checks if a class token exists in the database
+        /// </summary>
+        /// <param name="token"></param>
+        /// <returns>Returns the amount of tokens found</returns>
+        public async Task<int> CheckClassTokenAsync(string token)
+        {
+            int count = 0;
+
+            SqlCommand cmd = _sql.Execute("spCheckClassToken");
+            cmd.Parameters.AddWithValue("@token", token);
+
+            try
+            {
+                await cmd.Connection.OpenAsync();
+
+                count = Convert.ToInt32(await cmd.ExecuteNonQueryAsync());
+
+                await cmd.Connection.CloseAsync();
+            }
+            catch ( SqlException ex )
+            {
+                await Console.Out.WriteLineAsync(ex.Message);
+            }
+            finally
+            {
+                await cmd.Connection.CloseAsync();
+            }
+
+            return count;
         }
 
         #endregion

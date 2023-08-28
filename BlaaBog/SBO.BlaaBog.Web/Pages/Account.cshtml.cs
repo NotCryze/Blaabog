@@ -74,20 +74,9 @@ namespace SBO.BlaaBog.Web.Pages
                 bool emailExists = await _service.GetStudentByEmailAsync(Student.Email) != null;
                 Student oldStudent = await _service.GetStudentAsync(Convert.ToInt32(HttpContext.Session.GetInt32("Id")));
 
-                if (emailExists)
+                if (emailExists && oldStudent.Email != Student.Email)
                 {
-                    if (!(oldStudent.Email == Student.Email))
-                    {
-                        ModelState.AddModelError("Student.Email", "Email already exists.");
-                    }
-                }
-
-                if (Student.EndDate < DateOnly.FromDateTime(DateTime.Now))
-                {
-                    if (!(oldStudent.EndDate == Student.EndDate))
-                    {
-                        ModelState.AddModelError("Student.EndDate", "End date can not be in the past.");
-                    }
+                    ModelState.AddModelError("Student.Email", "Email already exists.");
                 }
 
                 if (ModelState.GetFieldValidationState("Student.Name") == ModelValidationState.Valid
@@ -97,7 +86,7 @@ namespace SBO.BlaaBog.Web.Pages
                     && ModelState.GetFieldValidationState("Student.Description") == ModelValidationState.Valid)
                 {
                     Student updatedStudent = new Student(Convert.ToInt32(HttpContext.Session.GetInt32("Id")), Student.Name, oldStudent.Image, Student.Description, Student.Email, Student.Speciality, oldStudent.ClassId, Student.EndDate, oldStudent.Password);
-                    bool test = await _service.UpdateStudentAsync(updatedStudent);
+                    await _service.UpdateStudentAsync(updatedStudent);
                     return Redirect("/Account");
                 }
             }

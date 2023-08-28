@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -21,8 +21,6 @@ namespace SBO.BlaaBog.Domain.Entities
 
         private List<Student>? _students;
         public List<Student>? Students { get { return _students; } set { _students = value; } }
-
-        public dynamic Dynamic { get; set; }
 
         public Class(int? id, DateOnly startDate, string token) 
         {

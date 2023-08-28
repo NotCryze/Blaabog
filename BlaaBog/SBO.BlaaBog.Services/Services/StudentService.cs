@@ -88,9 +88,9 @@ namespace SBO.BlaaBog.Services.Services
         /// </summary>
         /// <param name="class"></param>
         /// <returns>List<Student> if successful, null if not.</returns>
-        public async Task<List<Student>?> GetStudentsByClassAsync(int @class)
+        public async Task<List<Student>?> GetStudentsByClassAsync(int id)
         {
-            return await _studentConnection.GetStudentsByClassAsync(@class);
+            return await _studentConnection.GetStudentsByClassAsync(id);
         }
 
         #endregion

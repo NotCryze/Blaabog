@@ -7,6 +7,9 @@ namespace SBO.BlaaBog.Web.DTO
 {
     public class StudentAccountDTO
     {
+
+        public int? Id { get; set; }
+
         [Required]
         [StringLength(100)]
         public string? Name { get; set; }
@@ -23,8 +26,9 @@ namespace SBO.BlaaBog.Web.DTO
         [Required]
         public Specialities? Speciality { get; set; }
 
-        [Required]
         [DataType(DataType.Date)]
         public DateOnly? EndDate { get; set; }
+
+        public List<SelectListItem> SpecialitiesList { get; set; }
     }
 }

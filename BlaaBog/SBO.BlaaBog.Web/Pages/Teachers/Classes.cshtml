@@ -1,0 +1,128 @@
+﻿@page
+@using Microsoft.AspNetCore.Mvc.ModelBinding;
+@using SBO.BlaaBog.Domain.Entities;
+@model SBO.BlaaBog.Web.Pages.Teachers.ClassesModel
+@{
+    ViewData["Title"] = "Classes";
+}
+
+<div class="row mb-3">
+    <div class="col d-flex justify-content-end">
+        <button class="btn btn-primary float-right" data-bs-toggle="modal" data-bs-target="#addModal"><i class="fa-solid fa-plus fa-fw"></i></button>
+    </div>
+</div>
+<div>
+    <table id="classes" class="table table-striped ">
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>Name</th>
+                <th>Start Date</th>
+                <th>Token</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (Class classes in Model.Classes)
+            {
+                <tr>
+                    <td>@classes.Id</td>
+                    <td>@classes.Name</td>
+                    <td>@classes.StartDate</td>
+                    <td>@classes.Token</td>
+                    <td class="d-flex justify-content-end">
+                        <button class="btn btn-outline-primary me-2" data-bs-toggle="modal" data-bs-target="#edit-@classes.Id-Modal"><i class="fa-solid fa-pen fa-fw"></i></button>
+                        <form method="post" asp-page-handler="DeleteClass" asp-route-id="@classes.Id">
+                            <button type="submit" class="btn btn-outline-danger"><i class="fa-solid fa-trash-can fa-fw"></i></button>
+                        </form>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+<div class="modal fade" id="addModal" tabindex="-1" aria-labelledby="addModal" aria-hidden="false">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <form id="add" name="add" method="post" asp-page-handler="AddClass">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="addModal">Add Class</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label class="form-label">Start Date</label>
+                        <input asp-for="StartDate" type="date" class="form-control @(ModelState.GetFieldValidationState("StartDate") == ModelValidationState.Invalid ? "is-invalid" : ModelState.GetValidationState("Start") == ModelValidationState.Valid ? "is-valid" : "")" required />
+                        <span asp-validation-for="StartDate" class="invalid-feedback w-100 text-center"></span>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="reset" class="btn btn-danger" data-bs-dismiss="modal"><i class="fa-solid fa-xmark fa-fw"></i></button>
+                    <button type="submit" class="btn btn-success"><i class="fa-solid fa-check fa-fw"></i></button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts{
+    @if (ModelState.GetFieldValidationState("StartDate") == ModelValidationState.Invalid)
+    {
+        <script>
+            const addModal = new bootstrap.Modal('#addModal')
+            addModal.show();
+        </script>
+    }
+
+    @foreach (Class classes in Model.Classes)
+    {
+        <div class="modal fade" id="edit-@classes.Id-Modal" tabindex="-1" aria-labelledby="edit-@classes.Id-Modal" aria-hidden="false">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <form id="edit" name="edit" method="post" asp-page-handler="EditClass" asp-route-id="@classes.Id">
+                        <div class="modal-header">
+                            <h1 class="modal-title fs-5" id="edit-@classes.Id-Modal">Edit Class</h1>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="mb-3">
+                                <label class="form-label">Start Date</label>
+                                <input asp-for="EditStartDate" type="date" value="@classes.StartDate.ToString("yyyy-MM-dd")" class="form-control @(ModelState.GetFieldValidationState("EditStartDate") == ModelValidationState.Invalid ? "is-invalid" : ModelState.GetValidationState("EditStartDate") == ModelValidationState.Valid ? "is-valid" : "")" required />
+                                <span asp-validation-for="EditStartDate" class="invalid-feedback w-100 text-center"></span>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="reset" class="btn btn-danger" data-bs-dismiss="modal"><i class="fa-solid fa-xmark fa-fw"></i></button>
+                            <button type="submit" class="btn btn-success"><i class="fa-solid fa-check fa-fw"></i></button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    }
+
+    <script>
+        new DataTable(
+            '#classes',
+            {
+                "columnDefs": [
+                    {
+                        "orderable": false,
+                        "targets": -1
+                    },
+                    {
+                        "orderable": true,
+                        "targets": 0
+                    }
+                ],
+                "order": [
+                    [
+                        0,
+                        "desc"
+                    ]
+                ]
+            }
+        );
+    </script>
+}

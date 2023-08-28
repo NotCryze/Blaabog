@@ -57,7 +57,7 @@ GO
 CREATE OR ALTER PROCEDURE spUpdateClass
 	@id INT,
 	@start_date DATE = NULL,
-	@token CHAR(5) = NULL
+	@token CHAR(6) = NULL
 AS
 BEGIN
 	UPDATE Classes
@@ -81,6 +81,18 @@ BEGIN
 	WHERE
 		id = @id
 		AND deleted = 0
+END
+GO
+
+
+-- Misc
+CREATE OR ALTER PROCEDURE spCheckClassToken
+	@token CHAR(6)
+AS
+BEGIN
+	SELECT COUNT(*)
+	FROM Classes
+	WHERE token = @token
 END
 GO
 
