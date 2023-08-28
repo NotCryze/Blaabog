@@ -19,11 +19,7 @@ namespace SBO.BlaaBog.Web.Middlewares
 
         public async Task Invoke(HttpContext httpContext)
         {
-            //httpContext.Items["User"] = _cache.Get(httpContext.Session.Id);
-            httpContext.Items["User"] = new Student(1, "Name", "default.png", "description", "email@email.com", null, 1, null, "$2a$11$TwxkzN1iqAnRMQ4IRjTbWO.DhhZPdA64EYBwa3VZOMQasmw44MdYW");
-            httpContext.Session.SetInt32("Id", 1);
-            httpContext.Session.SetString("Name", "Name");
-
+            httpContext.Items["User"] = _cache.Get(httpContext.Session.Id);
 
             PathString path = httpContext.Request.Path;
 
