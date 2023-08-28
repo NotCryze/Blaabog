@@ -20,7 +20,7 @@ namespace SBO.BlaaBog.Domain.Entities
         public string Token { get { return _token; } }
 
         private List<Student>? _students;
-        public List<Student>? Students { get { return _students; } }
+        public List<Student>? Students { get { return _students; } set { _students = value; } }
 
         public Class(int? id, DateOnly startDate, string token) 
         {
