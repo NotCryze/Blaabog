@@ -4,37 +4,45 @@
     ViewData["Title"] = "Home";
 }
 
+
 <div class="accordion" id="accordionExample">
     @foreach (var classItem in Model.Classes)
     {
         <div class="accordion-item">
-            <h2 class="accordion-header">
-                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapse@classItem.Id" aria-expanded="true" aria-controls="collapse@classItem.Id">
+            <h2 class="accordion-header" id="header-@classItem.Id">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse-@classItem.Id" aria-expanded="false" aria-controls="collapse-@classItem.Id">
                     @classItem.Name
                 </button>
             </h2>
-            <div id="collapse@classItem.Id" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
+            <div id="collapse-@classItem.Id" class="accordion-collapse collapse" aria-labelledby="heading-@classItem.Id" data-bs-parent="#accordionExample">
                 <div class="accordion-body">
-                    <ul>
+                    <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 row-cols-xl-4 row-cols-xxl-5">
                         @foreach (var student in classItem.Students)
                         {
-                            <div class="col-md-3 mb-3">
+                            <div class="col mb-3">
                                 <a class="text-decoration-none" href="/Students/@student.Id">
-                                    <div class="card" style="width: 18rem;">
-                                        <img style="aspect-ratio:1/1" src="~/img/@student.Image" class="img-fluid rounded card-img-top w-100 h-100" alt="...">
+                                    <div class="card">
+                                        <img src="~/img/@student.Image" style="aspect-ratio: 1/1" class="card-img-top" alt=".eeeee..">
                                         <div class="card-body">
-                                            <h5 class="card-title text-center text-nowrap overflow-hidden" style="text-overflow:ellipsis" data-bs-toggle="tooltip" data-bs-title="@student.Name">@student.Name</h5>
+                                            <h5 class="card-title text-center text-truncate" data-bs-toggle="tooltip" title="@student.Name">@student.Name</h5>
+                                            <div class="d-flex align-items-center justify-content-center">
+                                                <h6 class="card-subtitle text-truncate mb-0" data-bs-toggle="tooltip" title="@student.Email">@student.Email</h6>
+                                                <a href="mailto:@student.Email" class="ms-2"><i class="fa-solid fa-paper-plane"></i></a>
+                                            </div>
                                         </div>
                                     </div>
                                 </a>
                             </div>
-
                         }
-                    </ul>
+                    </div>
                 </div>
             </div>
         </div>
     }
+</div>
+
+
+
 
 </div>
 @section Scripts{
