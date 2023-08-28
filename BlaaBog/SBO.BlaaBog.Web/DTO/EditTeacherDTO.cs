@@ -2,12 +2,8 @@
 
 namespace SBO.BlaaBog.Web.DTO
 {
-    public class RegisterDTO
+    public class EditTeacherDTO
     {
-        [Required]
-        [StringLength(6, MinimumLength = 6)]
-        public string Token { get; set; }
-
         [Required]
         [EmailAddress]
         public string Email { get; set; }
@@ -15,6 +11,10 @@ namespace SBO.BlaaBog.Web.DTO
         [Required]
         [StringLength(100, MinimumLength = 4)]
         public string Name { get; set; }
+
+        [Required]
+        [Range(1, 2, ErrorMessage = "Please select a valid option")]
+        public bool Admin { get; set; }
 
         [Required]
         [StringLength(512, MinimumLength = 4)]

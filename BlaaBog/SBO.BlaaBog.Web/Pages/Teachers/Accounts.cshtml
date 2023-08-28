@@ -3,7 +3,7 @@
 @using SBO.BlaaBog.Domain.Entities;
 @model SBO.BlaaBog.Web.Pages.Teachers.AccountsModel
 @{
-    ViewData["Title"] = "Accounts";
+    ViewData["Title"] = "Teachers";
 }
 
 
@@ -12,6 +12,7 @@
         <button class="btn btn-primary float-right" data-bs-toggle="modal" data-bs-target="#create-account-modal"><i class="fa-solid fa-plus fa-fw"></i></button>
     </div>
 </div>
+
 <div>
     <table id="accounts" class="table table-striped">
         <thead>
@@ -32,6 +33,48 @@
                     <td>@teacher.Email</td>
                     <td>@teacher.Admin</td>
                     <td class="d-flex justify-content-end">
+
+                        <div class="modal fade" id="edit-@teacher.Id-modal" tabindex="-1" aria-labelledby="edit-@teacher.Id-modal" aria-hidden="false">
+                            <div class="modal-dialog modal-dialog-centered">
+                                <div class="modal-content">
+                                    <form method="post" asp-page-handler="Edit" asp-route-id="@teacher.Id">
+                                        <div class="modal-header">
+                                            <h1 class="modal-title fs-5">Edit Teacher</h1>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <div class="mb-3">
+                                                <div class="mb-3">
+                                                    <label asp-for="EditAccount.Name" class="form-label">Name</label>
+                                                    <input type="text" value="@teacher.Name" asp-for="EditAccount.Name" class="form-control @(ModelState.GetFieldValidationState("EditAccount.Name") == ModelValidationState.Invalid ? "is-invalid" : ModelState.GetValidationState("EditAccount.Name") == ModelValidationState.Valid ? "is-valid" : "")" placeholder="Name" required>
+                                                    <span asp-validation-for="EditAccount.Name" class="invalid-feedback"></span>
+                                                </div>
+                                                <div class="mb-3">
+                                                    <label asp-for="EditAccount.Email" class="form-label">Email</label>
+                                                    <input type="email" value="@teacher.Email" asp-for="EditAccount.Email" class="form-control @(ModelState.GetFieldValidationState("EditAccount.Email") == ModelValidationState.Invalid ? "is-invalid" : ModelState.GetValidationState("EditAccount.Email") == ModelValidationState.Valid ? "is-valid" : "")" placeholder="Email" required>
+                                                    <span asp-validation-for="EditAccount.Email" class="invalid-feedback"></span>
+                                                </div>
+                                                <div class="mb-3">
+                                                    <label class="form-label">Permissions</label>
+                                                    <div class="form-check">
+                                                        <input type="checkbox" asp-for="EditAccount.Admin" value="true" checked="@teacher.Admin" class="form-check-input @(ModelState.GetFieldValidationState("EditAccount.Email") == ModelValidationState.Invalid ? "is-invalid" : ModelState.GetValidationState("EditAccount.Email") == ModelValidationState.Valid ? "is-valid" : "")">
+                                                        <label asp-for="EditAccount.Admin" class="form-check-label">
+                                                            Admin
+                                                        </label>
+                                                        <span asp-validation-for="EditAccount.Admin" class="invalid-feedback"></span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="reset" class="btn btn-danger" data-bs-dismiss="modal"><i class="fa-solid fa-xmark fa-fw"></i></button>
+                                            <button type="submit" class="btn btn-success"><i class="fa-solid fa-check fa-fw"></i></button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+
                         <button class="btn btn-outline-primary me-2" data-bs-toggle="modal" data-bs-target="#edit-@teacher.Id-modal"><i class="fa-solid fa-pen fa-fw"></i></button>
                         <form method="post" asp-page-handler="Delete" asp-route-id="@teacher.Id">
                             <button type="submit" class="btn btn-outline-danger"><i class="fa-solid fa-trash-can fa-fw"></i></button>
@@ -86,45 +129,13 @@
 </div>
 
 
-
-@foreach (Teacher teacher in Model.Teachers)
-{
-    <div class="modal fade" id="edit-@teacher.Id-modal" tabindex="-1" aria-labelledby="edit-@teacher.Id-modal" aria-hidden="false">
-        <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content">
-                <form method="post" asp-page-handler="Edit" asp-route-id="@teacher.Id">
-                    <div class="modal-header">
-                        <h1 class="modal-title fs-5">Edit Teacher</h1>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body">
-                        <div class="mb-3">
-                            <div class="mb-3">
-                                <label for="name" class="form-label">Name</label>
-                                <input type="text" value="@teacher.Name" asp-for="EditAccount.Name" class="form-control @(ModelState.GetFieldValidationState("EditAccount.Name") == ModelValidationState.Invalid ? "is-invalid" : ModelState.GetValidationState("EditAccount.Name") == ModelValidationState.Valid ? "is-valid" : "")" id="name" placeholder="Name" required>
-                                <span asp-validation-for="EditAccount.Name" class="invalid-feedback"></span>
-                            </div>
-                            <div class="mb-3">
-                                <label for="email" class="form-label">Email</label>
-                                <input type="email" value="@teacher.Email" asp-for="EditAccount.Email" class="form-control @(ModelState.GetFieldValidationState("EditAccount.Email") == ModelValidationState.Invalid ? "is-invalid" : ModelState.GetValidationState("EditAccount.Email") == ModelValidationState.Valid ? "is-valid" : "")" id="email" placeholder="Email" required>
-                                <span asp-validation-for="EditAccount.Email" class="invalid-feedback"></span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="reset" class="btn btn-danger" data-bs-dismiss="modal"><i class="fa-solid fa-xmark fa-fw"></i></button>
-                        <button type="submit" class="btn btn-success"><i class="fa-solid fa-check fa-fw"></i></button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
-}
-
-
-
 @section Scripts {
-    @if (ModelState.GetFieldValidationState("StartDate") == ModelValidationState.Invalid)
+    @if (
+        ModelState.GetFieldValidationState("CreateAccount.Name") == ModelValidationState.Invalid ||
+        ModelState.GetFieldValidationState("CreateAccount.Email") == ModelValidationState.Invalid ||
+        ModelState.GetFieldValidationState("CreateAccount.Password") == ModelValidationState.Invalid ||
+        ModelState.GetFieldValidationState("CreateAccount.ConfirmPassword") == ModelValidationState.Invalid
+    )
     {
         <script>
             const createAccountModal = new bootstrap.Modal('#create-account-modal')

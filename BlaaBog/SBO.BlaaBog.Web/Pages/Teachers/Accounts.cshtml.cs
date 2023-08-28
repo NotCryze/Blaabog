@@ -46,7 +46,7 @@ namespace SBO.BlaaBog.Web.Pages.Teachers
 
                 if (teacherFound != null)
                 {
-                    ModelState.AddModelError("Register.Email", "Email already in use");
+                    ModelState.AddModelError("CreateAccount.Email", "Email already in use");
                 }
 
                 if (
@@ -85,13 +85,36 @@ namespace SBO.BlaaBog.Web.Pages.Teachers
 
 
         [BindProperty]
-        public RegisterDTO EditAccount { get; set; }
+        public EditTeacherDTO EditAccount { get; set; }
+        
+        public int EditAccountId { get; set; }
+
         public async Task<IActionResult> OnPostEditAsync(int id)
         {
             try
             {
+                EditAccountId = id;
+
+                Teacher? teacherFound = await _teacherService.GetTeacherByEmailAsync(CreateAccount.Email);
+
+                if (teacherFound != null)
+                {
+                    ModelState.AddModelError("EditAccount.Email", "Email already in use");
+                }
+
+                if (
+                    ModelState.GetFieldValidationState("EditAccount.Name") == ModelValidationState.Invalid ||
+                    ModelState.GetFieldValidationState("EditAccount.Email") == ModelValidationState.Invalid ||
+                    ModelState.GetFieldValidationState("EditAccount.Admin") == ModelValidationState.Invalid
+                    )
+                {
+                    return await OnGetAsync();
+                }
+
                 Teacher teacher = await _teacherService.GetTeacherAsync(id);
-                Teacher newTeacher = new Teacher(id, EditAccount.Name, EditAccount.Email, teacher.Password, teacher.Admin);
+                Teacher newTeacher = new Teacher(id, EditAccount.Name, EditAccount.Email, teacher.Password, EditAccount.Admin);
+
+                await Console.Out.WriteLineAsync(EditAccount.Admin.ToString());
 
                 bool status = await _teacherService.UpdateTeacherAsync(newTeacher);
 
