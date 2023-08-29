@@ -41,7 +41,7 @@
                         <ul class="dropdown-menu">
                             @if (Context.Items["User"] is Student)
                             {
-                                <li><a class="dropdown-item" asp-page="/Student/@(Context.Session.GetInt32("Id"))">Profile</a></li>
+                                <li><a class="dropdown-item" asp-page="/Students" asp-route-id="@(Context.Session.GetInt32("Id"))">Profile</a></li>
                                 <li><a class="dropdown-item" asp-page="/Account">Account</a></li>
                             }
                             @if (Context.Items["User"] is Teacher)

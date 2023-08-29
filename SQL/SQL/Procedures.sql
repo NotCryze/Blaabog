@@ -443,7 +443,6 @@ BEGIN
 	FROM Comments
 	WHERE
 		fk_author = @id
-		AND approved = 1
 		AND deleted = 0
 END
 GO
@@ -456,7 +455,6 @@ BEGIN
 	FROM Comments
 	WHERE
 		fk_subject = @id
-		AND approved = 1
 		AND deleted = 0
 END
 GO
