@@ -1,5 +1,122 @@
 ﻿@page "{id:int}"
+@using Microsoft.AspNetCore.Mvc.ModelBinding;
+@using SBO.BlaaBog.Domain.Entities;
 @model SBO.BlaaBog.Web.Pages.StudentsModel
 @{
-ViewData["Title"] = "";
+    ViewData["Title"] = Model.Student.Name;
 }
+
+<div class="row">
+    <div class="col-md-4">
+        <div class="card">
+            <div class="card-body">
+                <div class="mb-3">
+                    <img style="aspect-ratio:1/1;" class="img-fluid rounded w-100 h-100" src="~/img/@Model.Student.Image" />
+                </div>
+                <div class="mb-3">
+                    <h1 class="card-title">@Model.Student.Name</h1>
+                    <h5 class="card-subtitle">@Model.Student.Speciality</h5>
+                    <span class="text-muted">Graduated @Model.Student.EndDate</span>
+                </div>
+                <div class="mb-3 overflow-y-hidden overflow-y-scroll" style="max-height:250px">
+                    <p class="card-text">@Model.Student.Description</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-8">
+        <div class="card border-0 h-100" id="comments">
+            <h1 class="card-title text-center">Comments</h1>
+            <div class="card-body">
+                <form method="post">
+                    <div class="mb-3 input-group">
+                        <input asp-for="Comment.Content" type="text" class="form-control" placeholder="Type a comment..." autocomplete="off"/>
+                        <button type="submit" class="btn btn-outline-primary">Post</button>
+                    </div>
+                </form>
+
+                @if (Model.Comments != null)
+                {
+                    <ul class="list-group overflow-y-scroll" style="max-height:60vh">
+                        @foreach (Comment comment in Model.DisplayedComments)
+                        {
+                            <li class="list-group-item">
+                                <div class="row" style="padding:10px;">
+                                    <div class="col-md-1">
+                                        <div class="me-3" style="width:50px; height:50px; border-radius: 50%; overflow: hidden;">
+                                            <img class="w-100 h-100 object-fit-cover" src="~/img/@comment.Author.Image">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-11">
+                                        <div class="mw-100" style="flex:1;">
+                                            <h6 class="mb-1">@comment.Author.Name</h6>
+                                            <p class=" ">@comment.Content</p>
+                                            <span class="text-muted float-end">@comment.CreatedAt.AddHours(2)</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </li>
+                        }
+                    </ul>
+                }
+            </div>
+            @if (Model.Comments.Count > Model.PageItems)
+            {
+                <nav>
+                    <ul class="pagination justify-content-center">
+                        <li class="page-item @(Model.CurrentPage == 1 ? "disabled" : "")">
+                            <a class="page-link" href="?page=1#comments" tabindex="-1" aria-disabled="true"><i class="fa-solid fa-angles-left fa-fw"></i></a>
+                        </li>
+                        <li class="page-item @(Model.CurrentPage == 1 ? "disabled" : "")">
+                            <a class="page-link" href="?page=@(Model.CurrentPage - 1)#comments" tabindex="-1" aria-disabled="true"><i class="fa-solid fa-angle-left fa-fw"></i></a>
+                        </li>
+                        @for (int i = Model.StartPage; i <= Model.EndPage; i++)
+                        {
+                            <li class="page-item @(i == Model.CurrentPage ? "active" : "")">
+                                <a class="page-link" href="?page=@i#comments">@i</a>
+                            </li>
+                        }
+                        <li class="page-item @(Model.CurrentPage == Model.TotalPage || Model.CurrentPage > Model.TotalPage  ? "disabled" : "")">
+                            <a class="page-link" href="?page=@(Model.CurrentPage + 1)#comments"><i class="fa-solid fa-angle-right fa-fw"></i></a>
+                        </li>
+                        <li class="page-item @(Model.CurrentPage == Model.TotalPage || Model.CurrentPage > Model.TotalPage  ? "disabled" : "")">
+                            <a class="page-link" href="?page=@Model.TotalPage#comments"><i class="fa-solid fa-angles-right fa-fw"></i></a>
+                        </li>
+                    </ul>
+                </nav>
+            }
+        </div>
+    </div>
+</div>
+
+
+<style>
+    div::-webkit-scrollbar {
+        width: 5px;
+    }
+
+    div::-webkit-scrollbar-thumb {
+        border-radius: 5px;
+        border: 3px solid;
+    }
+
+    div::-webkit-scrollbar-track {
+        background: gray;
+        border-radius: 5px;
+    }
+
+    ul::-webkit-scrollbar {
+        width: 5px;
+    }
+
+    ul::-webkit-scrollbar-thumb {
+        border-radius: 5px;
+        border: 3px solid;
+    }
+
+    ul::-webkit-scrollbar-track {
+        background: gray;
+        border-radius: 5px;
+    }
+</style>
+
