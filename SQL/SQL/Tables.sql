@@ -11,6 +11,7 @@ USE BlaaBog;
 GO
 
 
+
 DROP TABLE IF EXISTS Classes;
 CREATE TABLE Classes(
     id INT PRIMARY KEY IDENTITY(1, 1) NOT NULL,
@@ -19,9 +20,6 @@ CREATE TABLE Classes(
     deleted BIT NOT NULL DEFAULT 0
 );
 GO
-
-INSERT INTO Classes(start_date, token)
-VALUES (GETDATE(), '123456')
 
 
 DROP TABLE IF EXISTS Students;
@@ -38,9 +36,6 @@ CREATE TABLE Students(
     deleted BIT NOT NULL DEFAULT 0
 );
 GO
-
-INSERT INTO Students(name, email, fk_class, password, end_date)
-VALUES ('Student', 'student@example.com', 1, '$2a$11$TwxkzN1iqAnRMQ4IRjTbWO.DhhZPdA64EYBwa3VZOMQasmw44MdYW', GETDATE())
 
 
 DROP TABLE IF EXISTS StudentsPendingChanges;
@@ -63,10 +58,6 @@ CREATE TABLE Teachers(
 	admin BIT NOT NULL DEFAULT 0,
     deleted BIT NOT NULL DEFAULT 0
 );
-GO
-
-INSERT INTO Teachers(name, email, admin, password)
-VALUES ('Teacher', 'teacher@example.com', 1, '$2a$11$TwxkzN1iqAnRMQ4IRjTbWO.DhhZPdA64EYBwa3VZOMQasmw44MdYW')
 GO
 
 
@@ -104,5 +95,15 @@ CREATE TABLE TeacherTokens(
 	created_at DATETIME NOT NULL DEFAULT GETUTCDATE(),
 	deleted BIT NOT NULL DEFAULT 0
 );
+GO
 
-INSERT INTO TeacherTokens(token) VALUES ('123456');
+
+INSERT INTO Classes(start_date, token)
+VALUES (GETDATE(), '123456')
+
+INSERT INTO Students(name, email, fk_class, password, end_date)
+VALUES ('Student', 'student@example.com', 1, '$2a$11$TwxkzN1iqAnRMQ4IRjTbWO.DhhZPdA64EYBwa3VZOMQasmw44MdYW', GETDATE())
+
+INSERT INTO Teachers(name, email, admin, password)
+VALUES ('Teacher', 'teacher@example.com', 1, '$2a$11$TwxkzN1iqAnRMQ4IRjTbWO.DhhZPdA64EYBwa3VZOMQasmw44MdYW')
+GO
