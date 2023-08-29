@@ -3,3 +3,51 @@
 @{
     ViewData["Title"] = "Home";
 }
+
+
+<div class="accordion" id="accordionExample">
+    @foreach (var classItem in Model.Classes)
+    {
+        <div class="accordion-item">
+            <h2 class="accordion-header" id="header-@classItem.Id">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse-@classItem.Id" aria-expanded="false" aria-controls="collapse-@classItem.Id">
+                    @classItem.Name
+                </button>
+            </h2>
+            <div id="collapse-@classItem.Id" class="accordion-collapse collapse" aria-labelledby="heading-@classItem.Id" data-bs-parent="#accordionExample">
+                <div class="accordion-body">
+                    <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 row-cols-xl-4 row-cols-xxl-5">
+                        @foreach (var student in classItem.Students)
+                        {
+                            <div class="col mb-3">
+                                <a class="text-decoration-none" href="/Students/@student.Id">
+                                    <div class="card">
+                                        <img src="~/img/@student.Image" style="aspect-ratio: 1/1" class="card-img-top" alt=".eeeee..">
+                                        <div class="card-body">
+                                            <h5 class="card-title text-center text-truncate" data-bs-toggle="tooltip" title="@student.Name">@student.Name</h5>
+                                            <div class="d-flex align-items-center justify-content-center">
+                                                <h6 class="card-subtitle text-truncate mb-0" data-bs-toggle="tooltip" title="@student.Email">@student.Email</h6>
+                                                <a href="mailto:@student.Email" class="ms-2"><i class="fa-solid fa-paper-plane"></i></a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </a>
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
+
+
+
+</div>
+@section Scripts{
+    <script>
+        const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]')
+        const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl))
+    </script>
+}
