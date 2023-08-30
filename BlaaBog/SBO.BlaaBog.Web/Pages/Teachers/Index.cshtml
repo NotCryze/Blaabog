@@ -1,4 +1,288 @@
 ﻿@page
 @model SBO.BlaaBog.Web.Pages.Teachers.IndexModel
 @{
+    ViewData["Title"] = "Home";
+}
+
+<div class="row g-3 mb-3">
+    <div class="col-sm-6 col-md-3">
+        <div class="card">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-auto me-auto">
+                        <h6 class="text-muted">Total Classes</h6>
+                        <h1>27</h1>
+                    </div>
+                    <div class="col-auto d-flex justify-content-center align-items-center">
+                        <i class="fa-solid fa-users fa-2xl fa-fw"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-sm-6 col-md-3">
+        <div class="card">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-auto me-auto">
+                        <h6 class="text-muted">Total Users</h6>
+                        <h1>743</h1>
+                    </div>
+                    <div class="col-auto d-flex justify-content-center align-items-center">
+                        <i class="fa-solid fa-user fa-2xl fa-fw"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-sm-6 col-md-3">
+        <div class="card">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-auto me-auto">
+                        <h6 class="text-muted">Total Comments</h6>
+                        <h1>4458</h1>
+                    </div>
+                    <div class="col-auto d-flex justify-content-center align-items-center">
+                        <i class="fa-solid fa-comments fa-2xl fa-fw"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-sm-6 col-md-3">
+        <div class="card">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-auto me-auto">
+                        <h6 class="text-muted">New Comments</h6>
+                        <h1>27</h1>
+                    </div>
+                    <div class="col-auto d-flex justify-content-center align-items-center">
+                        <i class="fa-solid fa-comments fa-2xl fa-fw"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row g-3 mb-3">
+    <div class="col-md-9">
+        <div class="card h-100">
+            <div class="card-body h-100">
+                <div class="h-100">
+                    <canvas id="numbers-line"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-3">
+        <div class="card h-100">
+            <div class="card-body h-100">
+                <canvas id="specialities-pie"></canvas>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row g-3">
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-body">
+                <h5><i class="fa-solid fa-users fa-fw"></i> Latest Classes</h5>
+
+                <table class="table table-striped table-hover">
+                    <thead>
+                        <tr>
+                            <th scope="col">#</th>
+                            <th scope="col">Start Date</th>
+                            <th scope="col">Token</th>
+                            <th scope="col">Students</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        <tr>
+                            <th scope="row">27</th>
+                            <td>2023-08-08</td>
+                            <td>123456</td>
+                            <td>33</td>
+                        </tr>
+
+                        <tr>
+                            <th scope="row">26</th>
+                            <td>2023-07-07</td>
+                            <td>234567</td>
+                            <td>27</td>
+                        </tr>
+
+                        <tr>
+                            <th scope="row">25</th>
+                            <td>2023-06-06</td>
+                            <td>345678</td>
+                            <td>23</td>
+                        </tr>
+
+                        <tr>
+                            <th scope="row">24</th>
+                            <td>2023-05-05</td>
+                            <td>456789</td>
+                            <td>25</td>
+                        </tr>
+
+                        <tr>
+                            <th scope="row">23</th>
+                            <td>2023-04-04</td>
+                            <td>901234</td>
+                            <td>30</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-body">
+                <h5><i class="fa-solid fa-user fa-fw"></i> Latest Students</h5>
+
+                <table class="table table-striped table-hover">
+                    <thead>
+                        <tr>
+                            <th scope="col">#</th>
+                            <th scope="col">Name</th>
+                            <th scope="col">Speciality</th>
+                            <th scope="col">End Date</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        <tr>
+                            <th scope="row">4458</th>
+                            <td>Benjamin Skorstengaard</td>
+                            <td>Programmer</td>
+                            <td>2027-07-26</td>
+                        </tr>
+
+                        <tr>
+                            <th scope="row">4457</th>
+                            <td>Sammy Schröder</td>
+                            <td>Programmer</td>
+                            <td>2027-07-26</td>
+                        </tr>
+
+                        <tr>
+                            <th scope="row">4456</th>
+                            <td>Thor Christensen</td>
+                            <td>IT Supporter</td>
+                            <td>2027-07-26</td>
+                        </tr>
+
+                        <tr>
+                            <th scope="row">4455</th>
+                            <td>Martin Andersen</td>
+                            <td>Infrastructure</td>
+                            <td>2027-07-26</td>
+                        </tr>
+
+                        <tr>
+                            <th scope="row">4454</th>
+                            <td>Jens Madsen</td>
+                            <td>Infrastructure</td>
+                            <td>2027-07-26</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@section Scripts {
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.umd.js" integrity="sha512-6HrPqAvK+lZElIZ4mZ64fyxIBTsaX5zAFZg2V/2WT+iKPrFzTzvx6QAsLW2OaLwobhMYBog/+bvmIEEGXi0p1w==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+    <script type="text/javascript">
+        const lineChart = document.getElementById('numbers-line');
+
+        new Chart(lineChart, {
+            type: "line",
+            data: {
+                labels: ["January", "February", "March", "April", "May", "June", "July"],
+                datasets: [{
+                    label: "New Users",
+                    data: [65, 59, 80, 81, 56, 55, 40],
+                    fill: false,
+                    borderColor: "rgb(75, 192, 192)",
+                    tension: 0.1
+                },
+                {
+                    label: "New Classes",
+                    data: [25, 49, 30, 51, 86, 35, 20],
+                    fill: false,
+                    borderColor: "rgb(255, 99, 132)",
+                    tension: 0.1
+                },
+                {
+                    label: "New Comments",
+                    data: [15, 29, 60, 31, 56, 65, 20],
+                    fill: false,
+                    borderColor: "rgb(54, 162, 235)",
+                    tension: 0.1
+                }]
+            },
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                },
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        display: true
+                    }
+                }
+            }
+        });
+
+        const specialityChart = document.getElementById('specialities-pie');
+
+        new Chart(specialityChart, {
+            type: 'pie',
+            data: {
+                labels: ["IT Supporter  ", "Infrastructure", "Programmer  ", "Not Selected"],
+                datasets: [{
+                    label: "Specialities",
+                    data: [300, 50, 100, 50],
+                    backgroundColor: [
+                        '#0D6EFD',
+                        '#198754',
+                        '#FFC107',
+                        '#AEB2B6'
+                    ]
+                }]
+            },
+            options: {
+                title: {
+                    display: true,
+                    text: 'Specialities'
+                },
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        display: true
+                    }
+                }
+            }
+        });
+    </script>
 }

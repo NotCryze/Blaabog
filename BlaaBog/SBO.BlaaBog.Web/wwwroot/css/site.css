@@ -17,10 +17,6 @@ html {
     min-height: 100%;
 }
 
-body {
-    margin-bottom: 60px;
-}
-
 /* Login CSS */
 .card-fix-top {
     border-top: unset;
