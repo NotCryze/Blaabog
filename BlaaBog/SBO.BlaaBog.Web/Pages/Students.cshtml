@@ -37,7 +37,7 @@
 
                 @if (Model.Comments != null)
                 {
-                    <ul class="list-group overflow-y-auto" style="max-height:60vh; height:60vh;">
+                    <ul class="list-group overflow-y-auto border-1" style="max-height:60vh; height:60vh;">
                         @foreach (Comment comment in Model.DisplayedComments)
                         {
                             <li class="list-group-item">
@@ -55,16 +55,17 @@
                                                 </div>
                                                 <div class="col-6">
                                                     <div class="float-end">
+                                                        <button class="report-button btn btn-outline-warning btn-sm border-0" data-bs-toggle="modal" data-bs-target="#report-@comment.Id"><i class="fa-solid fa-flag fa-fw"></i></button>
                                                         @if (comment.AuthorId == HttpContext.Session.GetInt32("Id"))
                                                         {
-                                                            <form asp-page-handler="DeleteComment" asp-route-delId="@comment.Id">
+                                                            <form class="d-inline-block" method="post" asp-page-handler="DeleteComment" asp-route-delId="@comment.Id">
                                                                 <button type="submit" class="btn btn-outline-danger btn-sm border-0 delete-button"><i class="fa-solid fa-trash fa-fw"></i></button>
                                                             </form>
                                                         }
                                                     </div>
                                                 </div>
                                             </div>
-                                            <p class=" ">@comment.Content</p>
+                                            <p>@comment.Content</p>
                                             <span class="text-muted float-end">@comment.CreatedAt.AddHours(2)</span>
                                         </div>
                                     </div>
@@ -103,40 +104,75 @@
     </div>
 </div>
 
+@foreach (Comment comment in Model.DisplayedComments)
+{
+    <div class="modal fade" id="report-@comment.Id" data-bs-backdrop="static" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <form method="post" asp-page-handler="ReportComment" asp-route-comment="@comment.Id" onreset="hideOther(@comment.Id)">
+                <div class="modal-content" style="width:500px">
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-5">Report Comment</h1>
+                        <button type="reset" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="mb-3">
+                            <h6>Comment</h6>
+                            <p class="mw-100 text-break overflow-y-auto" style="max-height: 100px">@comment.Content</p>
+                        </div>
+                        <div class="mb-3">
+                            <h6>Reason</h6>
+                            <select asp-for="Report.Reason" class="form-select" asp-items="Model.Reasons" onchange="toggleOther(this, @comment.Id)" required>
+                                <option selected disabled hidden readonly value="">Select a reason</option>
+                            </select>
+                        </div>
+                        <div class="mb-3" id="other-@comment.Id" hidden>
+                            <textarea asp-for="CustomReason" class="form-control" style="resize:none" type="text" rows="3" placeholder="Type your reason..."></textarea>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="reset" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                        <button type="submit" class="btn btn-primary"><i class="fa-solid fa-paper-plane fa-fw"></i></button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+}
 
 <style>
-    div::-webkit-scrollbar {
+    div::-webkit-scrollbar, ul::-webkit-scrollbar, p::-webkit-scrollbar {
         width: 5px;
     }
 
-    div::-webkit-scrollbar-thumb {
+    div::-webkit-scrollbar-thumb, ul::-webkit-scrollbar-thumb, p::-webkit-scrollbar-thumb {
         border-radius: 5px;
         border: 3px solid;
     }
 
-    div::-webkit-scrollbar-track {
+    div::-webkit-scrollbar-track, ul::-webkit-scrollbar-track, p::-webkit-scrollbar-track {
         background: gray;
         border-radius: 5px;
     }
 
-    ul::-webkit-scrollbar {
-        width: 5px;
-    }
-
-    ul::-webkit-scrollbar-thumb {
-        border-radius: 5px;
-        border: 3px solid;
-    }
-
-    ul::-webkit-scrollbar-track {
-        background: gray;
-        border-radius: 5px;
-    }
 </style>
 
-<style>
-    .delete-button:hover {
-        color: red;
-        background: none;
-    }
-</style>
+@section Scripts{
+
+    <script>
+        function toggleOther(select, id) {
+            let other = document.getElementById("other-" + id);
+            if (select.value == "") {
+                other.hidden = false;
+            }
+            else {
+                other.hidden = true;
+            }
+        }
+
+        function hideOther(id){
+            document.getElementById("other-" + id).hidden = true;
+        }
+    </script>
+}
+
+
