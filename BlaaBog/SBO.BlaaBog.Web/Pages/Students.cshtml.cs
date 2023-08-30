@@ -113,7 +113,21 @@ namespace SBO.BlaaBog.Web.Pages
 
                 await _commentService.CreateCommentAsync(comment);
             }
-            return Redirect(HttpContext.Request.Path);
+            return Redirect(HttpContext.Request.Path + "#comments");
+        }
+
+        #endregion
+
+        #region Delete Comment
+
+        public async Task<IActionResult> OnPostDeleteCommentAsync(int delId)
+        {
+            Comment comment = await _commentService.GetCommentAsync(delId);
+            if (comment != null)
+            {
+                await _commentService.DeleteCommentAsync(delId);
+            }
+            return Redirect(HttpContext.Request.Path + "#comments");
         }
 
         #endregion
