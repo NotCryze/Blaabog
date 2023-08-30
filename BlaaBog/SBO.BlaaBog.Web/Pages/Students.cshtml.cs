@@ -38,8 +38,9 @@ namespace SBO.BlaaBog.Web.Pages
         public int StartPage { 
             get 
             {
-                int startPage = CurrentPage < 3 ? 1 : CurrentPage - 2;
-                startPage = (TotalPage - startPage) < 4 ? (int)TotalPage - 4 : startPage;
+                int startPage = CurrentPage < 3 ? 1 : CurrentPage - 2; // Sets the start page to 1 if the current page is less than 3, otherwise it sets it to the current page - 2
+                startPage = (TotalPage - startPage) < 4 ? (int)TotalPage - 4 : startPage; // Sets the start page to the total page - 4 if the total page - start page is less than 4, otherwise it sets it to the start page
+                startPage = startPage < 1 ? 1 : startPage; // Sets the start page to 1 if the start page is less than 1
                 return startPage;
             }  
             set { }

@@ -7,8 +7,8 @@
 }
 
 <div class="row">
-    <div class="col-md-4">
-        <div class="card">
+    <div class="col-md-4 mb-3" style="max-height:83vh; height: 83vh">
+        <div class="card h-100">
             <div class="card-body">
                 <div class="mb-3">
                     <img style="aspect-ratio:1/1;" class="img-fluid rounded w-100 h-100" src="~/img/@Model.Student.Image" />
@@ -24,7 +24,7 @@
             </div>
         </div>
     </div>
-    <div class="col-md-8">
+    <div class="col-md-8" style="max-height:83vh; height: 83vh">
         <div class="card border-0 h-100" id="comments">
             <h1 class="card-title text-center">Comments</h1>
             <div class="card-body">
@@ -37,7 +37,7 @@
 
                 @if (Model.Comments != null)
                 {
-                    <ul class="list-group overflow-y-scroll" style="max-height:60vh">
+                    <ul class="list-group overflow-y-scroll" style="max-height:60vh; height:60vh;">
                         @foreach (Comment comment in Model.DisplayedComments)
                         {
                             <li class="list-group-item">
