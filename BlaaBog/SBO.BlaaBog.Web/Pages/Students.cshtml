@@ -129,7 +129,7 @@
                                 </select>
                             </div>
                             <div class="mb-3" id="other-@comment.Id" hidden>
-                                <textarea asp-for="CustomReason" class="form-control" style="resize:none" type="text" rows="3" placeholder="Type your reason..."></textarea>
+                                <input id="other-field-@comment.Id" asp-for="CustomReason" class="form-control" type="text" placeholder="Reason">
                             </div>
                         </div>
                         <div class="modal-footer">
@@ -175,16 +175,23 @@
     <script>
         function toggleOther(select, id) {
             let other = document.getElementById("other-" + id);
+            let otherField = document.getElementById("other-field-" + id);
             if (select.value == "") {
                 other.hidden = false;
+                otherField.setAttribute("required", "");
+                otherField.setAttribute("pattern", "\S(.*\S)?");
             }
             else {
                 other.hidden = true;
+                otherField.removeAttribute("required");
+                otherField.removeAttribute("pattern");
             }
         }
 
         function hideOther(id) {
             document.getElementById("other-" + id).hidden = true;
+            document.getElementById("other-field-" + id).removeAttribute("required");
+            document.getElementById("other-field-" + id).removeAttribute("pattern");
         }
     </script>
 }
