@@ -167,7 +167,7 @@ namespace SBO.BlaaBog.Web.Pages
                 await _reportService.CreateReportAsync(Report);
             }
 
-            return await OnGetAsync(id);
+            return Redirect(HttpContext.Request.Path + "#comments");
         }
 
         #endregion
