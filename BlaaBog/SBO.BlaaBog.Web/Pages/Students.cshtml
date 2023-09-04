@@ -129,7 +129,7 @@
                                 </select>
                             </div>
                             <div class="mb-3" id="other-@comment.Id" hidden>
-                                <input id="other-field-@comment.Id" asp-for="CustomReason" class="form-control" type="text" placeholder="Reason">
+                                <input id="other-field-@comment.Id" asp-for="CustomReason" class="form-control" type="text" placeholder="Reason" pattern="\S(.*\S)?">
                             </div>
                         </div>
                         <div class="modal-footer">
@@ -179,19 +179,16 @@
             if (select.value == "") {
                 other.hidden = false;
                 otherField.setAttribute("required", "");
-                otherField.setAttribute("pattern", "\S(.*\S)?");
             }
             else {
                 other.hidden = true;
                 otherField.removeAttribute("required");
-                otherField.removeAttribute("pattern");
             }
         }
 
         function hideOther(id) {
             document.getElementById("other-" + id).hidden = true;
             document.getElementById("other-field-" + id).removeAttribute("required");
-            document.getElementById("other-field-" + id).removeAttribute("pattern");
         }
     </script>
 }
