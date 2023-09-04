@@ -9,26 +9,18 @@ namespace SBO.BlaaBog.Domain.Entities
     public class Report
     {
         private int? _id;
-        public int? Id { get { return _id; } }
+        public int? Id { get { return _id; } set { _id = value; } }
 
         private int _commentId;
-        public int CommentId { get { return _commentId; } }
+        public int CommentId { get { return _commentId; } set { _commentId = value; } }
 
         private Comment _comment;
-        public Comment Comment { get { return _comment; } }
+        public Comment Comment { get { return _comment; } set { _comment = value; } }
 
         private string _reason;
-        public string Reason { get { return _reason; } }
+        public string Reason { get { return _reason; } set { _reason = value; } }
 
         private DateTime _createdAt;
-        public DateTime CreatedAt { get { return _createdAt; } }
-
-        public Report(int? id, int commentId, string reason, DateTime createdAt)
-        {
-            _id = id;
-            _commentId = commentId;
-            _reason = reason;
-            _createdAt = createdAt;
-        }
+        public DateTime CreatedAt { get { return _createdAt; } set { _createdAt = value; } }
     }
 }

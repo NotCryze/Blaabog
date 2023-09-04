@@ -1,9 +1,11 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using SBO.BlaaBog.Domain.Entities;
 using SBO.BlaaBog.Services.Services;
 using SBO.BlaaBog.Web.DTO;
+using System.ComponentModel.DataAnnotations;
 using System.Reflection;
 
 namespace SBO.BlaaBog.Web.Pages
@@ -13,12 +15,14 @@ namespace SBO.BlaaBog.Web.Pages
         private readonly StudentService _studentService;
         private readonly CommentService _commentService;
         private readonly ClassService _classService;
+        private readonly ReportService _reportService;
 
         public StudentsModel()
         {
             _studentService = new StudentService();
             _commentService = new CommentService();
             _classService = new ClassService();
+            _reportService = new ReportService();
         }
 
         public Student Student { get; set; }
@@ -28,24 +32,28 @@ namespace SBO.BlaaBog.Web.Pages
         #region Pagination
         public int PageItems { get; set; } = 5;
         public int CurrentPage { get; set; } = 1;
-        public double TotalPage {
+        public double TotalPage
+        {
             get
             {
-               return Math.Ceiling((double)Comments.Count / PageItems);
+                return Math.Ceiling((double)Comments.Count / PageItems);
             }
         }
 
-        public int StartPage { 
-            get 
+        public int StartPage
+        {
+            get
             {
-                int startPage = CurrentPage < 3 ? 1 : CurrentPage - 2;
-                startPage = (TotalPage - startPage) < 4 ? (int)TotalPage - 4 : startPage;
+                int startPage = CurrentPage < 3 ? 1 : CurrentPage - 2; // Sets the start page to 1 if the current page is less than 3, otherwise it sets it to the current page - 2
+                startPage = (TotalPage - startPage) < 4 ? (int)TotalPage - 4 : startPage; // Sets the start page to the total page - 4 if the total page - start page is less than 4, otherwise it sets it to the start page
+                startPage = startPage < 1 ? 1 : startPage; // Sets the start page to 1 if the start page is less than 1
                 return startPage;
-            }  
+            }
             set { }
         }
 
-        public int EndPage {
+        public int EndPage
+        {
             get
             {
                 int endPage = StartPage + 4;
@@ -65,6 +73,14 @@ namespace SBO.BlaaBog.Web.Pages
         }
 
         #endregion
+
+        public List<SelectListItem> Reasons { get; set; } = new()
+        {
+            new SelectListItem { Text = "Inappropriate" },
+            new SelectListItem { Text = "Hurtful" },
+            new SelectListItem { Text = "Spam" },
+            new SelectListItem { Text = "Other", Value = "" }
+        };
 
         public async Task<IActionResult> OnGetAsync(int id)
         {
@@ -112,7 +128,46 @@ namespace SBO.BlaaBog.Web.Pages
 
                 await _commentService.CreateCommentAsync(comment);
             }
-            return Redirect(HttpContext.Request.Path);
+            return Redirect(HttpContext.Request.Path + "#comments");
+        }
+
+        #endregion
+
+        #region Delete Comment
+
+        public async Task<IActionResult> OnPostDeleteCommentAsync(int delId)
+        {
+            Comment comment = await _commentService.GetCommentAsync(delId);
+            if (comment != null)
+            {
+                await _commentService.DeleteCommentAsync(delId);
+            }
+            return Redirect(HttpContext.Request.Path + "#comments");
+        }
+
+        #endregion
+
+        #region Report Comment
+
+        [BindProperty]
+        public Report Report { get; set; }
+
+        [BindProperty]
+        [MaxLength(250)]
+        public string CustomReason { get; set; }
+
+        public async Task<IActionResult> OnPostReportCommentAsync(int id, int comment)
+        {
+
+            Report.Reason = Report.Reason == null ? CustomReason : Report.Reason;
+            Report.CommentId = comment;
+
+            if (await _commentService.GetCommentAsync(comment) != null)
+            {
+                await _reportService.CreateReportAsync(Report);
+            }
+
+            return Redirect(HttpContext.Request.Path + "#comments");
         }
 
         #endregion
