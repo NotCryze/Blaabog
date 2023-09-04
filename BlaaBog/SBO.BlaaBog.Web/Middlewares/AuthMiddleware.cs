@@ -1,6 +1,5 @@
 ﻿using Microsoft.Extensions.Caching.Memory;
 using SBO.BlaaBog.Domain.Entities;
-using SBO.BlaaBog.Services.Services;
 
 namespace SBO.BlaaBog.Web.Middlewares
 {
