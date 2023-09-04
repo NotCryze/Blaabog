@@ -1,4 +1,7 @@
 ﻿@page
+@using Microsoft.AspNetCore.Html
+@using SBO.BlaaBog.Domain.Entities;
+@using Microsoft.OpenApi.Extensions;
 @model SBO.BlaaBog.Web.Pages.Teachers.IndexModel
 @{
     ViewData["Title"] = "Home";
@@ -11,7 +14,7 @@
                 <div class="row">
                     <div class="col-auto me-auto">
                         <h6 class="text-muted">Total Classes</h6>
-                        <h1>27</h1>
+                        <h1>@Model.TotalClasses</h1>
                     </div>
                     <div class="col-auto d-flex justify-content-center align-items-center">
                         <i class="fa-solid fa-users fa-2xl fa-fw"></i>
@@ -26,8 +29,8 @@
             <div class="card-body">
                 <div class="row">
                     <div class="col-auto me-auto">
-                        <h6 class="text-muted">Total Users</h6>
-                        <h1>743</h1>
+                        <h6 class="text-muted">Total Students</h6>
+                        <h1>@Model.TotalStudents</h1>
                     </div>
                     <div class="col-auto d-flex justify-content-center align-items-center">
                         <i class="fa-solid fa-user fa-2xl fa-fw"></i>
@@ -43,7 +46,7 @@
                 <div class="row">
                     <div class="col-auto me-auto">
                         <h6 class="text-muted">Total Comments</h6>
-                        <h1>4458</h1>
+                        <h1>@Model.TotalComments</h1>
                     </div>
                     <div class="col-auto d-flex justify-content-center align-items-center">
                         <i class="fa-solid fa-comments fa-2xl fa-fw"></i>
@@ -59,7 +62,7 @@
                 <div class="row">
                     <div class="col-auto me-auto">
                         <h6 class="text-muted">New Comments</h6>
-                        <h1>27</h1>
+                        <h1>@Model.NewComments</h1>
                     </div>
                     <div class="col-auto d-flex justify-content-center align-items-center">
                         <i class="fa-solid fa-comments fa-2xl fa-fw"></i>
@@ -107,40 +110,15 @@
                     </thead>
 
                     <tbody>
-                        <tr>
-                            <th scope="row">27</th>
-                            <td>2023-08-08</td>
-                            <td>123456</td>
-                            <td>33</td>
-                        </tr>
-
-                        <tr>
-                            <th scope="row">26</th>
-                            <td>2023-07-07</td>
-                            <td>234567</td>
-                            <td>27</td>
-                        </tr>
-
-                        <tr>
-                            <th scope="row">25</th>
-                            <td>2023-06-06</td>
-                            <td>345678</td>
-                            <td>23</td>
-                        </tr>
-
-                        <tr>
-                            <th scope="row">24</th>
-                            <td>2023-05-05</td>
-                            <td>456789</td>
-                            <td>25</td>
-                        </tr>
-
-                        <tr>
-                            <th scope="row">23</th>
-                            <td>2023-04-04</td>
-                            <td>901234</td>
-                            <td>30</td>
-                        </tr>
+                        @foreach (Class latestClass in Model.LatestClasses)
+                        {
+                            <tr>
+                                <th scope="row">@latestClass.Id</th>
+                                <td>@latestClass.StartDate</td>
+                                <td>@latestClass.Token</td>
+                                <td>@latestClass.Students.Count</td>
+                            </tr>
+                        }
                     </tbody>
                 </table>
             </div>
@@ -163,40 +141,15 @@
                     </thead>
 
                     <tbody>
-                        <tr>
-                            <th scope="row">4458</th>
-                            <td>Benjamin Skorstengaard</td>
-                            <td>Programmer</td>
-                            <td>2027-07-26</td>
-                        </tr>
-
-                        <tr>
-                            <th scope="row">4457</th>
-                            <td>Sammy Schröder</td>
-                            <td>Programmer</td>
-                            <td>2027-07-26</td>
-                        </tr>
-
-                        <tr>
-                            <th scope="row">4456</th>
-                            <td>Thor Christensen</td>
-                            <td>IT Supporter</td>
-                            <td>2027-07-26</td>
-                        </tr>
-
-                        <tr>
-                            <th scope="row">4455</th>
-                            <td>Martin Andersen</td>
-                            <td>Infrastructure</td>
-                            <td>2027-07-26</td>
-                        </tr>
-
-                        <tr>
-                            <th scope="row">4454</th>
-                            <td>Jens Madsen</td>
-                            <td>Infrastructure</td>
-                            <td>2027-07-26</td>
-                        </tr>
+                        @foreach (Student student in Model.LatestStudents)
+                        {
+                            <tr>
+                                <th scope="row">@student.Id</th>
+                                <td>@student.Name</td>
+                                <td>@student.Speciality.GetDisplayName()</td>
+                                <td>@(student.EndDate == null ? "N/A" : student.EndDate)</td>
+                            </tr>
+                        }
                     </tbody>
                 </table>
             </div>
@@ -214,26 +167,12 @@
         new Chart(lineChart, {
             type: "line",
             data: {
-                labels: ["January", "February", "March", "April", "May", "June", "July"],
+                labels: [@Html.Raw(String.Join(", ", Model.ChartX.Select(x => String.Format("'{0}'", x))))],
                 datasets: [{
-                    label: "New Users",
-                    data: [65, 59, 80, 81, 56, 55, 40],
-                    fill: false,
-                    borderColor: "rgb(75, 192, 192)",
-                    tension: 0.1
-                },
-                {
-                    label: "New Classes",
-                    data: [25, 49, 30, 51, 86, 35, 20],
-                    fill: false,
-                    borderColor: "rgb(255, 99, 132)",
-                    tension: 0.1
-                },
-                {
                     label: "New Comments",
-                    data: [15, 29, 60, 31, 56, 65, 20],
+                    data: [@String.Join(", ", Model.ChartY)],
                     fill: false,
-                    borderColor: "rgb(54, 162, 235)",
+                    borderColor: "#0D6EFD",
                     tension: 0.1
                 }]
             },
@@ -258,15 +197,15 @@
         new Chart(specialityChart, {
             type: 'pie',
             data: {
-                labels: ["IT Supporter  ", "Infrastructure", "Programmer  ", "Not Selected"],
+                labels: [@Html.Raw(String.Join(", ", Model.PieChartData.Keys.Select(x => String.Format("'{0}'", EnumExtensions.GetDisplayName(x)))))],
                 datasets: [{
                     label: "Specialities",
-                    data: [300, 50, 100, 50],
+                    data: [@Html.Raw(String.Join(", ", Model.PieChartData.Values))],
                     backgroundColor: [
+                        '#AEB2B6',
                         '#0D6EFD',
                         '#198754',
-                        '#FFC107',
-                        '#AEB2B6'
+                        '#FFC107'
                     ]
                 }]
             },

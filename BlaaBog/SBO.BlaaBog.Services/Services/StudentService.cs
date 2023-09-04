@@ -93,6 +93,16 @@ namespace SBO.BlaaBog.Services.Services
             return await _studentConnection.GetStudentsByClassAsync(id);
         }
 
+        /// <summary>
+        /// Get the most recent students from the database
+        /// </summary>
+        /// <param name="amount"></param>
+        /// <returns>List<Student>?</returns>
+        public async Task<List<Student>?> GetLatestStudentsAsync(int amount = 5)
+        {
+            return await _studentConnection.GetLatestStudentsAsync(amount);
+        }
+
         #endregion
 
         #region Update
@@ -123,6 +133,26 @@ namespace SBO.BlaaBog.Services.Services
 
         #endregion
 
+        #region Other
 
+        /// <summary>
+        /// Gets the number of students in the database
+        /// </summary>
+        /// <returns>int</returns>
+        public async Task<int> GetStudentsCountAsync()
+        {
+            return await _studentConnection.GetStudentsCountAsync();
+        }
+
+        /// <summary>
+        /// Gets the number of students in the database grouped by speciality
+        /// </summary>
+        /// <returns>Dictionary<Specialities, int>?</returns>
+        public async Task<Dictionary<Specialities, int>?> GetStudentsCountGroupedBySpecialityAsync()
+        {
+            return await _studentConnection.GetStudentsCountGroupedBySpecialityAsync();
+        }
+
+        #endregion
     }
 }

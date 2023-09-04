@@ -22,11 +22,12 @@ namespace SBO.BlaaBog.Domain.Entities
         private List<Student>? _students;
         public List<Student>? Students { get { return _students; } set { _students = value; } }
 
-        public Class(int? id, DateOnly startDate, string token) 
+        public Class(int? id, DateOnly startDate, string token, List<Student>? students = null) 
         {
             _id = id;
             _startDate = startDate;
             _token = token;
+            _students = students;
         }
     }
 }
