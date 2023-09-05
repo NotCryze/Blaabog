@@ -4,7 +4,7 @@
     ViewData["Title"] = "Tokens";
 }
 
-<div class="container-fluid">
+<div class="container-fluid p-0 mb-3">
     <div class="row">
         <div class="col justify-content-end d-flex">
             <form method="post">
@@ -52,3 +52,31 @@
         </tbody>
     </table>
 </div>
+
+@section Scripts{
+
+
+    <script>
+        new DataTable(
+            '#tokens',
+            {
+                "columnDefs": [
+                    {
+                        "orderable": false,
+                        "targets": -1
+                    },
+                    {
+                        "orderable": true,
+                        "targets": 0
+                    }
+                ],
+                "order": [
+                    [
+                        0,
+                        "desc"
+                    ]
+                ]
+            }
+        );
+    </script>
+}
