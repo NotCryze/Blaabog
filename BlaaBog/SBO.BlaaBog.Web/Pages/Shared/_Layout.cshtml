@@ -32,6 +32,35 @@
                             <li class="nav-item">
                                 <a class="nav-link" asp-area="" asp-page="/Index">Home</a>
                             </li>
+
+                            @if (Context.Items["User"] is Teacher)
+                            {
+                                <li class="nav-item">
+                                    <a class="nav-link text-decoration-none" asp-area="" asp-page="/Teachers/Index">Teachers</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" asp-page="/Teachers/Classes">Classes</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" asp-page="/Teachers/Students">Students</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" asp-page="/Teachers/Reports">
+                                        Reports
+                                        <span class="badge rounded-pill bg-danger">
+                                            99+
+                                            <span class="visually-hidden">unread messages</span>
+                                        </span>
+                                    </a>
+                                </li>
+
+                                @if ((Context.Items["User"] as Teacher).Admin)
+                                {
+                                    <li class="nav-item">
+                                        <a class="nav-link" asp-page="/Teachers/Tokens">Tokens</a>
+                                    </li>
+                                }
+                            }
                         }
                     </ul>
                 </div>
@@ -52,7 +81,6 @@
                             {
                                 <li><a class="dropdown-item" asp-page="/Teachers/Index">Teachers</a></li>
                                 <li><a class="dropdown-item" asp-page="/Teachers/Account">Account</a></li>
-                                <li><a class="dropdown-item" asp-page="/Teachers/Tokens">Tokens</a></li>
                             }
                             <li><hr class="dropdown-divider"></li>
                             <li><a class="dropdown-item" asp-page="/Logout">Logout</a></li>
