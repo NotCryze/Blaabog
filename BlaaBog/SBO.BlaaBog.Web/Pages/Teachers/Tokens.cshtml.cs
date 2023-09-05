@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using SBO.BlaaBog.Domain.Connections;
 using SBO.BlaaBog.Domain.Entities;
 using SBO.BlaaBog.Services.Services;
+using SBO.BlaaBog.Web.Utils;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -62,6 +63,7 @@ namespace SBO.BlaaBog.Web.Pages.Teachers
 
                 if (tokenCreated)
                 {
+                    HttpContext.Session.AddToastNotification(new ToastNotification { Message = "Token has been generated!", Status = ToastColor.Success });
                     return RedirectToPage("/Teachers/Tokens");
                 }
                 else
@@ -78,6 +80,7 @@ namespace SBO.BlaaBog.Web.Pages.Teachers
 
                 if (tokenDeleted)
                 {
+                    HttpContext.Session.AddToastNotification(new ToastNotification { Message = "Token has been deleted!", Status = ToastColor.Success });
                     return RedirectToPage("/Teachers/Tokens");
                 }
                 else

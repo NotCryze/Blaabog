@@ -1,6 +1,8 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Caching.Memory;
+using SBO.BlaaBog.Domain.Entities;
+using SBO.BlaaBog.Web.Utils;
 
 namespace SBO.BlaaBog.Web.Pages
 {
@@ -16,6 +18,7 @@ namespace SBO.BlaaBog.Web.Pages
         {
             _cache.Remove(HttpContext.Session.Id);
             HttpContext.Session.Clear();
+            HttpContext.Session.AddToastNotification(new ToastNotification { Message = "You have been logged out!", Status = ToastColor.Success });
             
             if (HttpContext.Request.GetTypedHeaders().Referer.LocalPath.StartsWith("/Teachers"))
             {

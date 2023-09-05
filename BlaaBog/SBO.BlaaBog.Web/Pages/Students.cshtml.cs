@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using SBO.BlaaBog.Domain.Entities;
 using SBO.BlaaBog.Services.Services;
 using SBO.BlaaBog.Web.DTO;
+using SBO.BlaaBog.Web.Utils;
 using System.ComponentModel.DataAnnotations;
 using System.Reflection;
 
@@ -127,6 +128,7 @@ namespace SBO.BlaaBog.Web.Pages
                 };
 
                 await _commentService.CreateCommentAsync(comment);
+                HttpContext.Session.AddToastNotification(new ToastNotification { Message = "Comment has been sent!", Status = ToastColor.Success });
             }
             return Redirect(HttpContext.Request.Path + "#comments");
         }
@@ -141,6 +143,7 @@ namespace SBO.BlaaBog.Web.Pages
             if (comment != null)
             {
                 await _commentService.DeleteCommentAsync(delId);
+                HttpContext.Session.AddToastNotification(new ToastNotification { Message = "Comment has been deleted!", Status = ToastColor.Success });
             }
             return Redirect(HttpContext.Request.Path + "#comments");
         }
@@ -165,6 +168,7 @@ namespace SBO.BlaaBog.Web.Pages
             if (await _commentService.GetCommentAsync(comment) != null)
             {
                 await _reportService.CreateReportAsync(Report);
+                HttpContext.Session.AddToastNotification(new ToastNotification { Message = "Comment has been reported!", Status = ToastColor.Success });
             }
 
             return Redirect(HttpContext.Request.Path + "#comments");

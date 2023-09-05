@@ -63,7 +63,7 @@
         </nav>
     </header>
 
-    <div class="position-absolute end-0">
+    <div class="position-absolute end-0 z-3">
         @{
             Queue<ToastNotification> toastNotifications = Context.Session.GetObject<Queue<ToastNotification>>("ToastNotifications");
 
@@ -71,7 +71,7 @@
 
             while (toastNotifications != null && toastNotifications.TryDequeue(out toast))
             {
-                <div class="toast show align-items-center @toast.ToastStatus.GetDisplayName() border-0 mb-1 position-relative" role="alert" aria-live="assertive" aria-atomic="true" data-bs-delay="150">
+                <div class="toast show align-items-center @toast.Status.GetDisplayName() border-0 mb-1 position-relative me-3" role="alert" aria-live="assertive" aria-atomic="true" data-bs-delay="150">
                     <div class="d-flex">
                         <div class="toast-body">
                             @toast.Message

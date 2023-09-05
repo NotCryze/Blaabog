@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using SBO.BlaaBog.Domain.Entities;
 using SBO.BlaaBog.Services.Services;
+using SBO.BlaaBog.Web.Utils;
 using System.ComponentModel.DataAnnotations;
 
 namespace SBO.BlaaBog.Web.Pages.Teachers
@@ -49,6 +50,7 @@ namespace SBO.BlaaBog.Web.Pages.Teachers
 
                 Class @class = new Class(null, StartDate, token);
                 await _classService.CreateClassAsync(@class);
+                HttpContext.Session.AddToastNotification(new ToastNotification { Message = "Class has been created!", Status = ToastColor.Success });
                 return Redirect("/Teachers/Classes");
             }
             return await OnGetAsync();
@@ -63,6 +65,7 @@ namespace SBO.BlaaBog.Web.Pages.Teachers
 
             if (await _classService.DeleteClassAsync(id))
             {
+                HttpContext.Session.AddToastNotification(new ToastNotification { Message = "Class has been deleted!", Status = ToastColor.Success });
                 return Redirect("/Teachers/Classes");
             }
 
@@ -88,6 +91,7 @@ namespace SBO.BlaaBog.Web.Pages.Teachers
                     Class updatedClass = new Class(@class.Id, EditStartDate, @class.Token);
 
                     await _classService.UpdateClassAsync(updatedClass);
+                    HttpContext.Session.AddToastNotification(new ToastNotification { Message = "Class has been updated!", Status = ToastColor.Success });
 
                     return Redirect("/Teachers/Classes");
                 }

@@ -5,6 +5,7 @@ using Microsoft.OpenApi.Extensions;
 using SBO.BlaaBog.Domain.Entities;
 using SBO.BlaaBog.Services.Services;
 using SBO.BlaaBog.Web.DTO;
+using SBO.BlaaBog.Web.Utils;
 
 namespace SBO.BlaaBog.Web.Pages.Teachers
 {
@@ -52,7 +53,7 @@ namespace SBO.BlaaBog.Web.Pages.Teachers
             {
                 Student updatedStudent = new Student(id, Student.Name, oldStudent.Image, Student.Description, Student.Email, Student.Speciality, oldStudent.ClassId, Student.EndDate, oldStudent.Password);
                 await _studentService.UpdateStudentAsync(updatedStudent);
-
+                HttpContext.Session.AddToastNotification(new ToastNotification { Message = "Student has been updated!", Status = ToastColor.Success });
             }
 
             return await OnGetAsync();
@@ -66,6 +67,7 @@ namespace SBO.BlaaBog.Web.Pages.Teachers
             bool success = await _studentService.DeleteStudentAsync(id);
             if (success)
             {
+                HttpContext.Session.AddToastNotification(new ToastNotification { Message = "Student has been deleted!", Status = ToastColor.Success });
                 return Redirect("/Teachers/Students");
             }
             return await OnGetAsync();

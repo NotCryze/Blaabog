@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using SBO.BlaaBog.Domain.Entities;
 using SBO.BlaaBog.Services.Services;
 using SBO.BlaaBog.Web.DTO;
+using SBO.BlaaBog.Web.Utils;
 using System.ComponentModel.DataAnnotations;
 
 namespace SBO.BlaaBog.Web.Pages.Teachers
@@ -40,6 +41,8 @@ namespace SBO.BlaaBog.Web.Pages.Teachers
             return Page();
         }
 
+        #region Update Account
+
         public async Task<IActionResult> OnPostAsync()
         {
             try
@@ -55,6 +58,7 @@ namespace SBO.BlaaBog.Web.Pages.Teachers
                 Teacher newTeacher = new Teacher(teacher.Id, Account.Name, Account.Email, teacher.Password, teacher.Admin);
 
                 await _teacherService.UpdateTeacherAsync(newTeacher);
+                HttpContext.Session.AddToastNotification(new ToastNotification { Message = "Account has been updated", Status = ToastColor.Success });
             }
             catch (Exception exception)
             {
@@ -63,6 +67,10 @@ namespace SBO.BlaaBog.Web.Pages.Teachers
 
             return await OnGetAsync();
         }
+
+        #endregion
+
+        #region Change Password
 
         public async Task<IActionResult> OnPostChangePasswordAsync()
         {
@@ -91,6 +99,7 @@ namespace SBO.BlaaBog.Web.Pages.Teachers
 
                 if (success)
                 {
+                    HttpContext.Session.AddToastNotification(new ToastNotification { Message = "Password has been changed!", Status = ToastColor.Success });
                     return RedirectToPage("/Teachers/Account");
                 }
                 else
@@ -105,5 +114,7 @@ namespace SBO.BlaaBog.Web.Pages.Teachers
 
             return await OnGetAsync();
         }
+
+        #endregion
     }
 }
