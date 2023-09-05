@@ -1,0 +1,82 @@
+﻿@page
+@model SBO.BlaaBog.Web.Pages.Teachers.TokensModel
+@{
+    ViewData["Title"] = "Tokens";
+}
+
+<div class="container-fluid p-0 mb-3">
+    <div class="row">
+        <div class="col justify-content-end d-flex">
+            <form method="post">
+                <button type="submit" class="btn btn-primary" name="generateToken"><i class="fa-solid fa-plus"></i></button>
+            </form>
+        </div>
+    </div>
+</div>
+<div>
+    <table id="tokens" class="table table-striped">
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>Token</th>
+                <th>Teacher</th>
+                <th>Created At</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var Token in Model.TeacherTokens)
+            {
+                <tr>
+                    <td>@Token.Id</td>
+                    <td>@Token.Token</td>
+
+                    @if (Token.Teacher == null || Token.Teacher.Id == null)
+                    {
+                        <td>Not assigned</td>
+                    }
+                    else
+                    {
+                        <td>@Token.Teacher.Name</td>
+                    }
+
+                    <td>@Token.CreatedAt</td>
+                    <td>
+                        <form method="post">
+                            <input type="hidden" name="deleteToken" value="@Token.Id" />
+                            <button type="submit" class="btn btn-danger"><i class="fa-solid fa-trash"></i></button>
+                        </form>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+@section Scripts{
+
+
+    <script>
+        new DataTable(
+            '#tokens',
+            {
+                "columnDefs": [
+                    {
+                        "orderable": false,
+                        "targets": -1
+                    },
+                    {
+                        "orderable": true,
+                        "targets": 0
+                    }
+                ],
+                "order": [
+                    [
+                        0,
+                        "desc"
+                    ]
+                ]
+            }
+        );
+    </script>
+}

@@ -63,12 +63,12 @@ namespace SBO.BlaaBog.Domain.Connections
                 {
                     while ( await sqlDataReader.ReadAsync() )
                     {
-                        teacherToken = new TeacherToken(
-                                sqlDataReader.GetInt32("id"),
-                                sqlDataReader.GetString("token"),
-                                await sqlDataReader.IsDBNullAsync("fk_teacher") ? null : sqlDataReader.GetInt32("fk_teacher"),
-                                sqlDataReader.GetDateTime("created_at")
-                            );
+                        teacherToken = new TeacherToken {
+                               Id = sqlDataReader.GetInt32("id"),
+                                Token = sqlDataReader.GetString("token"),
+                                 TeacherId = await sqlDataReader.IsDBNullAsync("fk_teacher") ? null : sqlDataReader.GetInt32("fk_teacher"),
+                                CreatedAt = sqlDataReader.GetDateTime("created_at")
+                            };
                     }
 
                     await sqlDataReader.CloseAsync();
@@ -104,12 +104,12 @@ namespace SBO.BlaaBog.Domain.Connections
                 {
                     while ( await sqlDataReader.ReadAsync() )
                     {
-                        teacherTokens.Add(new TeacherToken(
-                                sqlDataReader.GetInt32("id"),
-                                sqlDataReader.GetString("token"),
-                                await sqlDataReader.IsDBNullAsync("fk_teacher") ? null : sqlDataReader.GetInt32("fk_teacher"),
-                                sqlDataReader.GetDateTime("created_at")
-                            ));
+                        teacherTokens.Add(new TeacherToken { 
+                               Id =  sqlDataReader.GetInt32("id"),
+                                Token = sqlDataReader.GetString("token"),
+                                TeacherId = await sqlDataReader.IsDBNullAsync("fk_teacher") ? null : sqlDataReader.GetInt32("fk_teacher"),
+                                CreatedAt = sqlDataReader.GetDateTime("created_at")
+                             });
                     }
 
                     await sqlDataReader.CloseAsync();
@@ -146,12 +146,12 @@ namespace SBO.BlaaBog.Domain.Connections
                 {
                     while ( await sqlDataReader.ReadAsync() )
                     {
-                        teacherToken = new TeacherToken(
-                                sqlDataReader.GetInt32("id"),
-                                sqlDataReader.GetString("token"),
-                                await sqlDataReader.IsDBNullAsync("fk_teacher") ? null : sqlDataReader.GetInt32("fk_teacher"),
-                                sqlDataReader.GetDateTime("created_at")
-                            );
+                        teacherToken = new TeacherToken {
+                               Id = sqlDataReader.GetInt32("id"),
+                                Token = sqlDataReader.GetString("token"),
+                                TeacherId = await sqlDataReader.IsDBNullAsync("fk_teacher") ? null : sqlDataReader.GetInt32("fk_teacher"),
+                                CreatedAt = sqlDataReader.GetDateTime("created_at")
+                            };
                     }
 
                     await sqlDataReader.CloseAsync();
@@ -201,6 +201,8 @@ namespace SBO.BlaaBog.Domain.Connections
                 await sqlCommand.Connection.CloseAsync();
             }
             return false;
+
+
         }
 
         #endregion
