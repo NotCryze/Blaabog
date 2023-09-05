@@ -76,7 +76,7 @@
                     </div>
                     <div>
                         <label asp-for="Student.Description" class="form-label">Description</label>
-                        <textarea asp-for="Student.Description" type="text" rows="3" class="form-control @(ModelState.GetFieldValidationState("Student.Description") == ModelValidationState.Invalid ? "is-invalid" : ModelState.GetValidationState("Student.Description") == ModelValidationState.Valid ? "is-valid" : "")" placeholder="Description" />@Model.Student.Description</textarea>
+                        <textarea asp-for="Student.Description" type="text" rows="3" style="resize:none" class="form-control @(ModelState.GetFieldValidationState("Student.Description") == ModelValidationState.Invalid ? "is-invalid" : ModelState.GetValidationState("Student.Description") == ModelValidationState.Valid ? "is-valid" : "")" placeholder="Description" />@Model.Student.Description</textarea>
                         <span asp-validation-for="Student.Description" class="invalid-feedback w-100 text-center"></span>
                     </div>
                     <span asp-validation-for="Student" class="invalid-feedback w-100 text-center"></span>

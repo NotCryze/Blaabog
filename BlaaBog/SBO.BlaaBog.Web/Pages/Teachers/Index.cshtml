@@ -1,4 +1,227 @@
 ﻿@page
+@using Microsoft.AspNetCore.Html
+@using SBO.BlaaBog.Domain.Entities;
+@using Microsoft.OpenApi.Extensions;
 @model SBO.BlaaBog.Web.Pages.Teachers.IndexModel
 @{
+    ViewData["Title"] = "Home";
+}
+
+<div class="row g-3 mb-3">
+    <div class="col-sm-6 col-md-3">
+        <div class="card">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-auto me-auto">
+                        <h6 class="text-muted">Total Classes</h6>
+                        <h1>@Model.TotalClasses</h1>
+                    </div>
+                    <div class="col-auto d-flex justify-content-center align-items-center">
+                        <i class="fa-solid fa-users fa-2xl fa-fw"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-sm-6 col-md-3">
+        <div class="card">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-auto me-auto">
+                        <h6 class="text-muted">Total Students</h6>
+                        <h1>@Model.TotalStudents</h1>
+                    </div>
+                    <div class="col-auto d-flex justify-content-center align-items-center">
+                        <i class="fa-solid fa-user fa-2xl fa-fw"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-sm-6 col-md-3">
+        <div class="card">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-auto me-auto">
+                        <h6 class="text-muted">Total Comments</h6>
+                        <h1>@Model.TotalComments</h1>
+                    </div>
+                    <div class="col-auto d-flex justify-content-center align-items-center">
+                        <i class="fa-solid fa-comments fa-2xl fa-fw"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-sm-6 col-md-3">
+        <div class="card">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-auto me-auto">
+                        <h6 class="text-muted">New Comments</h6>
+                        <h1>@Model.NewComments</h1>
+                    </div>
+                    <div class="col-auto d-flex justify-content-center align-items-center">
+                        <i class="fa-solid fa-comments fa-2xl fa-fw"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row g-3 mb-3">
+    <div class="col-md-9">
+        <div class="card h-100">
+            <div class="card-body h-100">
+                <div class="h-100">
+                    <canvas id="numbers-line"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-3">
+        <div class="card h-100">
+            <div class="card-body h-100">
+                <canvas id="specialities-pie"></canvas>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row g-3">
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-body">
+                <h5><i class="fa-solid fa-users fa-fw"></i> Latest Classes</h5>
+
+                <table class="table table-striped table-hover">
+                    <thead>
+                        <tr>
+                            <th scope="col">#</th>
+                            <th scope="col">Start Date</th>
+                            <th scope="col">Token</th>
+                            <th scope="col">Students</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        @foreach (Class latestClass in Model.LatestClasses)
+                        {
+                            <tr>
+                                <th scope="row">@latestClass.Id</th>
+                                <td>@latestClass.StartDate</td>
+                                <td>@latestClass.Token</td>
+                                <td>@latestClass.Students.Count</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-body">
+                <h5><i class="fa-solid fa-user fa-fw"></i> Latest Students</h5>
+
+                <table class="table table-striped table-hover">
+                    <thead>
+                        <tr>
+                            <th scope="col">#</th>
+                            <th scope="col">Name</th>
+                            <th scope="col">Speciality</th>
+                            <th scope="col">End Date</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        @foreach (Student student in Model.LatestStudents)
+                        {
+                            <tr>
+                                <th scope="row">@student.Id</th>
+                                <td>@student.Name</td>
+                                <td>@student.Speciality.GetDisplayName()</td>
+                                <td>@(student.EndDate == null ? "N/A" : student.EndDate)</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@section Scripts {
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.umd.js" integrity="sha512-6HrPqAvK+lZElIZ4mZ64fyxIBTsaX5zAFZg2V/2WT+iKPrFzTzvx6QAsLW2OaLwobhMYBog/+bvmIEEGXi0p1w==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+    <script type="text/javascript">
+        const lineChart = document.getElementById('numbers-line');
+
+        new Chart(lineChart, {
+            type: "line",
+            data: {
+                labels: [@Html.Raw(String.Join(", ", Model.ChartX.Select(x => String.Format("'{0}'", x))))],
+                datasets: [{
+                    label: "New Comments",
+                    data: [@String.Join(", ", Model.ChartY)],
+                    fill: false,
+                    borderColor: "#0D6EFD",
+                    tension: 0.1
+                }]
+            },
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                },
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        display: true
+                    }
+                }
+            }
+        });
+
+        const specialityChart = document.getElementById('specialities-pie');
+
+        new Chart(specialityChart, {
+            type: 'pie',
+            data: {
+                labels: [@Html.Raw(String.Join(", ", Model.PieChartData.Keys.Select(x => String.Format("'{0}'", EnumExtensions.GetDisplayName(x)))))],
+                datasets: [{
+                    label: "Specialities",
+                    data: [@Html.Raw(String.Join(", ", Model.PieChartData.Values))],
+                    backgroundColor: [
+                        '#AEB2B6',
+                        '#0D6EFD',
+                        '#198754',
+                        '#FFC107'
+                    ]
+                }]
+            },
+            options: {
+                title: {
+                    display: true,
+                    text: 'Specialities'
+                },
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        display: true
+                    }
+                }
+            }
+        });
+    </script>
 }

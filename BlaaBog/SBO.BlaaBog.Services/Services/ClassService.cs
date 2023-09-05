@@ -63,6 +63,16 @@ namespace SBO.BlaaBog.Services.Services
             return await _classConnection.GetClassesAsync();
         }
 
+        /// <summary>
+        /// Get the most recent classes from the database
+        /// </summary>
+        /// <param name="amount"></param>
+        /// <returns>List<Class>?</returns>
+        public async Task<List<Class>?> GetLatestClassesAsync(int amount = 5)
+        {
+            return await _classConnection.GetLatestClassesAsync(amount);
+        }
+
         #endregion
 
         #region Update Class
@@ -93,7 +103,7 @@ namespace SBO.BlaaBog.Services.Services
 
         #endregion
 
-        #region
+        #region Misc
 
         /// <summary>
         /// Checks if a class token exists in the database
@@ -103,6 +113,15 @@ namespace SBO.BlaaBog.Services.Services
         public async Task<int> CheckClassTokenAsync(string token)
         {
             return await _classConnection.CheckClassTokenAsync(token);
+        }
+
+        /// <summary>
+        /// Gets the number of students in the database
+        /// </summary>
+        /// <returns>int</returns>
+        public async Task<int> GetClassesCountAsync()
+        {
+            return await _classConnection.GetClassesCountAsync();
         }
 
         #endregion

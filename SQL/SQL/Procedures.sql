@@ -2,6 +2,7 @@ use BlaaBog;
 GO
 
 
+
 /*
 	Classes
 */
@@ -52,6 +53,17 @@ BEGIN
 END
 GO
 
+CREATE OR ALTER PROCEDURE spGetLatestClasses
+	@amount INT = 5
+AS
+BEGIN
+	SELECT TOP (@amount) Classes.*, (SELECT COUNT(*) FROM Students WHERE Students.fk_class = Classes.id) AS students
+	FROM Classes
+	WHERE Classes.deleted = 0
+	ORDER BY Classes.id DESC
+END
+GO
+
 
 -- Update Class
 CREATE OR ALTER PROCEDURE spUpdateClass
@@ -96,6 +108,14 @@ BEGIN
 END
 GO
 
+CREATE OR ALTER PROCEDURE spGetClassesCount
+AS
+BEGIN
+	SELECT COUNT(*)
+	FROM Classes
+	WHERE deleted = 0
+END
+GO
 
 /*
 	Students
@@ -184,6 +204,17 @@ BEGIN
 END
 GO
 
+CREATE OR ALTER PROCEDURE spGetLatestStudents
+	@amount INT = 5
+AS
+BEGIN
+	SELECT TOP (@amount) *
+	FROM Students
+	WHERE deleted = 0
+	ORDER BY id DESC
+END
+GO
+
 
 -- Update Student
 CREATE OR ALTER PROCEDURE spUpdateStudent
@@ -227,6 +258,26 @@ BEGIN
 END
 GO
 
+-- Other
+CREATE OR ALTER PROCEDURE spGetStudentsCount
+AS
+BEGIN
+	SELECT COUNT(*)
+	FROM Students
+	WHERE deleted = 0
+END
+GO
+
+CREATE OR ALTER PROCEDURE spGetStudentsCountGroupedBySpeciality
+AS
+BEGIN
+	SELECT speciality, COUNT(*) AS count
+	FROM Students
+	WHERE deleted = 0
+	GROUP BY speciality
+	ORDER BY speciality
+END
+GO
 
 /*
 	Student Pending Changes
@@ -442,7 +493,6 @@ BEGIN
 	FROM Comments
 	WHERE
 		fk_author = @id
-		AND approved = 1
 		AND deleted = 0
 END
 GO
@@ -455,8 +505,18 @@ BEGIN
 	FROM Comments
 	WHERE
 		fk_subject = @id
-		AND approved = 1
 		AND deleted = 0
+END
+GO
+
+CREATE OR ALTER PROCEDURE spGetLatestComments
+	@amount INT = 5
+AS
+BEGIN
+	SELECT TOP (@amount) *
+	FROM Comments
+	WHERE deleted = 0
+	ORDER BY id DESC
 END
 GO
 
@@ -506,6 +566,39 @@ BEGIN
 	WHERE
 		id = @id
 		AND deleted = 0
+END
+GO
+
+CREATE OR ALTER PROCEDURE spGetCommentsCount
+AS
+BEGIN
+	SELECT COUNT(*)
+	FROM Comments
+	WHERE deleted = 0
+END
+GO
+
+CREATE OR ALTER PROCEDURE spGetNewCommentsCount
+AS
+BEGIN
+	SELECT COUNT(*)
+	FROM Comments
+	WHERE
+		created_at > DATEADD(MONTH, -1, GETUTCDATE())
+		AND deleted = 0
+END
+GO
+
+CREATE OR ALTER PROCEDURE spGetCommentsGroupedByMonth
+AS
+BEGIN
+	SELECT CAST(DATEADD(MONTH, DATEDIFF(MONTH, 0, created_at), 0) AS date) AS date, COUNT(*) AS count
+	FROM Comments
+	WHERE
+		created_at > DATEADD(YEAR, -5, DATEADD(MONTH, DATEDIFF(MONTH, 0, GETUTCDATE()), 0))
+		AND deleted = 0
+	GROUP BY DATEADD(MONTH, DATEDIFF(MONTH, 0, created_at), 0)
+	ORDER BY date
 END
 GO
 

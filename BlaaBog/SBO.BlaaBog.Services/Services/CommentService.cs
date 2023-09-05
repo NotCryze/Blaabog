@@ -2,6 +2,8 @@
 using SBO.BlaaBog.Domain.Entities;
 using System;
 using System.Collections.Generic;
+using System.Data.SqlClient;
+using System.Formats.Asn1;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -82,6 +84,16 @@ namespace SBO.BlaaBog.Services.Services
             return await _commentConnection.GetCommentsBySubjectAsync(id);
         }
 
+        /// <summary>
+        /// Get recent comments from the database
+        /// </summary>
+        /// <param name="amount"></param>
+        /// <returns>List<Comment>?</returns>
+        public async Task<List<Comment>?> GetLatestCommentsAsync(int amount = 5)
+        {
+            return await _commentConnection.GetLatestCommentsAsync(amount);
+        }
+
         #endregion
 
         #region Update Comment
@@ -123,6 +135,33 @@ namespace SBO.BlaaBog.Services.Services
         public async Task<bool> ApproveCommentAsync(int id, int approvedBy)
         {
             return await _commentConnection.ApproveCommentAsync(id, approvedBy);
+        }
+
+        /// <summary>
+        /// Gets the number of students in the database
+        /// </summary>
+        /// <returns>int</returns>
+        public async Task<int> GetCommentsCountAsync()
+        {
+            return await _commentConnection.GetCommentsCountAsync();
+        }
+
+        /// <summary>
+        /// Gets the number of new comments in the database
+        /// </summary>
+        /// <returns>int</returns>
+        public async Task<int> GetNewCommentsCountAsync()
+        {
+            return await _commentConnection.GetNewCommentsCountAsync();
+        }
+
+        /// <summary>
+        /// Gets the number of comments in the database group by month
+        /// </summary>
+        /// <returns>Dictionary<DateOnly, int>?</returns>
+        public async Task<Dictionary<DateOnly, int>> GetCommentsGroupedByMonthAsync()
+        {
+            return await _commentConnection.GetCommentsGroupedByMonthAsync();
         }
 
         #endregion

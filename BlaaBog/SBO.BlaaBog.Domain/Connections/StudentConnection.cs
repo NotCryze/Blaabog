@@ -362,6 +362,57 @@ namespace SBO.BlaaBog.Domain.Connections
             return null;
         }
 
+        /// <summary>
+        /// Get the most recent students from the database
+        /// </summary>
+        /// <param name="amount"></param>
+        /// <returns>List<Student>?</returns>
+        public async Task<List<Student>?> GetLatestStudentsAsync(int amount = 5)
+        {
+            SqlCommand cmd = _sql.Execute("spGetLatestStudents");
+            cmd.Parameters.AddWithValue("@amount", amount);
+
+            List<Student> students = new List<Student>();
+
+            try
+            {
+                await cmd.Connection.OpenAsync();
+
+                SqlDataReader rdr = await cmd.ExecuteReaderAsync();
+                if ( rdr.HasRows )
+                {
+                    while ( await rdr.ReadAsync() )
+                    {
+                        students.Add(new Student(
+                                (int)rdr["id"],
+                                (string)rdr["name"],
+                                (string)rdr["image"],
+                                await rdr.IsDBNullAsync("description") ? null : (string)rdr["description"],
+                                (string)rdr["email"],
+                                (Specialities)rdr.GetByte("speciality"),
+                                (int)rdr["fk_class"],
+                               await rdr.IsDBNullAsync("end_date") ? null : new DateOnly(rdr.GetDateTime("end_date").Year, rdr.GetDateTime("end_date").Month, rdr.GetDateTime("end_date").Day),
+                                (string)rdr["password"]
+                            ));
+                    }
+
+                    await rdr.CloseAsync();
+                }
+
+                return students;
+            }
+            catch ( SqlException ex )
+            {
+                await Console.Out.WriteLineAsync(ex.Message);
+            }
+            finally
+            {
+                await cmd.Connection.CloseAsync();
+            }
+
+            return null;
+        }
+
         #endregion
 
         #region Update
@@ -437,6 +488,68 @@ namespace SBO.BlaaBog.Domain.Connections
 
             return false;
         }
+        #endregion
+
+        #region Other
+
+        /// <summary>
+        /// Gets the number of students in the database
+        /// </summary>
+        /// <returns>int</returns>
+        public async Task<int> GetStudentsCountAsync()
+        {
+            try
+            {
+                int count = 0;
+
+                SqlCommand sqlCommand = _sql.Execute("spGetStudentsCount");
+                await sqlCommand.Connection.OpenAsync();
+                count = Convert.ToInt32(await sqlCommand.ExecuteScalarAsync());
+                await sqlCommand.Connection.CloseAsync();
+
+                return count;
+            }
+            catch ( SqlException sqlException )
+            {
+                await Console.Out.WriteLineAsync(sqlException.Message);
+            }
+
+            return 0;
+        }
+
+        public async Task<Dictionary<Specialities, int>?> GetStudentsCountGroupedBySpecialityAsync()
+        {
+            SqlCommand sqlCommand = _sql.Execute("spGetStudentsCountGroupedBySpeciality");
+
+            try
+            {
+                await sqlCommand.Connection.OpenAsync();
+
+                Dictionary<Specialities, int> studentsCount = new Dictionary<Specialities, int>();
+
+                SqlDataReader sqlDataReader = await sqlCommand.ExecuteReaderAsync();
+
+                if ( sqlDataReader.HasRows )
+                {
+                    while ( await sqlDataReader.ReadAsync() )
+                    {
+                        studentsCount.Add((Specialities)sqlDataReader.GetByte("speciality"), sqlDataReader.GetInt32("count"));
+                    }
+                }
+
+                await sqlDataReader.CloseAsync();
+                await sqlCommand.Connection.CloseAsync();
+
+                return studentsCount;
+            }
+            catch ( SqlException sqlException )
+            {
+                await Console.Out.WriteLineAsync(sqlException.Message);
+            }
+
+            return null;
+        }
+
         #endregion
     }
 }

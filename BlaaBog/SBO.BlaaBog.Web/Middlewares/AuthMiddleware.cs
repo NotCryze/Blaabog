@@ -1,6 +1,5 @@
 ﻿using Microsoft.Extensions.Caching.Memory;
 using SBO.BlaaBog.Domain.Entities;
-using SBO.BlaaBog.Services.Services;
 
 namespace SBO.BlaaBog.Web.Middlewares
 {
@@ -8,19 +7,16 @@ namespace SBO.BlaaBog.Web.Middlewares
     {
         private readonly RequestDelegate _next;
         private readonly IMemoryCache _cache;
-        private readonly TeacherService _teacherService;
 
         public AuthMiddleware(RequestDelegate next, IMemoryCache cache)
         {
             _next = next;
             _cache = cache;
-            _teacherService = new TeacherService();
         }
 
         public async Task Invoke(HttpContext httpContext)
         {
             httpContext.Items["User"] = _cache.Get(httpContext.Session.Id);
-
 
             PathString path = httpContext.Request.Path;
 

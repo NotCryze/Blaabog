@@ -74,12 +74,12 @@ namespace SBO.BlaaBog.Domain.Connections
                 {
                     while ( await sqlDataReader.ReadAsync() )
                     {
-                        report = new Report(
-                                sqlDataReader.GetInt32("id"),
-                                sqlDataReader.GetInt32("fk_comment"),
-                                sqlDataReader.GetString("reason"),
-                                sqlDataReader.GetDateTime("created_at")
-                            );
+                        report = new Report {
+                                Id = sqlDataReader.GetInt32("id"),
+                                CommentId = sqlDataReader.GetInt32("fk_comment"),
+                                Reason = sqlDataReader.GetString("reason"),
+                                CreatedAt = sqlDataReader.GetDateTime("created_at")
+                        };
                     }
 
                     await sqlDataReader.CloseAsync();
@@ -120,12 +120,12 @@ namespace SBO.BlaaBog.Domain.Connections
                 {
                     while ( await sqlDataReader.ReadAsync() )
                     {
-                        reports.Add(new Report(
-                                sqlDataReader.GetInt32("id"),
-                                sqlDataReader.GetInt32("fk_comment"),
-                                sqlDataReader.GetString("reason"),
-                                sqlDataReader.GetDateTime("created_at")
-                            ));
+                        reports.Add(new Report {
+                                Id = sqlDataReader.GetInt32("id"),
+                                CommentId = sqlDataReader.GetInt32("fk_comment"),
+                                Reason = sqlDataReader.GetString("reason"),
+                                CreatedAt = sqlDataReader.GetDateTime("created_at")
+                        });
                     }
 
                     await sqlDataReader.CloseAsync();

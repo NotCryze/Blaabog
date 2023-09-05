@@ -75,16 +75,17 @@ namespace SBO.BlaaBog.Domain.Connections
                 {
                     while ( await sqlDataReader.ReadAsync() )
                     {
-                        comment = new Comment(
-                                sqlDataReader.GetInt32("id"),
-                                sqlDataReader.GetInt32("fk_author"),
-                                sqlDataReader.GetInt32("fk_subject"),
-                                sqlDataReader.GetString("content"),
-                                sqlDataReader.GetBoolean("approved"),
-                                await sqlDataReader.IsDBNullAsync("approved_by") ? null : await sqlDataReader.IsDBNullAsync("approved_by") ? null : sqlDataReader.GetInt32("approved_by"),
-                                await sqlDataReader.IsDBNullAsync("approved_at") ? null : await sqlDataReader.IsDBNullAsync("approved_at") ? null : sqlDataReader.GetDateTime("approved_at"),
-                                sqlDataReader.GetDateTime("created_at")
-                            );
+                        comment = new Comment
+                        {
+                            Id = sqlDataReader.GetInt32("id"),
+                            AuthorId = sqlDataReader.GetInt32("fk_author"),
+                            SubjectId = sqlDataReader.GetInt32("fk_subject"),
+                            Content = sqlDataReader.GetString("content"),
+                            Approved = sqlDataReader.GetBoolean("approved"),
+                            ApprovedById = await sqlDataReader.IsDBNullAsync("approved_by") ? null : await sqlDataReader.IsDBNullAsync("approved_by") ? null : sqlDataReader.GetInt32("approved_by"),
+                            ApprovedAt = await sqlDataReader.IsDBNullAsync("approved_at") ? null : await sqlDataReader.IsDBNullAsync("approved_at") ? null : sqlDataReader.GetDateTime("approved_at"),
+                            CreatedAt = sqlDataReader.GetDateTime("created_at")
+                        };
                     }
 
                     await sqlDataReader.CloseAsync();
@@ -112,7 +113,7 @@ namespace SBO.BlaaBog.Domain.Connections
         /// <returns>Comment if successful, null if not.</returns>
         public async Task<List<Comment>?> GetCommentsAsync()
         {
-            SqlCommand sqlCommand = _sql.Execute("spGetComment");
+            SqlCommand sqlCommand = _sql.Execute("spGetComments");
 
             try
             {
@@ -125,16 +126,17 @@ namespace SBO.BlaaBog.Domain.Connections
                 {
                     while ( await sqlDataReader.ReadAsync() )
                     {
-                        comments.Add(new Comment(
-                                sqlDataReader.GetInt32("id"),
-                                sqlDataReader.GetInt32("fk_author"),
-                                sqlDataReader.GetInt32("fk_subject"),
-                                sqlDataReader.GetString("content"),
-                                sqlDataReader.GetBoolean("approved"),
-                                await sqlDataReader.IsDBNullAsync("approved_by") ? null : sqlDataReader.GetInt32("approved_by"),
-                                await sqlDataReader.IsDBNullAsync("approved_at") ? null : sqlDataReader.GetDateTime("approved_at"),
-                                sqlDataReader.GetDateTime("created_at")
-                            ));
+                        comments.Add(new Comment
+                        {
+                            Id = sqlDataReader.GetInt32("id"),
+                            AuthorId = sqlDataReader.GetInt32("fk_author"),
+                            SubjectId = sqlDataReader.GetInt32("fk_subject"),
+                            Content = sqlDataReader.GetString("content"),
+                            Approved = sqlDataReader.GetBoolean("approved"),
+                            ApprovedById = await sqlDataReader.IsDBNullAsync("approved_by") ? null : sqlDataReader.GetInt32("approved_by"),
+                            ApprovedAt = await sqlDataReader.IsDBNullAsync("approved_at") ? null : sqlDataReader.GetDateTime("approved_at"),
+                            CreatedAt = sqlDataReader.GetDateTime("created_at")
+                        });
                     }
 
                     await sqlDataReader.CloseAsync();
@@ -177,16 +179,17 @@ namespace SBO.BlaaBog.Domain.Connections
                 {
                     while ( await sqlDataReader.ReadAsync() )
                     {
-                        comments.Add(new Comment(
-                                sqlDataReader.GetInt32("id"),
-                                sqlDataReader.GetInt32("fk_author"),
-                                sqlDataReader.GetInt32("fk_subject"),
-                                sqlDataReader.GetString("content"),
-                                sqlDataReader.GetBoolean("approved"),
-                                await sqlDataReader.IsDBNullAsync("approved_by") ? null : sqlDataReader.GetInt32("approved_by"),
-                                await sqlDataReader.IsDBNullAsync("approved_at") ? null : sqlDataReader.GetDateTime("approved_at"),
-                                sqlDataReader.GetDateTime("created_at")
-                            ));
+                        comments.Add(new Comment
+                        {
+                            Id = sqlDataReader.GetInt32("id"),
+                            AuthorId = sqlDataReader.GetInt32("fk_author"),
+                            SubjectId = sqlDataReader.GetInt32("fk_subject"),
+                            Content = sqlDataReader.GetString("content"),
+                            Approved = sqlDataReader.GetBoolean("approved"),
+                            ApprovedById = await sqlDataReader.IsDBNullAsync("approved_by") ? null : sqlDataReader.GetInt32("approved_by"),
+                            ApprovedAt = await sqlDataReader.IsDBNullAsync("approved_at") ? null : sqlDataReader.GetDateTime("approved_at"),
+                            CreatedAt = sqlDataReader.GetDateTime("created_at")
+                        });
                     }
 
                     await sqlDataReader.CloseAsync();
@@ -229,16 +232,17 @@ namespace SBO.BlaaBog.Domain.Connections
                 {
                     while ( await sqlDataReader.ReadAsync() )
                     {
-                        comments.Add(new Comment(
-                                sqlDataReader.GetInt32("id"),
-                                sqlDataReader.GetInt32("fk_author"),
-                                sqlDataReader.GetInt32("fk_subject"),
-                                sqlDataReader.GetString("content"),
-                                sqlDataReader.GetBoolean("approved"),
-                                await sqlDataReader.IsDBNullAsync("approved_by") ? null : sqlDataReader.GetInt32("approved_by"),
-                                await sqlDataReader.IsDBNullAsync("approved_at") ? null : sqlDataReader.GetDateTime("approved_at"),
-                                sqlDataReader.GetDateTime("created_at")
-                            ));
+                        comments.Add(new Comment
+                        {
+                            Id = sqlDataReader.GetInt32("id"),
+                            AuthorId = sqlDataReader.GetInt32("fk_author"),
+                            SubjectId = sqlDataReader.GetInt32("fk_subject"),
+                            Content = sqlDataReader.GetString("content"),
+                            Approved = sqlDataReader.GetBoolean("approved"),
+                            ApprovedById = await sqlDataReader.IsDBNullAsync("approved_by") ? null : sqlDataReader.GetInt32("approved_by"),
+                            ApprovedAt = await sqlDataReader.IsDBNullAsync("approved_at") ? null : sqlDataReader.GetDateTime("approved_at"),
+                            CreatedAt = sqlDataReader.GetDateTime("created_at")
+                        });
                     }
 
                     await sqlDataReader.CloseAsync();
@@ -282,16 +286,70 @@ namespace SBO.BlaaBog.Domain.Connections
                 {
                     while ( await sqlDataReader.ReadAsync() )
                     {
-                        comments.Add(new Comment(
-                                sqlDataReader.GetInt32("id"),
-                                sqlDataReader.GetInt32("fk_author"),
-                                sqlDataReader.GetInt32("fk_subject"),
-                                sqlDataReader.GetString("content"),
-                                sqlDataReader.GetBoolean("approved"),
-                                await sqlDataReader.IsDBNullAsync("approved_by") ? null : sqlDataReader.GetInt32("approved_by"),
-                                await sqlDataReader.IsDBNullAsync("approved_at") ? null : sqlDataReader.GetDateTime("approved_at"),
-                                sqlDataReader.GetDateTime("created_at")
-                            ));
+                        comments.Add(new Comment
+                        {
+                            Id = sqlDataReader.GetInt32("id"),
+                            AuthorId = sqlDataReader.GetInt32("fk_author"),
+                            SubjectId = sqlDataReader.GetInt32("fk_subject"),
+                            Content = sqlDataReader.GetString("content"),
+                            Approved = sqlDataReader.GetBoolean("approved"),
+                            ApprovedById = await sqlDataReader.IsDBNullAsync("approved_by") ? null : sqlDataReader.GetInt32("approved_by"),
+                            ApprovedAt = await sqlDataReader.IsDBNullAsync("approved_at") ? null : sqlDataReader.GetDateTime("approved_at"),
+                            CreatedAt = sqlDataReader.GetDateTime("created_at")
+                        });
+                    }
+
+                    await sqlDataReader.CloseAsync();
+                }
+
+                await sqlCommand.Connection.CloseAsync();
+
+                return comments;
+            }
+            catch ( SqlException exception )
+            {
+                await Console.Out.WriteLineAsync(exception.Message);
+            }
+            finally
+            {
+                await sqlCommand.Connection.CloseAsync();
+            }
+
+            return null;
+        }
+
+        /// <summary>
+        /// Get recent comments from the database
+        /// </summary>
+        /// <param name="amount"></param>
+        /// <returns>List<Comment>?</returns>
+        public async Task<List<Comment>?> GetLatestCommentsAsync(int amount = 5)
+        {
+            SqlCommand sqlCommand = _sql.Execute("spGetLatestComments");
+            sqlCommand.Parameters.AddWithValue("@amount", amount);
+
+            try
+            {
+                await sqlCommand.Connection.OpenAsync();
+                SqlDataReader sqlDataReader = await sqlCommand.ExecuteReaderAsync();
+
+                List<Comment> comments = new List<Comment>();
+
+                if ( sqlDataReader.HasRows )
+                {
+                    while ( await sqlDataReader.ReadAsync() )
+                    {
+                        comments.Add(new Comment
+                        {
+                            Id = sqlDataReader.GetInt32("id"),
+                            AuthorId = sqlDataReader.GetInt32("fk_author"),
+                            SubjectId = sqlDataReader.GetInt32("fk_subject"),
+                            Content = sqlDataReader.GetString("content"),
+                            Approved = sqlDataReader.GetBoolean("approved"),
+                            ApprovedById = await sqlDataReader.IsDBNullAsync("approved_by") ? null : sqlDataReader.GetInt32("approved_by"),
+                            ApprovedAt = await sqlDataReader.IsDBNullAsync("approved_at") ? null : sqlDataReader.GetDateTime("approved_at"),
+                            CreatedAt = sqlDataReader.GetDateTime("created_at")
+                        });
                     }
 
                     await sqlDataReader.CloseAsync();
@@ -415,6 +473,93 @@ namespace SBO.BlaaBog.Domain.Connections
             }
 
             return false;
+        }
+
+        /// <summary>
+        /// Gets the number of students in the database
+        /// </summary>
+        /// <returns>int</returns>
+        public async Task<int> GetCommentsCountAsync()
+        {
+            try
+            {
+                int count = 0;
+
+                SqlCommand sqlCommand = _sql.Execute("spGetCommentsCount");
+                await sqlCommand.Connection.OpenAsync();
+                count = Convert.ToInt32(await sqlCommand.ExecuteScalarAsync());
+                await sqlCommand.Connection.CloseAsync();
+
+                return count;
+            }
+            catch ( SqlException sqlException )
+            {
+                await Console.Out.WriteLineAsync(sqlException.Message);
+            }
+
+            return 0;
+        }
+
+        /// <summary>
+        /// Gets the number of new comments in the database
+        /// </summary>
+        /// <returns>int</returns>
+        public async Task<int> GetNewCommentsCountAsync()
+        {
+            try
+            {
+                int count = 0;
+
+                SqlCommand sqlCommand = _sql.Execute("spGetNewCommentsCount");
+                await sqlCommand.Connection.OpenAsync();
+                count = Convert.ToInt32(await sqlCommand.ExecuteScalarAsync());
+                await sqlCommand.Connection.CloseAsync();
+
+                return count;
+            }
+            catch ( SqlException sqlException )
+            {
+                await Console.Out.WriteLineAsync(sqlException.Message);
+            }
+
+            return 0;
+        }
+
+        /// <summary>
+        /// Gets comments grouped by month over the last 5 years
+        /// </summary>
+        /// <returns>Dictionary<DateOnly, int>?</returns>
+        public async Task<Dictionary<DateOnly, int>?> GetCommentsGroupedByMonthAsync()
+        {
+            SqlCommand sqlCommand = _sql.Execute("spGetCommentsGroupedByMonth");
+
+            try
+            {
+                await sqlCommand.Connection.OpenAsync();
+                
+                Dictionary<DateOnly, int> comments = new Dictionary<DateOnly, int>();
+
+                SqlDataReader sqlDataReader = await sqlCommand.ExecuteReaderAsync();
+                while ( sqlDataReader.Read() )
+                {
+                    comments.Add(new DateOnly(sqlDataReader.GetDateTime("date").Year, sqlDataReader.GetDateTime("date").Month, sqlDataReader.GetDateTime("date").Day), sqlDataReader.GetInt32("count"));
+                }
+
+                await sqlDataReader.CloseAsync();
+                await sqlCommand.Connection.CloseAsync();
+
+                return comments;
+            }
+            catch ( SqlException sqlException )
+            {
+                await Console.Out.WriteLineAsync(sqlException.Message);
+            }
+            finally
+            {
+                await sqlCommand.Connection.CloseAsync();
+            }
+
+            return null;
         }
 
         #endregion

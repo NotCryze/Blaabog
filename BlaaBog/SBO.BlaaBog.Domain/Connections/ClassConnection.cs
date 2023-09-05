@@ -193,6 +193,58 @@ namespace SBO.BlaaBog.Domain.Connections
             return null;
         }
 
+        /// <summary>
+        /// Get the most recent classes from the database
+        /// </summary>
+        /// <param name="amount"></param>
+        /// <returns>List<Class>?</returns>
+        public async Task<List<Class>?> GetLatestClassesAsync(int amount = 5)
+        {
+            SqlCommand sqlCommand = _sql.Execute("spGetLatestClasses");
+            sqlCommand.Parameters.AddWithValue("@amount", amount);
+
+            try
+            {
+                await sqlCommand.Connection.OpenAsync();
+                SqlDataReader sqlDataReader = await sqlCommand.ExecuteReaderAsync();
+
+                List<Class> @class = new List<Class>();
+
+                if ( sqlDataReader.HasRows )
+                {
+                    while ( await sqlDataReader.ReadAsync() )
+                    {
+                        @class.Add(new Class(
+                                sqlDataReader.GetInt32("id"),
+                                new DateOnly(
+                                        sqlDataReader.GetDateTime("start_date").Year,
+                                        sqlDataReader.GetDateTime("start_date").Month,
+                                        sqlDataReader.GetDateTime("start_date").Day
+                                    ),
+                                sqlDataReader.GetString("token"),
+                                new List<Student>(Enumerable.Range(1, sqlDataReader.GetInt32("students")).Select(x => new Student(null, null, null, null, null, null, 0, null, null))))
+                            );
+                    }
+
+                    await sqlDataReader.CloseAsync();
+                }
+
+                await sqlCommand.Connection.CloseAsync();
+
+                return @class;
+            }
+            catch ( SqlException exception )
+            {
+                await Console.Out.WriteLineAsync(exception.Message);
+            }
+            finally
+            {
+                await sqlCommand.Connection.CloseAsync();
+            }
+
+            return null;
+        }
+
         #endregion
 
         #region Update Class
@@ -293,6 +345,31 @@ namespace SBO.BlaaBog.Domain.Connections
             }
 
             return count;
+        }
+
+        /// <summary>
+        /// Gets the number of students in the database
+        /// </summary>
+        /// <returns>int</returns>
+        public async Task<int> GetClassesCountAsync()
+        {
+            try
+            {
+                int count = 0;
+
+                SqlCommand sqlCommand = _sql.Execute("spGetClassesCount");
+                await sqlCommand.Connection.OpenAsync();
+                count = Convert.ToInt32(await sqlCommand.ExecuteScalarAsync());
+                await sqlCommand.Connection.CloseAsync();
+
+                return count;
+            }
+            catch ( SqlException sqlException )
+            {
+                await Console.Out.WriteLineAsync(sqlException.Message);
+            }
+
+            return 0;
         }
 
         #endregion
