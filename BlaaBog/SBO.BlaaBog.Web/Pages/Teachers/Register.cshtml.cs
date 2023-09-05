@@ -48,12 +48,18 @@ namespace SBO.BlaaBog.Web.Pages.Teachers
                     ModelState.AddModelError("Register.Email", "Email already in use");
                 }
 
-                if (!ModelState.IsValid)
+                if (tokenFound.TeacherId != null)
                 {
+                    ModelState.AddModelError("Register.Token", "Token has already been used");
+                }
+
+                if (ModelState.GetFieldValidationState("Register.Token") == ModelValidationState.Invalid || ModelState.GetFieldValidationState("Register.Name") == ModelValidationState.Invalid || ModelState.GetFieldValidationState("Register.Email") == ModelValidationState.Invalid || ModelState.GetFieldValidationState("Register.Password") == ModelValidationState.Invalid)
+                {
+                    await Console.Out.WriteLineAsync("Test");
                     return Page();
                 }
 
-                if (teacherFound == null && tokenFound != null && tokenFound.Token == Register.Token)
+                if (teacherFound == null && tokenFound != null && tokenFound.Token == Register.Token && tokenFound.TeacherId == null)
                 {
                     string passwordHash = BC.EnhancedHashPassword(Register.Password);
 
