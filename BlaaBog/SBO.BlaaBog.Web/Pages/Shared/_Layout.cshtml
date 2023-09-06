@@ -5,6 +5,10 @@
 @using SBO.BlaaBog.Web.Utils;
 @inject IMemoryCache Cache;
 
+@functions {
+    private readonly ReportService _reportService = new ReportService();
+}
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -50,7 +54,7 @@
                                     <a class="nav-link" asp-page="/Teachers/Reports">
                                         Reports
                                         <span class="badge rounded-pill bg-danger">
-                                            @Context.Items["Reports"]
+                                            @await _reportService.GetReportsCountAsync()
                                             <span class="visually-hidden">unread messages</span>
                                         </span>
                                     </a>
