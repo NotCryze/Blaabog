@@ -665,6 +665,16 @@ BEGIN
 END
 GO
 
+-- Others
+CREATE OR ALTER PROCEDURE spGetReportsCount
+AS
+BEGIN
+	SELECT COUNT(*)
+	FROM Reports
+	WHERE deleted = 0
+END
+GO
+
 
 /*
 	Teacher Tokens

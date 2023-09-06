@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.Caching.Memory;
 using SBO.BlaaBog.Domain.Entities;
+using SBO.BlaaBog.Services.Services;
 
 namespace SBO.BlaaBog.Web.Middlewares
 {
@@ -7,11 +8,13 @@ namespace SBO.BlaaBog.Web.Middlewares
     {
         private readonly RequestDelegate _next;
         private readonly IMemoryCache _cache;
+        private readonly ReportService _reportService;
 
         public AuthMiddleware(RequestDelegate next, IMemoryCache cache)
         {
             _next = next;
             _cache = cache;
+            _reportService = new ReportService();
         }
 
         public async Task Invoke(HttpContext httpContext)
@@ -29,6 +32,7 @@ namespace SBO.BlaaBog.Web.Middlewares
                 {
                     if (httpContext.Items["User"] is Teacher)
                     {
+                        httpContext.Items["Reports"] = await _reportService.GetReportsCountAsync();
                     }
                     else if (pathLower.StartsWith("/Teachers/Login".ToLower()) || pathLower.StartsWith("/Teachers/Register".ToLower()))
                     {

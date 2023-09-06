@@ -1,8 +1,10 @@
 ﻿@using SBO.BlaaBog.Domain.Entities;
 @using Microsoft.Extensions.Caching.Memory;
 @using Microsoft.OpenApi.Extensions;
+@using SBO.BlaaBog.Services.Services;
 @using SBO.BlaaBog.Web.Utils;
 @inject IMemoryCache Cache;
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -48,7 +50,7 @@
                                     <a class="nav-link" asp-page="/Teachers/Reports">
                                         Reports
                                         <span class="badge rounded-pill bg-danger">
-                                            99+
+                                            @Context.Items["Reports"]
                                             <span class="visually-hidden">unread messages</span>
                                         </span>
                                     </a>

@@ -348,7 +348,7 @@ namespace SBO.BlaaBog.Domain.Connections
         }
 
         /// <summary>
-        /// Gets the number of students in the database
+        /// Gets the number of classes in the database
         /// </summary>
         /// <returns>int</returns>
         public async Task<int> GetClassesCountAsync()

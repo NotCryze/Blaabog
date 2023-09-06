@@ -71,5 +71,18 @@ namespace SBO.BlaaBog.Services.Services
         }
 
         #endregion
+
+        #region Other
+
+        /// <summary>
+        /// Gets the number of reports in the database
+        /// </summary>
+        /// <returns>int</returns>
+        public async Task<int> GetReportsCountAsync()
+        {
+            return await _reportConnection.GetReportsCountAsync();
+        }
+
+        #endregion
     }
 }

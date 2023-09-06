@@ -185,5 +185,34 @@ namespace SBO.BlaaBog.Domain.Connections
         }
 
         #endregion
+
+        #region Other
+
+        /// <summary>
+        /// Gets the number of reports in the database
+        /// </summary>
+        /// <returns>int</returns>
+        public async Task<int> GetReportsCountAsync()
+        {
+            try
+            {
+                int count = 0;
+
+                SqlCommand sqlCommand = _sql.Execute("spGetReportsCount");
+                await sqlCommand.Connection.OpenAsync();
+                count = Convert.ToInt32(await sqlCommand.ExecuteScalarAsync());
+                await sqlCommand.Connection.CloseAsync();
+
+                return count;
+            }
+            catch ( SqlException sqlException )
+            {
+                await Console.Out.WriteLineAsync(sqlException.Message);
+            }
+
+            return 0;
+        }
+
+        #endregion
     }
 }
