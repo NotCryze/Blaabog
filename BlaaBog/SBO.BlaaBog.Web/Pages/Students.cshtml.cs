@@ -88,28 +88,35 @@ namespace SBO.BlaaBog.Web.Pages
 
         public async Task<IActionResult> OnGetAsync(int id)
         {
-
-            Student = await _studentService.GetStudentAsync(id);
-            if (Student == null)
-            {
-                return Redirect("/");
-            }
-
-            Class = await _classService.GetClassAsync(Student.ClassId);
-            List<Comment> comments = await _commentService.GetCommentsBySubjectAsync(id);
-
-            foreach (Comment com in comments)
-            {
-                com.Author = await _studentService.GetStudentAsync(com.AuthorId);
-                Comments.Add(com);
-            }
-
-            Comments = Comments.OrderByDescending(c => c.CreatedAt).ToList();
-
             string? PageNumber = Request.Query["page"];
-            if (PageNumber != null)
+            if (PageNumber != null && Int32.TryParse(PageNumber, out int result))
             {
                 CurrentPage = Math.Max(Int32.Parse(PageNumber), 1);
+            }
+
+            try
+            {
+                Student = await _studentService.GetStudentAsync(id);
+                if (Student == null)
+                {
+                    return Redirect("/");
+                }
+
+                Class = await _classService.GetClassAsync(Student.ClassId);
+                List<Comment> comments = await _commentService.GetCommentsBySubjectAsync(id);
+
+                foreach (Comment com in comments)
+                {
+                    com.Author = await _studentService.GetStudentAsync(com.AuthorId);
+                    Comments.Add(com);
+                }
+
+                Comments = Comments.OrderByDescending(c => c.CreatedAt).ToList();
+
+            }
+            catch (Exception ex)
+            {
+                await Console.Out.WriteLineAsync(ex.Message);
             }
 
             return Page();
@@ -123,23 +130,31 @@ namespace SBO.BlaaBog.Web.Pages
         {
             if (ModelState.GetFieldValidationState("Comment.Content") == ModelValidationState.Valid)
             {
-                if (HttpContext.Items["User"] is Student)
+                try
                 {
-                    Comment comment = new Comment
+                    if (HttpContext.Items["User"] is Student)
                     {
-                        AuthorId = Convert.ToInt32(HttpContext.Session.GetInt32("Id")),
-                        SubjectId = id,
-                        Content = Comment.Content
-                    };
-                    await _commentService.CreateCommentAsync(comment);
-                    HttpContext.Session.AddToastNotification(new ToastNotification { Message = "Comment has been sent!", Status = ToastColor.Success });
+                        Comment comment = new Comment
+                        {
+                            AuthorId = Convert.ToInt32(HttpContext.Session.GetInt32("Id")),
+                            SubjectId = id,
+                            Content = Comment.Content
+                        };
+                        await _commentService.CreateCommentAsync(comment);
+                        HttpContext.Session.AddToastNotification(new ToastNotification { Message = "Comment has been sent!", Status = ToastColor.Success });
+                    }
+                    else
+                    {
+                        HttpContext.Session.AddToastNotification(new ToastNotification { Message = "Only students can send comments!", Status = ToastColor.Danger });
+                    }
                 }
-                else
+                catch (Exception ex)
                 {
-                    HttpContext.Session.AddToastNotification(new ToastNotification { Message = "Only students can send comments!", Status = ToastColor.Danger });
+                    await Console.Out.WriteLineAsync(ex.Message);
+                    HttpContext.Session.AddToastNotification(new ToastNotification { Message = "Something went wrong!", Status = ToastColor.Danger });
                 }
-
             }
+
             return Redirect(HttpContext.Request.Path + "#comments");
         }
 
@@ -149,12 +164,21 @@ namespace SBO.BlaaBog.Web.Pages
 
         public async Task<IActionResult> OnPostDeleteCommentAsync(int delId)
         {
-            Comment comment = await _commentService.GetCommentAsync(delId);
-            if (comment != null)
+            try
             {
-                await _commentService.DeleteCommentAsync(delId);
-                HttpContext.Session.AddToastNotification(new ToastNotification { Message = "Comment has been deleted!", Status = ToastColor.Success });
+                Comment comment = await _commentService.GetCommentAsync(delId);
+                if (comment != null)
+                {
+                    await _commentService.DeleteCommentAsync(delId);
+                    HttpContext.Session.AddToastNotification(new ToastNotification { Message = "Comment has been deleted!", Status = ToastColor.Success });
+                }
             }
+            catch (Exception ex)
+            {
+                await Console.Out.WriteLineAsync(ex.Message);
+                HttpContext.Session.AddToastNotification(new ToastNotification { Message = "Something went wrong!", Status = ToastColor.Danger });
+            }
+
             return Redirect(HttpContext.Request.Path + "#comments");
         }
 
@@ -175,10 +199,19 @@ namespace SBO.BlaaBog.Web.Pages
             Report.Reason = Report.Reason == null ? CustomReason : Report.Reason;
             Report.CommentId = comment;
 
-            if (await _commentService.GetCommentAsync(comment) != null)
+
+            try
             {
-                await _reportService.CreateReportAsync(Report);
-                HttpContext.Session.AddToastNotification(new ToastNotification { Message = "Comment has been reported!", Status = ToastColor.Success });
+                if (await _commentService.GetCommentAsync(comment) != null)
+                {
+                    await _reportService.CreateReportAsync(Report);
+                    HttpContext.Session.AddToastNotification(new ToastNotification { Message = "Comment has been reported!", Status = ToastColor.Success });
+                }
+            }
+            catch (Exception ex)
+            {
+                await Console.Out.WriteLineAsync(ex.Message);
+                HttpContext.Session.AddToastNotification(new ToastNotification { Message = "Something went wrong!", Status = ToastColor.Danger });
             }
 
             return Redirect(HttpContext.Request.Path + "#comments");

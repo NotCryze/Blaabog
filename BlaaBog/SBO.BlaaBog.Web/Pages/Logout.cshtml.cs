@@ -16,10 +16,18 @@ namespace SBO.BlaaBog.Web.Pages
 
         public async Task<IActionResult> OnGetAsync()
         {
-            _cache.Remove(HttpContext.Session.Id);
-            HttpContext.Session.Clear();
-            HttpContext.Session.AddToastNotification(new ToastNotification { Message = "You have been logged out!", Status = ToastColor.Success });
-            
+            try
+            {
+                _cache.Remove(HttpContext.Session.Id);
+                HttpContext.Session.Clear();
+                HttpContext.Session.AddToastNotification(new ToastNotification { Message = "You have been logged out!", Status = ToastColor.Success });
+            }
+            catch (Exception ex)
+            {
+                await Console.Out.WriteLineAsync(ex.Message);
+                HttpContext.Session.AddToastNotification(new ToastNotification { Message = "Something went wrong!", Status = ToastColor.Danger });
+            }
+
             if (HttpContext.Request.GetTypedHeaders().Referer.LocalPath.StartsWith("/Teachers"))
             {
                 return RedirectToPage("/Teachers/Login");

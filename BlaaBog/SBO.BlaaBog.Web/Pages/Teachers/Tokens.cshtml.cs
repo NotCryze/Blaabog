@@ -28,18 +28,25 @@ namespace SBO.BlaaBog.Web.Pages.Teachers
 
         public async Task<IActionResult> OnGetAsync()
         {
-            List <TeacherToken> tokens = await _teacherTokenService.GetTeacherTokensAsync();
-            foreach (var item in tokens)
+            try
             {
-                TeacherTokens.Add(
-                    new TeacherToken
-                    {
-                        Id = item.Id,
-                        Token = item.Token,
-                        TeacherId = item.TeacherId,
-                        Teacher = await _teacherService.GetTeacherAsync(Convert.ToInt32(item.TeacherId)),
-                        CreatedAt = item.CreatedAt
-                    });
+                List<TeacherToken> tokens = await _teacherTokenService.GetTeacherTokensAsync();
+                foreach (var item in tokens)
+                {
+                    TeacherTokens.Add(
+                        new TeacherToken
+                        {
+                            Id = item.Id,
+                            Token = item.Token,
+                            TeacherId = item.TeacherId,
+                            Teacher = await _teacherService.GetTeacherAsync(Convert.ToInt32(item.TeacherId)),
+                            CreatedAt = item.CreatedAt
+                        });
+                }
+            }
+            catch (Exception ex)
+            {
+                await Console.Out.WriteLineAsync(ex.Message);
             }
 
             return Page();
@@ -47,53 +54,62 @@ namespace SBO.BlaaBog.Web.Pages.Teachers
 
         public async Task<IActionResult> OnPostAsync()
         {
-            if (Request.Form.ContainsKey("generateToken"))
+            try
             {
-                // Handle token generation logic when the "Generate Token" button is clicked
-                GeneratedToken = await GenerateTokenAsync();
-                var newToken = new TeacherToken
+                if (Request.Form.ContainsKey("generateToken"))
                 {
-                    Id = 0,
-                    Token = GeneratedToken,
-                    TeacherId = null,
-                    Teacher = null
-                };
+                    GeneratedToken = await GenerateTokenAsync();
+                    var newToken = new TeacherToken
+                    {
+                        Id = 0,
+                        Token = GeneratedToken,
+                        TeacherId = null,
+                        Teacher = null
+                    };
 
-                bool tokenCreated = await _teacherTokenService.CreateTeacherTokenAsync(newToken);
+                    bool tokenCreated = await _teacherTokenService.CreateTeacherTokenAsync(newToken);
 
-                if (tokenCreated)
+                    if (tokenCreated)
+                    {
+                        HttpContext.Session.AddToastNotification(new ToastNotification { Message = "Token has been generated!", Status = ToastColor.Success });
+                        return RedirectToPage("/Teachers/Tokens");
+                    }
+                    else
+                    {
+                        ModelState.AddModelError(string.Empty, "Failed to create the token.");
+                        return Page();
+                    }
+                }
+                else if (Request.Form.ContainsKey("deleteToken"))
                 {
-                    HttpContext.Session.AddToastNotification(new ToastNotification { Message = "Token has been generated!", Status = ToastColor.Success });
-                    return RedirectToPage("/Teachers/Tokens");
+                    int token = Convert.ToInt32(Request.Form["deleteToken"]);
+                    bool tokenDeleted = await _teacherTokenService.DeleteTeacherTokenAsync(token);
+
+                    if (tokenDeleted)
+                    {
+                        HttpContext.Session.AddToastNotification(new ToastNotification { Message = "Token has been deleted!", Status = ToastColor.Success });
+                        return RedirectToPage("/Teachers/Tokens");
+                    }
+                    else
+                    {
+                        ModelState.AddModelError(string.Empty, "Failed to delete the token.");
+                        return Page();
+                    }
                 }
                 else
                 {
-                    ModelState.AddModelError(string.Empty, "Failed to create the token.");
+                    ModelState.AddModelError(string.Empty, "Invalid form submission.");
                     return Page();
                 }
             }
-            else if (Request.Form.ContainsKey("deleteToken"))
+            catch (Exception ex)
             {
-                // Handle token deletion logic when the "Delete" button is clicked
-                int token = Convert.ToInt32(Request.Form["deleteToken"]);
-                bool tokenDeleted = await _teacherTokenService.DeleteTeacherTokenAsync(token);
+                await Console.Out.WriteLineAsync(ex.Message);
+                HttpContext.Session.AddToastNotification(new ToastNotification { Message = "Something went wrong!", Status = ToastColor.Danger });
 
-                if (tokenDeleted)
-                {
-                    HttpContext.Session.AddToastNotification(new ToastNotification { Message = "Token has been deleted!", Status = ToastColor.Success });
-                    return RedirectToPage("/Teachers/Tokens");
-                }
-                else
-                {
-                    ModelState.AddModelError(string.Empty, "Failed to delete the token.");
-                    return Page();
-                }
             }
-            else
-            {
-                ModelState.AddModelError(string.Empty, "Invalid form submission.");
-                return Page();
-            }
+
+            return await OnGetAsync();
         }
 
         public async Task<string> GenerateTokenAsync(int length = 6)

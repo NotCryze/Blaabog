@@ -29,7 +29,6 @@ namespace SBO.BlaaBog.Web.Pages.Teachers
             catch (Exception exception)
             {
                 await Console.Out.WriteLineAsync(exception.Message);
-                throw;
             }
 
             return Page();
@@ -79,6 +78,7 @@ namespace SBO.BlaaBog.Web.Pages.Teachers
             catch (Exception exception)
             {
                 await Console.Out.WriteLineAsync(exception.Message);
+                ModelState.AddModelError("Register", "Something went wrong");
             }
 
             return await OnGetAsync();
@@ -135,6 +135,7 @@ namespace SBO.BlaaBog.Web.Pages.Teachers
             catch (Exception exception)
             {
                 await Console.Out.WriteLineAsync(exception.Message);
+                ModelState.AddModelError("Edit", "Something went wrong");
             }
 
             return Redirect("/Teachers/Accounts");
@@ -160,6 +161,7 @@ namespace SBO.BlaaBog.Web.Pages.Teachers
             catch (Exception exception)
             {
                 await Console.Out.WriteLineAsync(exception.Message);
+                HttpContext.Session.AddToastNotification(new ToastNotification { Message = "Something went wrong", Status = ToastColor.Danger });
             }
 
             return Redirect("/Teachers/Accounts");

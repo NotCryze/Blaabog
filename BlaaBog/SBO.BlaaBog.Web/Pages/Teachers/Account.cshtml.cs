@@ -63,6 +63,7 @@ namespace SBO.BlaaBog.Web.Pages.Teachers
             catch (Exception exception)
             {
                 await Console.Out.WriteLineAsync(exception.Message);
+                HttpContext.Session.AddToastNotification(new ToastNotification { Message = "Something went wrong", Status = ToastColor.Danger });
             }
 
             return await OnGetAsync();
@@ -110,6 +111,7 @@ namespace SBO.BlaaBog.Web.Pages.Teachers
             catch (Exception exception)
             {
                 await Console.Out.WriteLineAsync(exception.Message);
+                HttpContext.Session.AddToastNotification(new ToastNotification { Message = "Something went wrong", Status = ToastColor.Danger });
             }
 
             return await OnGetAsync();

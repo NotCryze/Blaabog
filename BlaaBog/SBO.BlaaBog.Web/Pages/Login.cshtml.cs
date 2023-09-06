@@ -32,7 +32,7 @@ namespace SBO.BlaaBog.Web.Pages
             {
                 if (!ModelState.IsValid)
                 {
-                    return Page();
+                    return await OnGetAsync();
                 }
 
                 Student? student = await _studentService.GetStudentByEmailAsync(Login.Email);
@@ -65,7 +65,7 @@ namespace SBO.BlaaBog.Web.Pages
                 ModelState.AddModelError("Login", "Something went wrong");
             }
 
-            return Page();
+            return await OnGetAsync();
         }
     }
 }
