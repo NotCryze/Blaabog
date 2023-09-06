@@ -69,7 +69,7 @@ namespace SBO.BlaaBog.Web.Pages.Teachers
                 ModelState.AddModelError("Login", "Something went wrong");
             }
 
-            return Page();
+            return await OnGetAsync();
         }
     }
 }
