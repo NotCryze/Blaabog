@@ -90,6 +90,7 @@ namespace SBO.BlaaBog.Web.Pages
                 {
                     Student updatedStudent = new Student(Convert.ToInt32(HttpContext.Session.GetInt32("Id")), Student.Name, oldStudent.Image, Student.Description, Student.Email, Student.Speciality, oldStudent.ClassId, Student.EndDate, oldStudent.Password);
                     await _service.UpdateStudentAsync(updatedStudent);
+                    HttpContext.Session.SetString("Name", Student.Name);
                     HttpContext.Session.AddToastNotification(new ToastNotification { Message = "Account details have been changed!", Status = ToastColor.Success });
                     return Redirect("/Account");
                 }
