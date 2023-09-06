@@ -640,6 +640,18 @@ BEGIN
 END
 GO
 
+CREATE OR ALTER PROCEDURE spGetReportsByComment
+	@id INT
+AS
+BEGIN
+	SELECT *
+	FROM Reports
+	WHERE 
+		deleted = 0
+		AND fk_comment = @id
+END
+GO
+
 -- Update Report
 --CREATE OR ALTER PROCEDURE spUpdateReport
 --	@id INT
