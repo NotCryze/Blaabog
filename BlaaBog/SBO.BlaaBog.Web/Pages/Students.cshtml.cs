@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.Extensions.Caching.Memory;
 using SBO.BlaaBog.Domain.Entities;
 using SBO.BlaaBog.Services.Services;
 using SBO.BlaaBog.Web.DTO;
@@ -17,13 +18,15 @@ namespace SBO.BlaaBog.Web.Pages
         private readonly CommentService _commentService;
         private readonly ClassService _classService;
         private readonly ReportService _reportService;
+        private readonly IMemoryCache _cache;
 
-        public StudentsModel()
+        public StudentsModel(IMemoryCache cache)
         {
             _studentService = new StudentService();
             _commentService = new CommentService();
             _classService = new ClassService();
             _reportService = new ReportService();
+            _cache = cache;
         }
 
         public Student Student { get; set; }
@@ -120,15 +123,22 @@ namespace SBO.BlaaBog.Web.Pages
         {
             if (ModelState.GetFieldValidationState("Comment.Content") == ModelValidationState.Valid)
             {
-                Comment comment = new Comment
+                if (HttpContext.Items["User"] is Student)
                 {
-                    AuthorId = Convert.ToInt32(HttpContext.Session.GetInt32("Id")),
-                    SubjectId = id,
-                    Content = Comment.Content
-                };
+                    Comment comment = new Comment
+                    {
+                        AuthorId = Convert.ToInt32(HttpContext.Session.GetInt32("Id")),
+                        SubjectId = id,
+                        Content = Comment.Content
+                    };
+                    await _commentService.CreateCommentAsync(comment);
+                    HttpContext.Session.AddToastNotification(new ToastNotification { Message = "Comment has been sent!", Status = ToastColor.Success });
+                }
+                else
+                {
+                    HttpContext.Session.AddToastNotification(new ToastNotification { Message = "Only students can send comments!", Status = ToastColor.Danger });
+                }
 
-                await _commentService.CreateCommentAsync(comment);
-                HttpContext.Session.AddToastNotification(new ToastNotification { Message = "Comment has been sent!", Status = ToastColor.Success });
             }
             return Redirect(HttpContext.Request.Path + "#comments");
         }
