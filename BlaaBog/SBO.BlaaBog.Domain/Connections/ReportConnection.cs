@@ -1,4 +1,5 @@
-﻿using SBO.BlaaBog.Domain.Entities;
+﻿using Microsoft.VisualBasic;
+using SBO.BlaaBog.Domain.Entities;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -142,6 +143,56 @@ namespace SBO.BlaaBog.Domain.Connections
             finally
             {
                 await sqlCommand.Connection.CloseAsync();
+            }
+
+            return null;
+        }
+
+        /// <summary>
+        /// Gets all reports by a specific comment
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns>List<Report>?</returns>
+        public async Task<List<Report>?> GetReportsByCommentAsync(int id)
+        {
+            SqlCommand cmd = _sql.Execute("spGetReportsByComment");
+            cmd.Parameters.AddWithValue("@id", id);
+
+            try
+            {
+                await cmd.Connection.OpenAsync();
+
+                SqlDataReader rdr = await cmd.ExecuteReaderAsync();
+
+                List<Report> reports = new List<Report>();
+
+                if ( rdr.HasRows )
+                {
+                    while ( await rdr.ReadAsync() )
+                    {
+                        reports.Add(new Report
+                        {
+                            Id = rdr.GetInt32("id"),
+                            CommentId = rdr.GetInt32("fk_comment"),
+                            Reason = rdr.GetString("reason"),
+                            CreatedAt = rdr.GetDateTime("created_at")
+                        });
+                    }
+
+                    await rdr.CloseAsync();
+                }
+
+                await cmd.Connection.CloseAsync();
+
+                return reports;
+            }
+            catch ( SqlException ex )
+            {
+                await Console.Out.WriteLineAsync(ex.Message);
+            }
+            finally
+            {
+                await cmd.Connection.CloseAsync();
             }
 
             return null;

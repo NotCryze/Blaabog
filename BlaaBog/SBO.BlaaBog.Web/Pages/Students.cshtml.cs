@@ -167,10 +167,13 @@ namespace SBO.BlaaBog.Web.Pages
                 Comment comment = await _commentService.GetCommentAsync(delId);
                 if (comment != null)
                 {
-                    Report report = await _reportService.GetReportAsync(delId);
-                    if (true)
+                    List<Report> reports = await _reportService.GetReportsByCommentAsync(delId);
+                    if (reports != null)
                     {
-
+                        foreach (Report report in reports)
+                        {
+                            _reportService.DeleteReportAsync(Convert.ToInt32(report.Id));
+                        }
                     }
                     await _commentService.DeleteCommentAsync(delId);
                     HttpContext.Session.AddToastNotification(new ToastNotification { Message = "Comment has been deleted!", Status = ToastColor.Success });
