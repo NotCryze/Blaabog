@@ -8,6 +8,7 @@ using SBO.BlaaBog.Domain.Entities;
 using SBO.BlaaBog.Services.Services;
 using SBO.BlaaBog.Web.DTO;
 using SBO.BlaaBog.Web.Extensions.DataAnnotations;
+using SBO.BlaaBog.Web.Utils;
 using System.ComponentModel.DataAnnotations;
 using BC = BCrypt.Net.BCrypt;
 
@@ -29,41 +30,43 @@ namespace SBO.BlaaBog.Web.Pages
         public string ImageName { get; set; }
         public async Task<IActionResult> OnGetAsync()
         {
-            if (HttpContext.Items["User"] is Teacher)
+            try
             {
-                return RedirectToPage("/Teachers/Register");
+                if (HttpContext.Items["User"] is Teacher)
+                {
+                    return RedirectToPage("/Teachers/Register");
+                }
+
+                Student? student = await _service.GetStudentAsync(Convert.ToInt32(HttpContext.Session.GetInt32("Id")));
+
+                Student = new StudentAccountDTO
+                {
+                    Name = student.Name,
+                    Description = student.Description,
+                    Email = student.Email,
+                    Speciality = student.Speciality,
+                    EndDate = student.EndDate
+                };
+
+                foreach (Specialities speciality in Enum.GetValues<Specialities>())
+                {
+                    SpecialitiesList.Add(new SelectListItem { Text = EnumExtensions.GetDisplayName(speciality), Value = speciality.ToString(), Selected = speciality == student.Speciality });
+                }
+
+                ImageName = student.Image;
             }
-
-            Student? student = await _service.GetStudentAsync(Convert.ToInt32(HttpContext.Session.GetInt32("Id")));
-
-            Student = new StudentAccountDTO
+            catch (Exception ex)
             {
-                Name = student.Name,
-                Description = student.Description,
-                Email = student.Email,
-                Speciality = student.Speciality,
-                EndDate = student.EndDate
-            };
+                await Console.Out.WriteLineAsync(ex.Message);
+                HttpContext.Session.AddToastNotification(new ToastNotification { Message = "Something went wrong!", Status = ToastColor.Danger });
 
-            //SpecialitiesList = new List<SelectListItem>
-            //{
-            //    new SelectListItem { Text = nameof(Specialities.None), Value = Specialities.None.ToString() },
-            //    new SelectListItem { Text = nameof(Specialities.ITSupporter), Value = Specialities.ITSupporter.ToString() },
-            //    new SelectListItem { Text = nameof(Specialities.Programmer), Value = Specialities.Programmer.ToString() },
-            //    new SelectListItem { Text = nameof(Specialities.Infrastructure), Value = Specialities.Infrastructure.ToString() },
-            //};
-
-            foreach (Specialities speciality in Enum.GetValues<Specialities>())
-            {
-                SpecialitiesList.Add(new SelectListItem { Text = EnumExtensions.GetDisplayName(speciality), Value = speciality.ToString(), Selected = speciality == student.Speciality });
             }
-
-            ImageName = student.Image;
 
             return Page();
         }
 
         #region Change Account Details
+
         public async Task<IActionResult> OnPostChangeAccountDetailsAsync()
         {
             try
@@ -87,6 +90,7 @@ namespace SBO.BlaaBog.Web.Pages
                 {
                     Student updatedStudent = new Student(Convert.ToInt32(HttpContext.Session.GetInt32("Id")), Student.Name, oldStudent.Image, Student.Description, Student.Email, Student.Speciality, oldStudent.ClassId, Student.EndDate, oldStudent.Password);
                     await _service.UpdateStudentAsync(updatedStudent);
+                    HttpContext.Session.AddToastNotification(new ToastNotification { Message = "Account details have been changed!", Status = ToastColor.Success });
                     return Redirect("/Account");
                 }
             }
@@ -94,7 +98,6 @@ namespace SBO.BlaaBog.Web.Pages
             {
                 await Console.Out.WriteLineAsync(ex.Message);
                 ModelState.AddModelError("Student", "Something went wrong");
-                throw;
             }
 
             return await OnGetAsync();
@@ -123,6 +126,7 @@ namespace SBO.BlaaBog.Web.Pages
                     {
                         Student updatedStudent = new Student(Convert.ToInt32(HttpContext.Session.GetInt32("Id")), student.Name, student.Image, student.Description, student.Email, student.Speciality, student.ClassId, student.EndDate, BC.EnhancedHashPassword(Password.New));
                         await _service.UpdateStudentAsync(updatedStudent);
+                        HttpContext.Session.AddToastNotification(new ToastNotification { Message = "Password has been changed!", Status = ToastColor.Success });
                         return Redirect("/Account");
                     }
                 }
@@ -180,6 +184,7 @@ namespace SBO.BlaaBog.Web.Pages
                 }
 
                 await _service.UpdateStudentAsync(new Student(student.Id, student.Name, fileName, student.Description, student.Email, student.Speciality, student.ClassId, student.EndDate, student.Password));
+                HttpContext.Session.AddToastNotification(new ToastNotification { Message = "Profile picture has been updated!", Status = ToastColor.Success });
                 return Redirect("/Account");
             }
             catch (Exception ex)

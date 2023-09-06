@@ -22,8 +22,9 @@ namespace SBO.BlaaBog.Web.Pages.Teachers
             _cache = cache;
         }
 
-        public void OnGet()
+        public async Task<IActionResult> OnGetAsync()
         {
+            return Page();
         }
 
         [BindProperty]
@@ -31,8 +32,6 @@ namespace SBO.BlaaBog.Web.Pages.Teachers
 
         public async Task<IActionResult> OnPostAsync()
         {
-            await Console.Out.WriteLineAsync(Register.Token);
-
             try
             {
                 TeacherToken? tokenFound = await _teacherTokenService.GetTeacherTokenByTokenAsync(Register.Token);
@@ -93,7 +92,7 @@ namespace SBO.BlaaBog.Web.Pages.Teachers
                 ModelState.AddModelError("Register", "Something went wrong");
             }
 
-            return Page();
+            return await OnGetAsync();
         }
     }
 }

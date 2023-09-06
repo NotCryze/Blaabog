@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using SBO.BlaaBog.Domain.Connections;
 using SBO.BlaaBog.Domain.Entities;
 using SBO.BlaaBog.Services.Services;
+using SBO.BlaaBog.Web.Utils;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -24,10 +25,18 @@ namespace SBO.BlaaBog.Web.Pages
 
         public async Task<IActionResult> OnGetAsync()
         {
-            Classes = await _classService.GetClassesAsync();
-            foreach (var @class in Classes)
+            try
             {
-                @class.Students = await _studentService.GetStudentsByClassAsync(Convert.ToInt32(@class.Id));
+                Classes = await _classService.GetClassesAsync();
+                foreach (var @class in Classes)
+                {
+                    @class.Students = await _studentService.GetStudentsByClassAsync(Convert.ToInt32(@class.Id));
+                }
+            }
+            catch (Exception ex)
+            {
+                await Console.Out.WriteLineAsync(ex.Message);
+                HttpContext.Session.AddToastNotification(new ToastNotification { Message = "Something went wrong!", Status = ToastColor.Danger });
             }
             return Page();
         }

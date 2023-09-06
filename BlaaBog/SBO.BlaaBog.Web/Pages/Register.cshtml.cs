@@ -85,10 +85,10 @@ namespace SBO.BlaaBog.Web.Pages
             catch (Exception exception)
             {
                 await Console.Out.WriteLineAsync(exception.Message);
-                ModelState.AddModelError("Register", "Something went wrong");
+                ModelState.AddModelError("Login", "Something went wrong");
             }
 
-            return Page();
+            return await OnGetAsync();
         }
     }
 }

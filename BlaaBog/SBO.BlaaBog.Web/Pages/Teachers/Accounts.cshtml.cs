@@ -5,6 +5,7 @@ using Microsoft.Win32;
 using SBO.BlaaBog.Domain.Entities;
 using SBO.BlaaBog.Services.Services;
 using SBO.BlaaBog.Web.DTO;
+using SBO.BlaaBog.Web.Utils;
 using BC = BCrypt.Net.BCrypt;
 
 namespace SBO.BlaaBog.Web.Pages.Teachers
@@ -28,12 +29,12 @@ namespace SBO.BlaaBog.Web.Pages.Teachers
             catch (Exception exception)
             {
                 await Console.Out.WriteLineAsync(exception.Message);
-                throw;
             }
 
             return Page();
         }
 
+        #region Create Account
 
         [BindProperty]
         public RegisterDTO CreateAccount { get; set; }
@@ -66,8 +67,7 @@ namespace SBO.BlaaBog.Web.Pages.Teachers
 
                 if (success)
                 {
-                    Teacher createdTeacher = await _teacherService.GetTeacherByEmailAsync(teacher.Email);
-
+                    HttpContext.Session.AddToastNotification(new ToastNotification { Message = "Account has been created!", Status = ToastColor.Success });
                     return RedirectToPage("/Teachers/Accounts");
                 }
                 else
@@ -78,11 +78,15 @@ namespace SBO.BlaaBog.Web.Pages.Teachers
             catch (Exception exception)
             {
                 await Console.Out.WriteLineAsync(exception.Message);
+                ModelState.AddModelError("Register", "Something went wrong");
             }
 
             return await OnGetAsync();
         }
 
+        #endregion
+
+        #region Edit Account
 
         [BindProperty]
         public EditTeacherDTO EditAccount { get; set; }
@@ -114,12 +118,11 @@ namespace SBO.BlaaBog.Web.Pages.Teachers
                 Teacher teacher = await _teacherService.GetTeacherAsync(id);
                 Teacher newTeacher = new Teacher(id, EditAccount.Name, EditAccount.Email, teacher.Password, EditAccount.Admin);
 
-                await Console.Out.WriteLineAsync(EditAccount.Admin.ToString());
-
                 bool status = await _teacherService.UpdateTeacherAsync(newTeacher);
 
                 if (status)
                 {
+                    HttpContext.Session.AddToastNotification(new ToastNotification { Message = "Account has been updated!", Status = ToastColor.Success });
                     return RedirectToPage("/Teachers/Accounts");
                 }
                 else
@@ -132,11 +135,15 @@ namespace SBO.BlaaBog.Web.Pages.Teachers
             catch (Exception exception)
             {
                 await Console.Out.WriteLineAsync(exception.Message);
+                ModelState.AddModelError("Edit", "Something went wrong");
             }
 
             return Redirect("/Teachers/Accounts");
         }
 
+        #endregion
+
+        #region Delete Account
 
         [BindProperty]
         public int DeleteAccount { get; set; }
@@ -146,13 +153,20 @@ namespace SBO.BlaaBog.Web.Pages.Teachers
             try
             {
                 bool status = await _teacherService.DeleteTeacherAsync(id);
+                if (status)
+                {
+                    HttpContext.Session.AddToastNotification(new ToastNotification { Message = "Account has been deleted!", Status = ToastColor.Success });
+                }
             }
             catch (Exception exception)
             {
                 await Console.Out.WriteLineAsync(exception.Message);
+                HttpContext.Session.AddToastNotification(new ToastNotification { Message = "Something went wrong", Status = ToastColor.Danger });
             }
 
             return Redirect("/Teachers/Accounts");
         }
+
+        #endregion
     }
 }
