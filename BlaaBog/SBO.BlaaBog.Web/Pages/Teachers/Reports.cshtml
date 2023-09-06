@@ -1,0 +1,103 @@
+﻿@page
+@model SBO.BlaaBog.Web.Pages.Teachers.ReportsModel
+@{
+    ViewData["Title"] = "Reports";
+}
+
+
+<div>
+    <table id="reports" class="table table-striped">
+        <thead>
+            <tr>
+                <td>#</td>
+                <th>Reason</th>
+                <th>Created At</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var Report in Model.Reports)
+            {
+                <tr>
+                    <td>@Report.Id</td>
+                    <td>@Report.Reason</td>
+                    <td>@Report.CreatedAt</td>
+                    <td>
+                        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#report-@Report.Id">
+
+                            <i class="fa-solid fa-up-right-from-square"></i>
+                        </button>
+                    </td>
+
+                </tr>
+
+            }
+
+        </tbody>
+
+    </table>
+</div>
+
+@foreach (var report in Model.Reports)
+{
+    <div class="modal fade" id="report-@report.Id" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+
+                    <h1 class="modal-title fs-5" id="exampleModalLabel">Reported Comment</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <h5>Comment</h5>
+                    <p>@report.Comment.Content</p>
+                    <h5>Reason</h5>
+                    <p>@report.Reason</p>
+                </div>
+
+                <form id="delete-@report.Id" method="post" asp-page-handler="Delete" asp-route-id="@report.Id">
+                </form>
+
+                <form id="approve-@report.Id" method="post" asp-page-handler="Approve" asp-route-id="@report.Id">
+                </form>
+                <div class="modal-footer">
+                    <h5>Do you want to delete this comment?</h5>
+                    <button form="approve-@report.Id" type="submit" class="btn btn-success"><i class="fa-solid fa-check"></i></button>
+
+                    <h5>Do you want to delete the report?</h5>
+                    <button form="delete-@report.Id" type="submit" class="btn btn-danger"><i class="fa-solid fa-trash"></i></button>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+@section Scripts{
+
+
+    <script>
+        new DataTable(
+            '#reports',
+            {
+                "columnDefs": [
+                    {
+                        "orderable": false,
+                        "targets": -1
+                    },
+                    {
+                        "orderable": true,
+                        "targets": 0
+                    }
+                ],
+                "order": [
+                    [
+                        0,
+                        "desc"
+                    ]
+                ]
+            }
+        );
+    </script>
+}
+
+
