@@ -18,7 +18,6 @@ namespace SBO.BlaaBog.Web.Pages
         private readonly CommentService _commentService;
         private readonly ClassService _classService;
         private readonly ReportService _reportService;
-        private readonly IMemoryCache _cache;
 
         public StudentsModel(IMemoryCache cache)
         {
@@ -26,7 +25,6 @@ namespace SBO.BlaaBog.Web.Pages
             _commentService = new CommentService();
             _classService = new ClassService();
             _reportService = new ReportService();
-            _cache = cache;
         }
 
         public Student Student { get; set; }
@@ -169,6 +167,11 @@ namespace SBO.BlaaBog.Web.Pages
                 Comment comment = await _commentService.GetCommentAsync(delId);
                 if (comment != null)
                 {
+                    Report report = await _reportService.GetReportAsync(delId);
+                    if (true)
+                    {
+
+                    }
                     await _commentService.DeleteCommentAsync(delId);
                     HttpContext.Session.AddToastNotification(new ToastNotification { Message = "Comment has been deleted!", Status = ToastColor.Success });
                 }
