@@ -102,8 +102,8 @@ INSERT INTO Classes(start_date, token)
 VALUES (GETDATE(), '123456')
 
 INSERT INTO Students(name, email, fk_class, password, end_date)
-VALUES ('Student', 'student@example.com', 1, '$2a$11$TwxkzN1iqAnRMQ4IRjTbWO.DhhZPdA64EYBwa3VZOMQasmw44MdYW', GETDATE())
+VALUES ('Student', 'student@example.com', 1, '$2a$11$vS2TIcU9c.fg5KGAR1jkveuDJneF6e/WpRyrQpbFayT1u0skFaf0i', GETDATE())
 
 INSERT INTO Teachers(name, email, admin, password)
-VALUES ('Teacher', 'teacher@example.com', 1, '$2a$11$TwxkzN1iqAnRMQ4IRjTbWO.DhhZPdA64EYBwa3VZOMQasmw44MdYW')
+VALUES ('Teacher', 'teacher@example.com', 1, '$2a$11$vS2TIcU9c.fg5KGAR1jkveuDJneF6e/WpRyrQpbFayT1u0skFaf0i')
 GO
