@@ -52,6 +52,16 @@ namespace SBO.BlaaBog.Services.Services
             return await _reportConnection.GetReportsAsync();
         }
 
+        /// <summary>
+        /// Gets all reports by a specific comment
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns>List<Report>?</returns>
+        public async Task<List<Report>?> GetReportsByCommentAsync(int id)
+        {
+            return await _reportConnection.GetReportsByCommentAsync(id);
+        }
+
         #endregion
 
         #region Update Report
