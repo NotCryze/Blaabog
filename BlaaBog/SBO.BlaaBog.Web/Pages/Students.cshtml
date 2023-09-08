@@ -55,11 +55,11 @@
                                                 </div>
                                                 <div class="col-6">
                                                     <div class="float-end">
-                                                        @if (comment.SubjectId == HttpContext.Session.GetInt32("Id"))
+                                                        @if (comment.SubjectId == HttpContext.Session.GetInt32("Id") && HttpContext.Items["User"] is not Teacher)
                                                         {
                                                             <button class="report-button btn btn-outline-warning btn-sm border-0" data-bs-toggle="modal" data-bs-target="#report-@comment.Id"><i class="fa-solid fa-flag fa-fw"></i></button>
                                                         }
-                                                        @if (comment.AuthorId == HttpContext.Session.GetInt32("Id"))
+                                                        @if (comment.AuthorId == HttpContext.Session.GetInt32("Id") || HttpContext.Items["User"] is Teacher)
                                                         {
                                                             <button type="button" class="btn btn-outline-danger btn-sm border-0 delete-button" data-bs-toggle="modal" data-bs-target="#delete-@comment.Id"><i class="fa-solid fa-trash fa-fw"></i></button>
                                                         }
