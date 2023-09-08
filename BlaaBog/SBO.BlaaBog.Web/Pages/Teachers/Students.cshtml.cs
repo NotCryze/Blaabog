@@ -60,7 +60,7 @@ namespace SBO.BlaaBog.Web.Pages.Teachers
                 Student oldStudent = await _studentService.GetStudentAsync(id);
                 if (oldStudent != null)
                 {
-                    Student updatedStudent = new Student(id, Student.Name, oldStudent.Image, Student.Description, Student.Email, Student.Speciality, oldStudent.ClassId, Student.EndDate, oldStudent.Password);
+                    Student updatedStudent = new Student(id, Student.Name, oldStudent.Image, Student.Description ?? "", Student.Email, Student.Speciality, oldStudent.ClassId, Student.EndDate, oldStudent.Password);
                     await _studentService.UpdateStudentAsync(updatedStudent);
                     HttpContext.Session.AddToastNotification(new ToastNotification { Message = "Student has been updated!", Status = ToastColor.Success });
                 }
