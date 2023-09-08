@@ -193,24 +193,31 @@ namespace SBO.BlaaBog.Web.Pages
         #region Report Comment
 
         [BindProperty]
-        public Report Report { get; set; }
-
-        [BindProperty]
-        [MaxLength(250)]
-        public string CustomReason { get; set; }
+        public ReportDTO Report { get; set; }
 
         public async Task<IActionResult> OnPostReportCommentAsync(int id, int comment)
         {
 
-            Report.Reason = Report.Reason == null ? CustomReason : Report.Reason;
+            Report.Reason = Report.Reason == null ? Report.CustomReason : Report.Reason;
             Report.CommentId = comment;
-
+            if (Report.Reason == null)
+            {
+                ModelState.AddModelError("Report.Reason", "Reason is required");
+                HttpContext.Items["reportModalId"] = comment;
+                return await OnGetAsync(id);
+            }
+            else if (Report.CustomReason == null && Report.Reason == null)
+            {
+                ModelState.AddModelError("Report.CustomReason", "You need to type a reason");
+                HttpContext.Items["reportModalId"] = comment;
+                return await OnGetAsync(id);
+            }
 
             try
             {
                 if (await _commentService.GetCommentAsync(comment) != null)
                 {
-                    await _reportService.CreateReportAsync(Report);
+                    await _reportService.CreateReportAsync(new Report { CommentId = Report.CommentId, Reason = Report.Reason });
                     HttpContext.Session.AddToastNotification(new ToastNotification { Message = "Comment has been reported!", Status = ToastColor.Success });
                 }
             }

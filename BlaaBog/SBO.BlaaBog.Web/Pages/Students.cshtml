@@ -124,12 +124,14 @@
                             </div>
                             <div class="mb-3">
                                 <h6>Reason</h6>
-                                <select asp-for="Report.Reason" class="form-select" asp-items="Model.Reasons" onchange="toggleOther(this, @comment.Id)" required>
+                                <select asp-for="Report.Reason" class="form-select @(ModelState.GetFieldValidationState("Report.Reason") == ModelValidationState.Invalid ?  "is-invalid" : "")" asp-items="Model.Reasons" onchange="toggleOther(this, @comment.Id)" required>
                                     <option selected disabled hidden readonly value="">Select a reason</option>
                                 </select>
+                                <span asp-validation-for="Report.Reason" class="invalid-feedback w-100 text-center"></span>
                             </div>
                             <div class="mb-3" id="other-@comment.Id" hidden>
-                                <input id="other-field-@comment.Id" asp-for="CustomReason" class="form-control" type="text" placeholder="Reason" pattern="\S(.*\S)?">
+                                <input id="other-field-@comment.Id" asp-for="Report.CustomReason" class="form-control @(ModelState.GetFieldValidationState("Report.CustomReason") == ModelValidationState.Invalid ?  "is-invalid" : "")" type="text" placeholder="Reason" pattern="\S(.*\S)?">
+                                <span asp-validation-for="Report.CustomReason" class="invalid-feedback w-100 text-center"></span>
                             </div>
                         </div>
                         <div class="modal-footer">
@@ -191,6 +193,14 @@
             document.getElementById("other-field-" + id).removeAttribute("required");
         }
     </script>
+
+    @if (ModelState.GetFieldValidationState("Report.Reason") == ModelValidationState.Invalid || ModelState.GetFieldValidationState("Report.CustomReason") == ModelValidationState.Invalid)
+    {
+        <script>
+            const reportModal = new bootstrap.Modal('#report-@HttpContext.Items["reportModalId"]')
+            reportModal.show();
+        </script>
+    }
 }
 
 
