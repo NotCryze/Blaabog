@@ -115,6 +115,14 @@ namespace SBO.BlaaBog.Web.Pages.Teachers
                     {
                         Class updatedClass = new Class(@class.Id, EditStartDate, @class.Token);
 
+                        if (EditStartDate < new DateOnly(1753,1,1) || EditStartDate > new DateOnly(9999,12,31))
+                        {
+                            HttpContext.Items["editModalId"] = id;
+                            await Console.Out.WriteLineAsync(HttpContext.Items["editModalId"].ToString());
+                            ModelState.AddModelError("EditStartDate", "Must be between 1/1/1753 and 12/31/9999.");
+                            return await OnGetAsync();
+                        }
+
                         await _classService.UpdateClassAsync(updatedClass);
                         HttpContext.Session.AddToastNotification(new ToastNotification { Message = "Class has been updated!", Status = ToastColor.Success });
 

@@ -1,4 +1,5 @@
 ﻿@page
+@using SBO.BlaaBog.Domain.Entities;
 @model IndexModel
 @{
     ViewData["Title"] = "Home";
@@ -6,38 +7,37 @@
 
 
 <div class="accordion" id="accordionExample">
-    @foreach (var classItem in Model.Classes)
+    @foreach (Class classItem in Model.Classes)
     {
-        <div class="accordion-item">
-            <h2 class="accordion-header" id="header-@classItem.Id">
-                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse-@classItem.Id" aria-expanded="false" aria-controls="collapse-@classItem.Id">
-                    @classItem.Name
-                </button>
-            </h2>
-            <div id="collapse-@classItem.Id" class="accordion-collapse collapse" aria-labelledby="heading-@classItem.Id" data-bs-parent="#accordionExample">
-                <div class="accordion-body">
-                    <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 row-cols-xl-4 row-cols-xxl-5">
-                        @foreach (var student in classItem.Students)
-                        {
-                            <div class="col mb-3">
-                                <a class="text-decoration-none w-100" href="/Students/@student.Id">
-                                    <div class="card">
-                                        <img src="~/img/@student.Image" style="aspect-ratio: 1/1" class="card-img-top" alt="Profile Picture">
-                                        <div class="card-body">
-                                            <h5 class="card-title text-center text-truncate" data-bs-toggle="tooltip" title="@student.Name">@student.Name</h5>
-@*                                             <div class="d-flex align-items-center w-75 mx-3">
-                                                <h6 class="card-subtitle text-truncate me-3" data-bs-toggle="tooltip" title="@student.Email">@student.Email</h6>
-                                                <a href="mailto:@student.Email"><i class="fa-solid fa-paper-plane"></i></a>
-                                            </div> *@
+        @if (classItem.Students.Count > 0)
+        {
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="header-@classItem.Id">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse-@classItem.Id" aria-expanded="false" aria-controls="collapse-@classItem.Id">
+                        Year @classItem.Name - @classItem.Students.Count student(s)
+                    </button>
+                </h2>
+                <div id="collapse-@classItem.Id" class="accordion-collapse collapse" aria-labelledby="heading-@classItem.Id" data-bs-parent="#accordionExample">
+                    <div class="accordion-body">
+                        <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 row-cols-xl-4 row-cols-xxl-5">
+                            @foreach (Student student in classItem.Students)
+                            {
+                                <div class="col mb-3">
+                                    <a class="text-decoration-none w-100" href="/Students/@student.Id">
+                                        <div class="card">
+                                            <img src="~/img/@student.Image" style="aspect-ratio: 1/1" class="card-img-top" alt="Profile Picture">
+                                            <div class="card-body">
+                                                <h5 class="card-title text-center text-truncate" data-bs-toggle="tooltip" title="@student.Name">@student.Name</h5>
+                                            </div>
                                         </div>
-                                    </div>
-                                </a>
-                            </div>
-                        }
+                                    </a>
+                                </div>
+                            }
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
+        }
     }
 </div>
 
