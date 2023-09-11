@@ -122,6 +122,16 @@ namespace SBO.BlaaBog.Services.Services
             return await _commentConnection.DeleteCommentAsync(id);
         }
 
+        /// <summary>
+        /// Deletes all comments from a specific author
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns>true if successful, false if not.</returns>
+        public async Task<bool> DeleteCommentsByAuthorAsync(int id)
+        {
+            return await _commentConnection.DeleteCommentsByAuthorAsync(id);
+        }
+
         #endregion
 
         #region Other

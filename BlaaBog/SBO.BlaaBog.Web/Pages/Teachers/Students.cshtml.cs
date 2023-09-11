@@ -12,9 +12,11 @@ namespace SBO.BlaaBog.Web.Pages.Teachers
     public class StudentsModel : PageModel
     {
         private readonly StudentService _studentService;
+        private readonly CommentService _commentService;
         public StudentsModel()
         {
             _studentService = new StudentService();
+            _commentService = new CommentService();
         }
         public List<StudentAccountDTO> Students { get; set; } = new();
         public async Task<IActionResult> OnGetAsync()
@@ -81,9 +83,10 @@ namespace SBO.BlaaBog.Web.Pages.Teachers
         {
             try
             {
-                bool success = await _studentService.DeleteStudentAsync(id);
+                bool success = await _commentService.DeleteCommentsByAuthorAsync(id);
                 if (success)
                 {
+                    await _studentService.DeleteStudentAsync(id);
                     HttpContext.Session.AddToastNotification(new ToastNotification { Message = "Student has been deleted!", Status = ToastColor.Success });
                     return Redirect("/Teachers/Students");
                 }

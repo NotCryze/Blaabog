@@ -552,6 +552,18 @@ BEGIN
 END
 GO
 
+CREATE OR ALTER PROCEDURE spDeleteCommentsByAuthor
+	@id INT
+AS
+BEGIN
+	UPDATE Comments
+	SET deleted = 1
+	WHERE
+		fk_author = @id
+		AND DELETED = 0
+END
+GO
+
 -- Other
 CREATE OR ALTER PROCEDURE spApproveComment
 	@id INT,
