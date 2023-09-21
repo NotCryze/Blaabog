@@ -440,6 +440,35 @@ namespace SBO.BlaaBog.Domain.Connections
             return false;
         }
 
+        /// <summary>
+        /// Deletes all comments from a specific author
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns>true if successful, false if not.</returns>
+        public async Task<bool> DeleteCommentsByAuthorAsync(int id)
+        {
+            SqlCommand sqlCommand = _sql.Execute("spDeleteCommentsByAuthor");
+            sqlCommand.Parameters.AddWithValue("@id", id);
+
+            try
+            {
+                await sqlCommand.Connection.OpenAsync();
+                int rowsAffected = await sqlCommand.ExecuteNonQueryAsync();
+                await sqlCommand.Connection.CloseAsync();
+                return rowsAffected > 0;
+            }
+            catch ( SqlException exception )
+            {
+                await Console.Out.WriteLineAsync(exception.Message);
+            }
+            finally
+            {
+                await sqlCommand.Connection.CloseAsync();
+            }
+
+            return false;
+        }   
+
         #endregion
 
         #region Other
